@@ -6,7 +6,7 @@ Do not recolor standard emoji through unsupported text formatting.
 
 ## Discrete operational status
 
-Established Cyprus.BZ vocabulary:
+Shared vocabulary:
 
 - `✅` success / verified healthy.
 - `🛑` failure / halted / action required.
@@ -15,9 +15,9 @@ Established Cyprus.BZ vocabulary:
 - `⏭️` skipped / no-op, not success.
 - `❓` unknown, not failure or zero.
 
-Source: `🚚` deploy, `👁️` observability, `☁️` Cloudflare, `🐞` application error,
-`🖥️` host, `💓` health. Target: `🏗️` DEV, `🏁` LIVE, `🗄️` database, `🖥️` host.
-`📄` introduces commit/author context when needed. Omit redundant roles.
+Source: `🚚` deploy, `👁️` observability, `☁️` infrastructure, `🐞` application error,
+`🖥️` host, `💓` health. Target: `🏗️` development, `🏁` production, `🗄️` database,
+`🖥️` host. `📄` introduces commit/author context when needed. Omit redundant roles.
 
 ## Continuous indicators
 
@@ -34,7 +34,7 @@ sign halfway through its scale. Keep the exact value beside the quantized icon.
 
 This describes occupancy, not measured loss of model intelligence. Use the same
 displayed percentage as the runtime; do not introduce independent rounding.
-Missing context is omitted in the existing Hermes renderer.
+Missing context may be omitted when the renderer cannot provide it.
 
 ### Weekly quota remaining
 
@@ -60,5 +60,5 @@ more, partial hours up below 24 hours; show `<1h` below one hour. Do not imply
 that quota usage determines reset time. Use `YYYY-MM-DD HH:mm UTC` when an exact
 cross-timezone time is required; omit dates when they do not affect interpretation.
 
-The current Hermes footer is Telegram-only. Other platforms require rendering
-verification, not an assumption of identical glyphs or layout.
+Footer layout must be verified for each output channel; do not assume identical
+glyphs or spacing across clients.

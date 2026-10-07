@@ -1,23 +1,22 @@
 # Examples
 
-All values below are illustrative, not current measurements. Cyprus notification
-patterns and the Hermes footer grammar come from inspected implementations;
-these are not captured production deliveries.
+All values below are illustrative, not current measurements or captured
+production deliveries.
 
-## Existing notification patterns
+## Notification patterns
 
 ```text
-👁️ ⚠️ 🖥️ pds5 disk nearly full · remaining 12.3% (49.3 GiB) · Details
-👁️ 🛑 🗄️ Postgres metrics unavailable · Details
-👁️ ♻️ 🖥️ Alert cleared: Nginx HTTP 5xx rate · Details
-🚚 ✅ 🏁 cyprus.bz · sha: <commit link> · pipeline: <pipeline link>
-🚚 🛑 🏁 cyprus.bz halted: build failed, prod unchanged · pipeline: <link>
+👁️ ⚠️ 🖥️ host disk nearly full · remaining 12.3% (49.3 GiB) · Details
+👁️ 🛑 🗄️ Database metrics unavailable · Details
+👁️ ♻️ 🖥️ Alert cleared: HTTP 5xx rate · Details
+🚚 ✅ 🏁 example.app · sha: <commit link> · pipeline: <pipeline link>
+🚚 🛑 🏁 example.app halted: build failed, production unchanged · pipeline: <link>
 ```
 
 The compact deploy examples omit optional commit/author detail. Real links must
 be clickable, correctly escaped and point to the relevant incident or release.
 
-## Existing footer pattern
+## Footer pattern
 
 ```text
 model · 🙂 12% · 🌕 96% ↻ 2h

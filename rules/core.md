@@ -18,6 +18,8 @@ A specific profile refines these rules; it cannot weaken them.
 - Remove greetings, filler, repeated summaries and offers to help.
 - Keep negations, exceptions, prerequisites, units and consequences.
 - Preserve commands, paths, identifiers, quoted errors and values verbatim.
+- Keep source text separate from its output syntax; encode dynamic values once at the final sink.
+- For commit, merge-request and release communication, follow [Change communication](changes.md).
 - Distinguish observed facts, estimates, hypotheses and unknowns.
 - Separate implemented, tested, published, deployed and verified.
 - Say what failed and what it affects. Do not present a guessed cause as fact.

@@ -8,9 +8,9 @@
 <source-icon> <status-icon> <target-icon> <target> <state> · <essential context> · <details link>
 ```
 
-Use the [shared catalog](indicators.md). Existing Cyprus senders use all three
-roles; new compact senders may omit redundant source or target icons. Do not
-introduce decorative emoji runs. Keep status understandable as text.
+Use the source, status and target roles when they clarify the event; new compact
+senders may omit redundant source or target icons. Do not introduce decorative
+emoji runs. Keep status understandable as text.
 
 ## Content
 
@@ -36,7 +36,9 @@ in other notification types.
 ## Telegram and scheduled jobs
 
 Use explicit HTML parse mode where the sender supports it; escape all dynamic
-text and link attributes. Other channels use their native supported formatting.
+text and link attributes once at the output sink. Other channels use their
+native supported formatting. See [Change communication](changes.md) for the
+boundary between stored text, Markdown, HTML and JSON serialization.
 
 Hermes `cron.wrap_response: false` removes the standard cron header, job ID and
 management footer. It does not shorten the task's own content or every runtime
