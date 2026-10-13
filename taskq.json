@@ -9,8 +9,13 @@
   "capacity_hosts": {
     "macbook-m2.local": {
       "limits": {
-        "claude": 4,
+        "claude": 2,
         "codex": 0
+      },
+      "load_gate": {
+        "enabled": true,
+        "cpu_max": 80,
+        "memory_min": 15
       }
     }
   },
