@@ -19,6 +19,13 @@ The minimum that keeps taskqorg repositories, releases and agent access from lea
 - A leaked secret is rotated first, then its history is cleaned. Cleaning history without rotation does not close the incident.
 - Each agent host uses its own fine-grained token with the smallest scope and a bounded expiry, named after the host. The owner's administrator credential is not an agent credential ([permission authority](permission-authority.md)).
 
+### One durable GitHub token per host
+
+- A host keeps one durable GitHub token, installed by the owner in the tool's install store (taskq: `<install>/token`, mode 0600). The service, workers and sandboxes on that host share it.
+- Agents never run `gh auth login` or another device login, and never ask the owner to run one. GitHub keeps 10 OAuth tokens per user, app and scope; the 11th login revokes the oldest and breaks another host.
+- A missing, empty, unreadable or expired token is an owner item: the agent reports it through the normal owner channel (taskq: `taskq ask`) and stops.
+- Lookup order and errors: [taskq.md token lookup](https://github.com/taskqorg/taskq/blob/main/taskq.md#8-runtimes-and-deployment). Background: [taskqorg/taskq#944](https://github.com/taskqorg/taskq/issues/944).
+
 ## Dependencies and releases
 
 - The lockfile is committed and a dependency change is reviewed like code. An advisory that reaches a shipped code path is fixed in the next release; the rest wait for the normal upgrade cadence.

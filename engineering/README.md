@@ -13,4 +13,4 @@ Reusable engineering rules. Projects link to the applicable rule and define thei
 - [Release, update, service](release-contract.md): verifiable releases, safe updates, self-maintenance and service ownership.
 - [Permission authority](permission-authority.md): trust boundaries for agent access.
 - [Independent product connections](product-connections.md): consent, isolation, delivery, recovery and end-to-end evidence.
-- [Security baseline](security.md): repository protection, secrets, dependencies, releases and the review routine.
+- [Security baseline](security.md): repository protection, secrets, [one durable GitHub token per host](security.md#one-durable-github-token-per-host), dependencies, releases and the review routine.
