@@ -5,6 +5,7 @@ Pages here hold specq rules only. Projects link them and keep their own dimensio
 
 - [Product design workflow](workflow.md): start here for shared/project specifications, iterative design, operator preferences and acceptance.
 - [Operator interfaces](operator-ui.md): density, hierarchy, alignment and visual review.
+- [Dashboards and widgets](dashboards.md): first-screen priorities, automatic refresh, trends and restrained change cues.
 - [Implementation fidelity](implementation-fidelity.md): reference ownership, native sizing, chart rasterization and acceptance.
 - [Labels](labels.md): naming and status color across native platforms.
 
