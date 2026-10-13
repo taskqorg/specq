@@ -26,6 +26,12 @@ A dashboard gives the owner a useful overview at a glance and stays current with
 - **W11. Mark actionable limits.** Put a visible threshold mark on capacity bars when a defined limit exists. Use a calm common color for ordinary measurements and semantic warning/failure colors for breached limits, with a textual or symbolic status. Example thresholds do not become operational policy.
 - **W12. Update the value, then signal the change.** Render the new number immediately in tabular figures, retaining unit placement and space for changes in digit count. Briefly tint only the changed value; show direction and a correctly labelled delta when useful. Update its bar, trend and summary from the same sample. Unchanged values stay still; apply W4–W6 to motion, continuity and status.
 
+## Project board summaries
+
+- **W13. Separate work, decisions and failures.** Use one aligned row per project with stable counter order. Distinguish active work, an owner's answer, task failure, ready work and dependency blocking. Product contracts define exact state mappings; an unreadable source is unknown, never an empty queue. Aggregate totals state their coverage when any source is unavailable.
+- **W14. Show queue composition, not fake progress.** An optional segmented bar uses the same state order and colors as counters, with one shared count scale across projects. It represents the current open-task mix, not percent completion. Keep exact counts visible and retain access to omitted states.
+- **W15. Make counters useful.** Selecting a nonzero count reveals that project's matching tasks in place, including state, identity/title, age and the reason or decision needed. Keep owner questions and dependent work distinct. Pair each project with a recognizable board icon linked directly to its actual board; give icon links accessible names. Read-only dashboards link to the source for actions rather than silently changing tasks.
+
 ## Acceptance
 
 Verify the first viewport against the owner's named questions with representative data, warnings, missing sources and long labels. Check the agreed screen sizes and text scale, both themes, reduced motion and several consecutive refreshes. Confirm that detail remains reachable, reading position stays stable, changes remain noticeable without distraction, and failed refreshes cannot look like a fresh all-clear.
