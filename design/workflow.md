@@ -24,7 +24,7 @@ Entry point for collaborative product and interface work. Adopt this workflow an
 Project documents link shared rules. Do not copy their prose. Shared rules contain no consumer names, paths, catalogs or product-specific thresholds.
 A correction that reveals a reusable principle follows [improve shared rules](../engineering/spec-first.md#improve-shared-rules). A local shared edit does not prove publication, consumer adoption or deployment.
 
-Dashboard and widget work also follows [W1–W8](dashboards.md): first-screen priorities, automatic refresh and legible changes.
+Dashboard and widget work also follows [W1–W12](dashboards.md): first-screen priorities, bars, trends, automatic refresh and legible changes.
 
 ## Iteration loop
 

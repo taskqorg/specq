@@ -19,6 +19,13 @@ A dashboard gives the owner a useful overview at a glance and stays current with
 - **W7. Keep the summary useful.** Expose the subject, relevant value or state, scope and freshness without opening detail. Use concise Unicode or consistent icons as semantic cues with accessible labels; avoid decorative repetition and verify glyphs on target platforms. Product contracts select metrics and symbols.
 - **W8. Preserve evidence in detail.** Group related observations by an explicit key and retain access to the underlying records. Grouping does not establish a shared cause. Keep historical records distinct from current failures and observation gaps. Put relevant evidence and existing work-item links beside their subjects.
 
+## Bars, trends and changing numbers
+
+- **W9. Match the visual to the question.** Use a filled bar for current utilization against a known capacity; show used/total and units beside it. Use a compact line chart for change over time. Combine them when both headroom and direction matter; never replace exact values with graphics alone.
+- **W10. Make comparisons truthful.** Comparable utilization plots share a fixed percentage scale and time window. Show scale and window once per unambiguous group. Bars run from zero to total capacity. An unknown total cannot produce a utilization bar; missing history cannot produce a continuous line.
+- **W11. Mark actionable limits.** Put a visible threshold mark on capacity bars when a defined limit exists. Use a calm common color for ordinary measurements and semantic warning/failure colors for breached limits, with a textual or symbolic status. Example thresholds do not become operational policy.
+- **W12. Update the value, then signal the change.** Render the new number immediately in tabular figures, retaining unit placement and space for changes in digit count. Briefly tint only the changed value; show direction and a correctly labelled delta when useful. Update its bar, trend and summary from the same sample. Unchanged values stay still; apply W4–W6 to motion, continuity and status.
+
 ## Acceptance
 
 Verify the first viewport against the owner's named questions with representative data, warnings, missing sources and long labels. Check the agreed screen sizes and text scale, both themes, reduced motion and several consecutive refreshes. Confirm that detail remains reachable, reading position stays stable, changes remain noticeable without distraction, and failed refreshes cannot look like a fresh all-clear.
