@@ -1,13 +1,28 @@
 # Release, update, service
 
-The contract a taskqorg tool follows when it ships as a binary. [coreq](https://github.com/taskqorg/coreq) is the shared Rust implementation; [coreq.md](https://github.com/taskqorg/coreq/blob/main/coreq.md) defines every step, name and threshold. [taskq](https://github.com/taskqorg/taskq/blob/main/taskq.md) is the reference consumer. [dashq](https://github.com/taskqorg/dashq) is where each tool's `status.json` is seen.
+Rules for tools distributed as binaries with a managed background service.
+Consumer contracts define platforms, commands, artifact names, paths, schemas, dependencies and thresholds.
 
 ## Rules
 
-- A tool depends on coreq, pinned by git tag (`v0.1.0`), and passes its own name, title, release repository and version. It does not copy release, update or service code.
-- Release: one static binary per OS and architecture, built by CI on a `v*` tag, with checksums and a manifest. A failing selftest publishes nothing.
-- Update: immutable release folders, an atomic `current` and `previous`, a verified download, a selftest smoke and launcher rollback. Running children keep their own release folder.
-- Compatibility N/N-1: a release changes shared data only additively, so the previous version keeps working next to it.
-- Service: one OS unit per host runs `<tool> service run`. Each pass writes `status.json`; every UI reads it and none talks to the backend directly.
-- Unknown or stale values say so with a reason, never zero or success.
-- A change to a step or threshold edits coreq.md first ([spec first](spec-first.md)); this file changes only when a rule changes.
+- Build versioned artifacts in CI for each supported platform and architecture.
+- Publish integrity metadata and a machine-readable release manifest.
+- Verify release artifacts before publication. Failed checks block publication.
+- Define the trusted release source and who may publish.
+- Reuse a shared implementation where available; keep its identity and pinned version in the consumer contract.
+
+## Update
+
+- Keep installed releases immutable. Verify downloads before activation.
+- Validate the candidate before switching the active version atomically.
+- Preserve the previous working version and define a tested rollback path.
+- Preserve running work during updates. State platform-specific limitations explicitly.
+- Define compatibility for overlapping versions and a migration plan for incompatible changes.
+
+## Service
+
+- Define service ownership and lifecycle in the consumer contract; installation must not create competing owners.
+- Expose observable health, version, current work and errors through a documented status interface.
+- UIs consume the service interface; they do not duplicate backend state or orchestration.
+- Mark stale or missing observations as unknown with a reason, never zero or success.
+- Verify install, restart, stop, uninstall and recovery on each supported platform.

@@ -1,11 +1,19 @@
 # Spec first
 
-One file per project holds every decision, product ones included: `<project>.md` at the repository root (taskq: `taskq.md`).
+Each project keeps its decisions, including product decisions, in one root contract. Supporting specifications link to it.
 
-- A change that alters a decision edits the spec first; code, README and pages follow in the same deliverable.
-- A task that conflicts with a decision is a question to the owner with options, not an edit. Only the owner accepts a decision change.
-- Every agent reads the spec before work. `AGENTS.md` and `CLAUDE.md` point to it and stay thin.
-- The spec is the source of truth and matches the code: tests check it (behavior tables have golden traces; the spec fits a line limit) and code and spec ship in the same release.
-- Briefs and docs link to the spec, never copy it.
+- Edit the contract before changing a decision. Update implementation and supporting documents in the same deliverable.
+- A conflicting task becomes a question with options. Only the owner approves decision changes.
+- Agent entrypoints link to the contract and stay thin.
+- Verify implemented behavior against the contract. Keep design targets distinct from shipped behavior.
+- Project specifications contain project-specific decisions and explicit exceptions. Link shared rules; do not copy them.
 
-Reference: [taskq.md](https://github.com/taskqorg/taskq/blob/main/taskq.md) R8 and R13.
+Product/interface collaboration follows the [design workflow](../design/workflow.md); it connects these ownership rules to use cases, iterations and acceptance.
+
+## Improve shared rules
+
+- When work exposes a reusable gap, propose a change here with the problem, general rule, affected consumers and verification.
+- Discuss the proposal before adoption. Keep unresolved proposals separate from active rules.
+- After approval, update the canonical shared rule; remove duplicate wording from project specifications.
+- Review consumer compatibility explicitly. A shared edit does not silently change deployed behavior or override a project contract.
+- Keep product names, implementation references, dependency versions and project-specific thresholds in consumer specifications.

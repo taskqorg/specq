@@ -1,8 +1,13 @@
-# Engineering contract
+# Engineering rules
 
-Rules a taskqorg project follows. Each file is the canonical definition; projects link here instead of copying.
+Reusable engineering rules. Projects link to the applicable rule and define their own implementation details.
 
 - [Ponytail](ponytail.md): the smallest change that fully solves the task.
-- [Spec first](spec-first.md): one spec file holds every decision; code follows it.
-- [Release, update, service](release-contract.md): one static binary, immutable releases, self-update, one service contract. Shared implementation: [coreq](https://github.com/taskqorg/coreq/blob/main/coreq.md); status view: [dashq](https://github.com/taskqorg/dashq).
-- [Working principles](principles.md): specq owns shared rules; projects keep project docs.
+- [Spec first](spec-first.md): canonical decisions, project boundaries and shared-rule improvements.
+- [Release, update, service](release-contract.md): verifiable releases, safe updates and service ownership.
+
+- [Verification](verification.md): evidence boundaries and executable behavioral models.
+- [Use cases](use-cases.md): scenario structure, overlap and requirement coverage.
+- [Permission authority](permission-authority.md): proposed trust boundaries for agent access.
+
+- [Working principles](principles.md): shared-rule ownership and project boundaries.
