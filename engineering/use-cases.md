@@ -5,6 +5,7 @@ Product scenarios belong in the product repository; this file defines the method
 
 - Assign stable IDs. Record source and status: observed need, owner requirement, proposal or approved behavior.
 - State relevant initial conditions, intent, actions, observable result, exceptions and open decisions.
+- Separate requirements, illustrative examples, preferences and unresolved questions in free-form input. Give each material request a specification home or an explicit deferral. Examples do not automatically constrain the solution.
 - Keep user intent separate from a proposed interface and from implemented capability.
 - Preserve counts, scope, hosts and constraints when they affect meaning. Exclude secrets and private paths.
 - Link applicable contracts. Record conflicts as decisions to resolve; scenarios do not silently amend runtime rules.

@@ -40,3 +40,7 @@ Use the shared [Core review](../caveman/rules/core.md#review) for reporting; the
 - Formalize only risky state transitions, for example mutual exclusion of operations, no activation before verification, drain before switch, no deletion outside owned files, stable IDs against double counting. Tie each invariant to a requirement ID.
 - Default: one state model plus generated operation sequences in the project's existing test tools. Adopt a heavier tool (for example P, Quint or TLA+) only after a one-scenario spike finds real defects at lower ongoing cost than targeted checks.
 - A model check proves the model within its bounds; a trace check proves observed runs. Neither proves all code.
+
+## Agent integration
+
+Use a thin discoverable entry to load the compatible installed contract. Qualify integration presence, actual instruction loading and the complete user flow separately. Report unavailable capabilities explicitly. Keep provider-specific commands, versions and qualification fixtures in the consumer project. A second supported client must be able to continue from authoritative project state without the original chat.
