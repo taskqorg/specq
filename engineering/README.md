@@ -4,6 +4,7 @@ Reusable engineering rules. Projects link to the applicable rule and define thei
 
 - [Ponytail](ponytail.md): the smallest change that fully solves the task.
 - [Spec first](spec-first.md): canonical decisions, project boundaries and shared-rule improvements.
+- [Agent workflow](agent-workflow.md): ownership, work cycle, approval boundaries and completion.
 - [Release, update, service](release-contract.md): verifiable releases, safe updates and service ownership.
 
 - [Verification](verification.md): evidence boundaries, unknown health, scoped remediation, run policy by stage and behavioral models.
