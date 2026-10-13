@@ -4,4 +4,4 @@ Three rules a taskqorg project follows. Each file is the canonical definition; p
 
 - [Ponytail](ponytail.md): the smallest change that fully solves the task.
 - [Spec first](spec-first.md): one spec file holds every decision; code follows it.
-- [Release, update, service](release-contract.md): one static binary, immutable releases, self-update, one service contract. Reference implementation: [taskq](https://github.com/taskqorg/taskq/blob/main/taskq.md) § 8.
+- [Release, update, service](release-contract.md): one static binary, immutable releases, self-update, one service contract. Shared implementation: [coreq](https://github.com/taskqorg/coreq/blob/main/coreq.md); status view: [dashq](https://github.com/taskqorg/dashq).

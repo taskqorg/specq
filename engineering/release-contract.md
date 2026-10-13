@@ -1,24 +1,13 @@
 # Release, update, service
 
-The contract a taskqorg tool follows when it ships as a binary. Modelled on taskq v4; [taskq.md](https://github.com/taskqorg/taskq/blob/main/taskq.md) § 8 is the reference implementation and the canonical detail.
+The contract a taskqorg tool follows when it ships as a binary. [coreq](https://github.com/taskqorg/coreq) is the shared Rust implementation; [coreq.md](https://github.com/taskqorg/coreq/blob/main/coreq.md) defines every step, name and threshold. [taskq](https://github.com/taskqorg/taskq/blob/main/taskq.md) is the reference consumer. [dashq](https://github.com/taskqorg/dashq) is where each tool's `status.json` is seen.
 
-## Release
+## Rules
 
-- One static binary per OS and architecture, built by CI on a `v*` tag: `<tool>-<ver>-<os>-<arch>`.
-- The release carries `SHA256SUMS` and `latest.json`. A failing selftest publishes nothing.
-- The release repository is built into the binary; no config changes it. Trust is HTTPS plus who can push tags.
-
-## Update
-
-- Install layout: immutable `releases/<ver>/`, a `current` file with `<ver>` (atomic rename) and `previous`.
-- `<tool> update`: read `latest.json`; not newer: stop. Download into `releases/<ver>.tmp/`, verify sha256, rename. Smoke: `releases/<ver>/<tool> selftest`; failure deletes it and keeps current.
-- The launcher runs `releases/$(current)/<tool>`. A version that fails to start repeatedly is rolled back to `previous`.
-- Running children keep their own release folder: no drain, no manual resume.
+- A tool depends on coreq, pinned by git tag (`v0.1.0`), and passes its own name, title, release repository and version. It does not copy release, update or service code.
+- Release: one static binary per OS and architecture, built by CI on a `v*` tag, with checksums and a manifest. A failing selftest publishes nothing.
+- Update: immutable release folders, an atomic `current` and `previous`, a verified download, a selftest smoke and launcher rollback. Running children keep their own release folder.
 - Compatibility N/N-1: a release changes shared data only additively, so the previous version keeps working next to it.
-
-## Service
-
-- `<tool> service install|run|pause|resume|status|restart|stop|uninstall|list`.
-- One OS unit per host runs `<install>/<tool> service run`; install makes its binary `current` when newer.
-- The service writes `status.json` (host, version, error, heartbeat time, work in progress) that every UI reads; no UI talks to the backend directly.
+- Service: one OS unit per host runs `<tool> service run`. Each pass writes `status.json`; every UI reads it and none talks to the backend directly.
 - Unknown or stale values say so with a reason, never zero or success.
+- A change to a step or threshold edits coreq.md first ([spec first](spec-first.md)); this file changes only when a rule changes.
