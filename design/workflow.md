@@ -89,5 +89,6 @@ Compare the actions, concepts and manual setup required to complete the scenario
 - Agents interpret, decompose and explain. The execution service enforces identity, confirmed effects, dependencies, capacity and receipts; a model's prose is not execution proof.
 - Put an explained question and its choices at the work item. A normal choice submits the displayed answer directly; consequential effects retain their explicit review.
 - Preserve choice identifiers across interfaces. Show the same source numbers, order, meaning and recommendation in buttons, text and receipts; presentation never changes answer identity.
+- Every manager report ends with `Next:` as numbered actions, the recommended one first and marked; the person picks by number in text and by button in a UI. The numbers are the same identifiers in every interface and in the receipt.
 
 Accepted refinement coverage: [workflow review](workflow-review.md). The linked owner sections below define the rules.

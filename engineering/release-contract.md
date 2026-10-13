@@ -28,6 +28,13 @@ Install once, then leave it. The service maintains itself.
 - Pausing stops updates, not health checks or the service's core work.
 - Retries, timeouts and growing files are bounded per [data](data.md#files).
 
+## Delivery speed
+
+- A merge to the main branch is a deployment candidate. The only gates are the persistent chain checks ([test classes](verification.md#test-classes)) and the release checks above.
+- One approval per task, recorded in the task contract ([approval boundaries](agent-workflow.md#approval-boundaries)); no approval per step and no manual queue between merge and rollout.
+- Rollout and rollback are bounded in minutes and scripted; rollback is one command that activates the preserved previous version.
+- Measure lead time from merge to running version, deployment frequency, change failure rate and time to restore. A slow or manual step in that path is a defect to remove, not a routine to keep.
+
 ## Service
 
 - Define service ownership and lifecycle in the consumer contract; installation must not create competing owners.
