@@ -24,5 +24,5 @@ Consumer contracts define platforms, commands, artifact names, paths, schemas, d
 - Define service ownership and lifecycle in the consumer contract; installation must not create competing owners.
 - Expose observable health, version, current work and errors through a documented status interface.
 - UIs consume the service interface; they do not duplicate backend state or orchestration.
-- Mark stale or missing observations as unknown with a reason, never zero or success.
+- Report stale or missing observations per [unknown is never healthy](verification.md#unknown-is-never-healthy).
 - Verify install, restart, stop, uninstall and recovery on each supported platform.
