@@ -10,7 +10,7 @@ Implementation and review follow [F1–F6](implementation-fidelity.md); product 
 - **D1. Keep related content together.** Present an entity as one flowing block. Metadata and title start together; wrapping does not create a separate column.
 - **D2. Use one grid.** Align names left and compact counter groups right. Reuse edges and spacing across levels. Align visible marks, not just containers.
 - **D3. Preserve readability.** Use large, adjustable text. Keep secondary text readable and respect system scaling.
-- **D4. Give whitespace a purpose.** Size to content. Do not stretch gaps between names, counts and navigation. Remove duplicate cards and labels.
+- **D4. Give whitespace a purpose.** Size to content. Do not stretch gaps between names, counts and navigation. Remove duplicate cards and labels. Let grouping, alignment and a shared heading carry repeated meaning before adding words. Use a familiar semantic symbol when it remains clear; keep units, uncertainty and accessible names.
 - **D5. Keep primary actions direct.** Reveal detail on demand; do not add an intermediate screen just to expose a link.
 - **D6. Let long text use the row.** Wrap titles from the full block's left edge, below metadata. Keep atomic identifiers intact. Avoid fixed metadata columns that squeeze titles or force horizontal scrolling.
 - **D7. Give color stable meaning.** Use restrained colors and text contrast of at least 4.5:1. Add position, symbols or labels so color is never the only signal.
@@ -25,7 +25,7 @@ Implementation and review follow [F1–F6](implementation-fidelity.md); product 
 ## Review each change
 
 1. Does each element help recognition, decision or action? Remove it if not.
-2. Can a duplicate row or gap disappear, or text grow, without losing clarity?
+2. For each label, can it disappear because position, a shared heading or a semantic symbol already conveys its meaning? Compare before/after; retain it if removal introduces ambiguity. Remove duplicate rows and gaps before shrinking text.
 3. Are alignment, direct actions and accepted features preserved?
 4. Check long text, large fonts, narrow surfaces, both themes and system scaling.
 
