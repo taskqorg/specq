@@ -17,7 +17,7 @@ One owner page per area. Other pages in the area link from it.
 
 - [caveman/](caveman/README.md): Caveman style library. Moved with history from `gitlab.ufobe.com/gradus-public/caveman` (archived); pinned links to commit `62579538` stay valid here.
 - [design/](design/README.md): shared design rules: workflow, operator interfaces, implementation fidelity and labels.
-- [engineering/](engineering/README.md): shared engineering rules: Ponytail, spec first, release, update and service, [verification](engineering/verification.md) and remediation.
+- [engineering/](engineering/README.md): shared engineering rules: Ponytail, spec first, agent workflow, [verification](engineering/verification.md), data, performance, release, update and service.
 
 Check: `python3 caveman/scripts/check.py` and `git diff --check`.
 

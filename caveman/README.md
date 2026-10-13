@@ -2,7 +2,7 @@
 
 **Less text. Same meaning. Clear next action.**
 
-Gradus style rules for agents, operational notifications and documentation.
+taskqorg style rules for agents, operational notifications and documentation.
 This is a style library, not a coding framework or a deployment policy.
 
 ## Choose a profile

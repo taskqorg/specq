@@ -12,7 +12,10 @@ Product/interface collaboration follows the [design workflow](../design/workflow
 
 ## Improve shared rules
 
-- When work exposes a reusable gap, propose a change here with the problem, general rule, affected consumers and verification.
+An agent that sees a better way during any task follows this order: propose, change the specification, then implement.
+
+- When work exposes a reusable gap, propose a change here with the problem, general rule, affected consumers and verification. A project-only improvement is proposed to the project contract the same way.
+- Do not implement an improvement that changes a decision before the owning specification changes.
 - Discuss the proposal before adoption. Keep unresolved proposals separate from active rules.
 - After approval, update the canonical shared rule; remove duplicate wording from project specifications.
 - Review consumer compatibility explicitly. A shared edit does not silently change deployed behavior or override a project contract.

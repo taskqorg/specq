@@ -22,7 +22,7 @@ Entry point for collaborative product and interface work. Adopt this workflow an
 | Observations, screenshots and test results | Revision-specific evidence |
 
 Project documents link shared rules. Do not copy their prose. Shared rules contain no consumer names, paths, catalogs or product-specific thresholds.
-When a correction reveals a reusable principle, explain the general change and affected consumers. After agreement, update its shared source and link it from the project. A local shared edit does not prove publication, consumer adoption or deployment.
+A correction that reveals a reusable principle follows [improve shared rules](../engineering/spec-first.md#improve-shared-rules). A local shared edit does not prove publication, consumer adoption or deployment.
 
 ## Iteration loop
 

@@ -5,7 +5,7 @@ Consumer contracts define platforms, commands, artifact names, paths, schemas, d
 
 ## Rules
 
-- Build versioned artifacts in CI for each supported platform and architecture.
+- Build versioned artifacts in CI from source for each supported platform and architecture. Pin dependency versions and verify downloaded sources by checksum.
 - Publish integrity metadata and a machine-readable release manifest.
 - Verify release artifacts before publication. Failed checks block publication.
 - Define the trusted release source and who may publish.
@@ -18,6 +18,15 @@ Consumer contracts define platforms, commands, artifact names, paths, schemas, d
 - Preserve the previous working version and define a tested rollback path.
 - Preserve running work during updates. State platform-specific limitations explicitly.
 - Define compatibility for overlapping versions and a migration plan for incompatible changes.
+
+## Self-maintenance
+
+Install once, then leave it. The service maintains itself.
+
+- The service runs its own update check, pruning, log rotation and rollback on its schedule. No second scheduler, cron entry or human routine.
+- A failed update keeps the current version. A version that fails to become healthy after a bounded number of starts is rolled back automatically.
+- Pausing stops updates, not health checks or the service's core work.
+- Retries, timeouts and growing files are bounded per [data](data.md#files).
 
 ## Service
 

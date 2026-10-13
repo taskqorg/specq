@@ -1,6 +1,6 @@
 # Permission authority
 
-Proposed shared rules; review before adoption.
+Trust boundaries for agent access. Consumer contracts name their policy store, grants and approvers.
 
 - Human-controlled host policy grants authority. Untrusted tasks and writable project configuration may restrict or request it, never enlarge it.
 - Resolve effective capabilities across administrator policy, host grants, task restrictions and runtime support. Unknown enforcement refuses privileged launch.
