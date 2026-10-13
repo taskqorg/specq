@@ -12,3 +12,4 @@ Reusable engineering rules. Projects link to the applicable rule and define thei
 - [Performance and capacity](performance.md): targets, order of work and resource budgets.
 - [Release, update, service](release-contract.md): verifiable releases, safe updates, self-maintenance and service ownership.
 - [Permission authority](permission-authority.md): trust boundaries for agent access.
+- [Security baseline](security.md): repository protection, secrets, dependencies, releases and the review routine.
