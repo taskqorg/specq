@@ -1,34 +1,8 @@
-# Caveman
+# specq
 
-**Less text. Same meaning. Clear next action.**
+Public reusable rules of taskqorg. Private material (host inventory, identities, SoT) stays outside this repository.
 
-Gradus style rules for agents, operational notifications and documentation.
-This is a style library, not a coding framework or a deployment policy.
+- [caveman/](caveman/README.md): Caveman style library. Moved with history from `gitlab.ufobe.com/gradus-public/caveman` (archived); pinned links to commit `62579538` stay valid here.
+- [engineering/](engineering/README.md): engineering contract. Ponytail, spec first, release/update/service contract modelled on taskq v4.
 
-## Choose a profile
-
-- [Core](rules/core.md): shared principles and precedence.
-- [Agent replies](rules/agents.md): coding conversations and ready-to-paste instructions.
-- [Change communication](rules/changes.md): commit subjects, merge requests and release messages.
-- [Notifications](rules/notifications.md): compact operational messages.
-- [Indicators](rules/indicators.md): icon vocabulary, ranges and reset notation.
-- [Documentation](rules/documentation.md): scannable, compact persistent writing.
-- [Examples](examples/messages.md): established patterns and illustrative rewrites.
-- [Notification scope](audits/notification-scope.md): adoption boundary; no integration or deployment claim.
-- [Sources](SOURCES.md): provenance and upstream differences.
-
-## Adopt
-
-Read Core, then only the profile needed. Link these files from your agent or
-project instructions. For agents without repository access, paste the block in
-Agent replies. Adopting this repository does not silently change other projects.
-
-Clarity, safety, exact facts and the user's requested format override brevity.
-Project content is English; conversational replies follow the user's language.
-
-## Check
-
-Run `python3 scripts/check.py`. Then review meaning, readability and uncertainty
-using the checklist in Core. Mechanical checks cannot prove semantic fidelity.
-
-Maintainer: Tight <tight@kirs.online>.
+Check: `python3 caveman/scripts/check.py` and `git diff --check`.
