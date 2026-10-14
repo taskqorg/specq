@@ -13,6 +13,8 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - For a substantial behavior change, walk the relevant [scenarios](use-cases.md) to uncover decisions missing from the request. Investigate facts in code and current state; bring only unresolved choices that change behavior, authority, cost or risk to the owner, with recommendations.
 - Group independent choices in a short round; ask dependent questions after their prerequisites are settled. Reuse accepted answers. Resolve material choices before dependent implementation; routine changes need no interview or extra approval round.
 - Split functional work into small, independently verifiable user scenarios across the required layers, with only real blocking dependencies. Size by a coherent outcome and manageable context, not a fixed token quota. Research and mechanical migrations may use a different split when each step has a clear check and preserves compatibility.
+- One surface has one open task: a batch of fixes to the same screen, module or file goes to one task and one session, and a new fix for that surface joins its open task instead of starting a parallel writer.
+- Acceptance names evidence for the changed behavior only, on the host that runs the task; it never asks for a full snapshot or platform matrix ([run policy](verification.md#run-policy-by-stage)).
 
 ## Work cycle
 
@@ -46,5 +48,6 @@ After repeated rework, prolonged diagnosis or a material owner correction, brief
 - Check whether an existing check or navigation pointer is missing, disconnected or broken before adding another.
 - Prefer a deterministic check for a mechanically detectable mistake; reserve prose for judgement and decisions. Inspect tool cost and missing information when they caused the friction.
 - Propose only evidence-backed improvements, most consequential first. Fixes within the authorized task proceed normally; changes to shared decisions follow [spec first](spec-first.md#improve-shared-rules). Do not auto-apply speculative findings or expand access.
+- A remedy that changes how work is done lives in the owning specification or a check, never only in agent memory. Agent memory keeps private and host facts and a pointer to the rule.
 
 Source: [Matt Pocock skills, v1.3.1](https://github.com/mattpocock/skills/tree/v1.3.1), adapted to shared ownership and acceptance rules.
