@@ -59,6 +59,12 @@ Describe the user-facing change, then add tests or limitations only when they
 help review. Headings are optional; do not add empty `Summary`, `Testing` or
 `Deployment` sections as filler.
 
+For a risky change, state affected users or systems, whether it is reversible,
+the rollback action and what rollback cannot restore. Include relevant before/after
+evidence per [verification](https://github.com/taskqorg/specq/blob/main/engineering/verification.md#run-policy-by-stage).
+Use a sentence or an existing result/evidence link when enough; no mandatory
+risk section for routine changes. Green CI does not establish reversibility.
+
 Before:
 
 ```markdown

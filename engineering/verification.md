@@ -32,6 +32,7 @@ Use the shared [Core review](../caveman/rules/core.md#review) for reporting; the
 ## Run policy by stage
 
 - During development: run the affected scenario and the relevant high-risk checks. Do not repeat unrelated suites.
+- For a defect fix, first reproduce the failure with the smallest safe check at the affected behavior boundary, then run the same check after the fix. Reuse chain checks where possible. If reproducing is unsafe or unavailable, record why and the alternative evidence; do not claim a before/after proof. This is not mandatory test-first work for trivial or documentation changes.
 - Merge candidate: run cheap deterministic core acceptance and the checks the diff affects. Capture seed, version, step events and native logs. A failure names the broken chain before anyone isolates the step.
 - Release candidate: run the platform and client matrix, lifecycle and outage cases, and bounded live probes of changed integration paths. Run expensive or paid evaluations only when the logic they measure changed, never for doc edits or unchanged redeploys.
 - Each persistent test names its requirement and its distinct failure risk. Remove a redundant test only after another check covers its risk.

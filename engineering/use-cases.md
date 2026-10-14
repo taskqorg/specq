@@ -7,6 +7,7 @@ Product scenarios belong in the product repository; this file defines the method
 - State relevant initial conditions, intent, actions, observable result, exceptions and open decisions.
 - Separate requirements, illustrative examples, preferences and unresolved questions in free-form input. Give each material request a specification home or an explicit deferral. Examples do not automatically constrain the solution.
 - Keep user intent separate from a proposed interface and from implemented capability.
+- Define ambiguous domain terms once in the owning contract or linked domain reference; use the same meanings in scenarios, code and interfaces. Distinguish terms with different behavior and identify misleading synonyms. Reuse existing definitions; add a separate glossary only when their size warrants it.
 - Preserve counts, scope, hosts and constraints when they affect meaning. Exclude secrets and private paths.
 - Link applicable contracts. Record conflicts as decisions to resolve; scenarios do not silently amend runtime rules.
 - Map capabilities to primary cases. Reuse cases for overlapping flows; make provider/platform variations separate only when behavior differs.

@@ -8,16 +8,28 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - One outcome has one owner, one writer, one worktree and one acceptance contract. Parallel writers use isolated worktrees and hand off through immutable commits, never shared uncommitted state.
 - Delegate only when independent work gains from it. Workers do not fan out; add at most one read-only reviewer when risk warrants it.
 
+## Prepare the task
+
+- For a substantial behavior change, walk the relevant [scenarios](use-cases.md) to uncover decisions missing from the request. Investigate facts in code and current state; bring only unresolved choices that change behavior, authority, cost or risk to the owner, with recommendations.
+- Group independent choices in a short round; ask dependent questions after their prerequisites are settled. Reuse accepted answers. Resolve material choices before dependent implementation; routine changes need no interview or extra approval round.
+- Split functional work into small, independently verifiable user scenarios across the required layers, with only real blocking dependencies. Size by a coherent outcome and manageable context, not a fixed token quota. Research and mechanical migrations may use a different split when each step has a clear check and preserves compatibility.
+
 ## Work cycle
 
 1. Inspect the relevant code, contract and current state. Discovery stays inside the exact project or worktree.
 2. Implement the smallest coherent change ([Ponytail](ponytail.md)).
 3. Run focused tests while iterating.
 4. Freeze the diff and run the project's canonical gate once.
-5. Review only the frozen result when review is warranted.
+5. Review only the frozen result when review is warranted, using the two axes below.
 6. Report the actual outcome with its evidence ([verification](verification.md)).
 
 If the same command or failure repeats twice, stop and change strategy. Dispatch async work once and wait for its completion signal; do not poll or redispatch healthy work.
+
+## Review
+
+- Report task fit and implementation quality separately: missing, incorrect or unrequested behavior versus concrete standards violations and maintenance risks. Neither result substitutes for the other.
+- Distinguish binding violations from judgement calls. A code smell alone is not a rejection; follow the project's acceptance rules. Tool-enforced rules need no duplicate manual checklist.
+- Two axes do not require two agents. Keep safety, compatibility and architectural constraints available to the implementer; load detailed review guidance when needed.
 
 ## Approval boundaries
 
@@ -27,4 +39,12 @@ Commit, push, deploy, destructive operations, production access and changes to a
 
 Done means the requested user-visible outcome exists and its executable evidence passed. A worker handoff, a finished conversation or agent prose is not proof. If any acceptance item remains unproved, report the task as incomplete.
 
-Fix a recurring failure in code, tooling or the executable contract; do not turn every incident into a new prose rule.
+## Learn from friction
+
+After repeated rework, prolonged diagnosis or a material owner correction, briefly inspect the relevant attempt evidence: time lost or error, cause, smallest remedy and how to verify it. Skip this for routine work; reuse the task or result rather than adding a report file or completion gate.
+
+- Check whether an existing check or navigation pointer is missing, disconnected or broken before adding another.
+- Prefer a deterministic check for a mechanically detectable mistake; reserve prose for judgement and decisions. Inspect tool cost and missing information when they caused the friction.
+- Propose only evidence-backed improvements, most consequential first. Fixes within the authorized task proceed normally; changes to shared decisions follow [spec first](spec-first.md#improve-shared-rules). Do not auto-apply speculative findings or expand access.
+
+Source: [Matt Pocock skills, v1.3.1](https://github.com/mattpocock/skills/tree/v1.3.1), adapted to shared ownership and acceptance rules.
