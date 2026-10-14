@@ -22,6 +22,16 @@ Every product measures its own operations, so optimization starts from evidence,
 - An incident links to the profile report of its window.
 - An optimization task cites the report before the change and the same report after it, in the same environment ([performance](performance.md#target)). A change without a before and after comparison is not an optimization result.
 
+## Agent work
+
+Agent work is an operation like any other: every task attempt is measured by design, always on, by the service that runs it.
+
+- Per attempt, record each stage that occurred: `claim`, `start`, `build`, `checks`, `review`, `ask`, `close`. Per stage keep the duration, outcome and error class, with the counters above.
+- Record model calls and context tokens per stage when the client reports them. A client that reports none reads unknown, never zero.
+- Identify an attempt by its task and attempt ids, runtime and host name. Store no secrets, task text, prompts, model output or paths.
+- Write these records to the existing attempt log or profile store under its bound. Agent work adds no collector, hook service or second store.
+- A profile report for agent work ranks stages and runtimes by slowness, failure rate and retries, like any operation report.
+
 ## Budgets and unknowns
 
 - Each product spec lists its measured operations with a time budget, such as p95, and an error budget.
