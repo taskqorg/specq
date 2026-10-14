@@ -10,11 +10,11 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 
 ## Attempt context
 
-- The runner injects the whole project contract and every shared rule file at each attempt start and each resume. Shared rule files are all specq rule documents, principles included. Owner budget: about 50k tokens per start.
+- The runner injects the project contract and the shared core at each attempt start and each resume. The shared core applies to every attempt: [principles](principles.md), [spec first](spec-first.md), [Ponytail](ponytail.md), this file, [use cases](use-cases.md), [verification](verification.md), [security](security.md), [Caveman core](../caveman/rules/core.md), [documentation](../caveman/rules/documentation.md) and [change communication](../caveman/rules/changes.md).
+- Every other shared file is linked from the injected index and is not injected. The agent loads it on demand when the task touches its area.
 - A header names the injected revisions and states precedence: the project contract overrides shared rules where they conflict.
-- Project `docs/` are not injected. The runner injects an index instead: one line per file, path plus a one-line summary. The agent loads a listed document on demand when the task touches it.
+- Project `docs/` are not injected. The index lists them too: one line per file, path plus a one-line summary.
 - Acknowledging the injected rules is not evidence. Apply them to the work; evidence follows [verification](verification.md).
-- Consumer follow-up: the taskq runner builds this context in its `turn_text` ([taskqorg/taskq](https://github.com/taskqorg/taskq)). The consumer pins a specq revision and moves the pin with each specq release; pin drift is a defect.
 
 ## Prepare the task
 
@@ -22,20 +22,13 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - Group independent choices in a short round; ask dependent questions after their prerequisites are settled. Reuse accepted answers. Resolve material choices before dependent implementation; routine changes need no interview or extra approval round.
 - Split functional work into small, independently verifiable user scenarios across the required layers, with only real blocking dependencies. Size by a coherent outcome and manageable context, not a fixed token quota. Research and mechanical migrations may use a different split when each step has a clear check and preserves compatibility.
 - One task is one user-visible outcome; its steps, hosts and surfaces are acceptance items, not tasks. A batch of fixes to the same screen, module or file goes to one task and one session, and a new fix for that surface joins its open task instead of starting a parallel writer. A repeated check (a probe per host, a periodic measure) is one recipe run, not one task per run.
-- A gap found in review is fixed inside the task, up to three review rounds; a task stays open until its outcome is proved rather than spawning follow-up tasks for its own acceptance. A finding on unchanged lines is a note or a separate task only when it is another outcome.
+- A gap found in review is fixed inside the task, up to three review rounds; a task stays open until its outcome is proved rather than spawning follow-up tasks for its own acceptance ([review](#review)).
 - Waiting is not a question: a task that needs an owner action, a release or another task's close is parked with its dependency and resumes on it; an ask is only for a product, scope or spec-rule choice the agent cannot make. Technical choices inside the contract are the agent's.
 - Acceptance names evidence for the changed behavior only, on the host that runs the task; it never asks for a full snapshot or platform matrix ([run policy](verification.md#run-policy-by-stage)).
 
 ## Runtime preference
 
-The task author may state a soft runtime preference by task kind with one label, `prefer-codex` or `prefer-claude`, or none.
-
-- UI, visual and usability work prefers codex: `prefer-codex`.
-- Code, infrastructure, release and host work prefers claude: `prefer-claude`.
-- Soft: when the preferred runtime has no free slot or is not installed on the host, the task runs on the available runtime.
-- Hard pins override the preference: a `run-<runtime>` label, or evidence only one runtime can produce (macOS snapshot evidence needs claude).
-- The reviewer rule is unchanged: the reviewer prefers the runtime other than the accepted worker's.
-- The scheduler that reads these labels belongs to the consumer project.
+UI, visual and usability work prefers codex; code, infrastructure, release and host work prefers claude. The preference is soft: an unavailable runtime yields to the available one. How a task states it belongs to the consumer contract.
 
 ## Work cycle
 
