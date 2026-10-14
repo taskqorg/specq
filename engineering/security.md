@@ -21,10 +21,10 @@ The minimum that keeps taskqorg repositories, releases and agent access from lea
 
 ### One durable GitHub token per host
 
-- A host keeps one durable GitHub token, installed by the owner in the tool's install store (taskq: `<install>/token`, mode 0600). The service, workers and sandboxes on that host share it.
+- A host keeps one durable GitHub token, installed by the owner in the tool's install store, readable only by the host user. The service, workers and sandboxes on that host share it.
 - Agents never run `gh auth login` or another device login, and never ask the owner to run one. GitHub keeps 10 OAuth tokens per user, app and scope; the 11th login revokes the oldest and breaks another host.
-- A missing, empty, unreadable or expired token is an owner item: the agent reports it through the normal owner channel (taskq: `taskq ask`) and stops.
-- Lookup order and errors: [taskq.md token lookup](https://github.com/taskqorg/taskq/blob/main/taskq.md#8-runtimes-and-deployment). Background: [taskqorg/taskq#944](https://github.com/taskqorg/taskq/issues/944).
+- A missing, empty, unreadable or expired token is an owner item: the agent reports it through the normal owner channel and stops.
+- The consumer contract names the store path, lookup order and errors, for example [taskq.md § 9 Config and cutover](https://github.com/taskqorg/taskq/blob/main/taskq.md#9-config-and-cutover).
 
 ## Dependencies and releases
 
