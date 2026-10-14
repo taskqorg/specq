@@ -5,7 +5,7 @@ specq owns the rules every taskqorg project shares. A project repository keeps o
 ## Rules
 
 - Shared rules live in specq: texts, notifications, design and engineering practice. The [spec area index](../README.md#spec-areas) names the owner page of each area.
-- Each project's `AGENTS.md` names specq as binding for every task and links the owner pages it uses. Example line (invented): `Shared rules: https://github.com/taskqorg/specq (binding for every task).`
+- Each project's `AGENTS.md` and other agent entrypoints stay thin: they name specq as binding for every task and link the project contract and the owner pages it uses. Example line (invented): `Shared rules: https://github.com/taskqorg/specq (binding for every task).`
 - A project links to specq, never copies it. A rule that two projects need moves here; a rule only one project needs stays in that project's spec ([spec first](spec-first.md)).
 - Effort follows result: pick the measure that removes most of the risk or work for the least effort, do it fully, and name what it leaves open. A heavier process waits for evidence that the light one failed.
 - Measure before optimizing: each product profiles its own operations by [built-in profiling](profiling.md), and optimization work cites that evidence before and after the change.
