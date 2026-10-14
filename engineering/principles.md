@@ -11,6 +11,18 @@ specq owns the rules every taskqorg project shares. A project repository keeps o
 - Measure before optimizing: each product profiles its own operations by [built-in profiling](profiling.md), and optimization work cites that evidence before and after the change.
 - Owner pages keep their URLs. A move leaves the old path resolving, or updates every link from taskqorg projects in the same deliverable.
 
+## Rule homes
+
+| Content | Canonical home |
+|---|---|
+| Reusable design, writing, workflow or verification principle | Applicable shared specification |
+| Product entities, state meanings, operations and authority | Project root contract and linked specifications |
+| Dimensions, assets, platform policies and acceptance fixtures | Project design package |
+| Scenarios and product-specific exceptions | Project use cases / contract |
+| Observations, screenshots and test results | Revision-specific evidence |
+
+Shared rules contain no consumer names, paths, catalogs or product-specific thresholds. A local shared edit does not prove publication, consumer adoption or deployment.
+
 ## Project docs cleanup
 
 Check each page of the project, one item at a time.
