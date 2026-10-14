@@ -2,7 +2,8 @@
 
 **Compact enough to scan. Complete enough to act.**
 
-Use grammatical, plain English. No telegraphic role-play in persistent content.
+Write persistent project content in grammatical, plain English, without telegraphic
+role-play. Conversational replies follow the user's language.
 
 ## Structure
 

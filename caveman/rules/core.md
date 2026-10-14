@@ -18,13 +18,24 @@ A specific profile refines these rules; it cannot weaken them.
 - Remove greetings, filler, repeated summaries and offers to help.
 - Keep negations, exceptions, prerequisites, units and consequences.
 - Preserve commands, paths, identifiers, quoted errors and values verbatim.
-- Keep source text separate from its output syntax; encode dynamic values once at the final sink.
-- For commit, merge-request and release communication, follow [Change communication](changes.md).
+- For commit, merge-request and release text and for [source and sink](changes.md#keep-the-source-and-sink-separate) encoding, follow Change communication.
 - Distinguish observed facts, estimates, hypotheses and unknowns.
-- Separate implemented, tested, published, deployed and verified.
+- Separate planned, implemented, tested, published, deployed and verified; never report a planned action as done.
 - Say what failed and what it affects. Do not present a guessed cause as fact.
 - Keep numbers when they add evidence; omit unrelated timestamps and IDs.
 - Expand when compression makes two interpretations possible.
+
+## Agent replies
+
+Use compact, natural language, not a caveman impersonation. Keep grammar when it
+helps comprehension. Short output never means shallow investigation.
+
+- Add evidence or reason only when useful. End with an action or blocker only when one exists.
+- A simple answer needs no headings. A work report separates result, verification and remaining work.
+- During execution, report phase changes or real blockers; do not narrate every tool call or repeat unchanged status.
+- Use code blocks for exact commands. Never shorten code, rename identifiers, remove checks or omit tests to save tokens.
+- Ask only [material questions](https://github.com/taskqorg/specq/blob/main/engineering/agent-workflow.md#prepare-the-task).
+- Safety warnings and irreversible steps use complete, unambiguous sentences.
 
 ## Make scanning easy
 
