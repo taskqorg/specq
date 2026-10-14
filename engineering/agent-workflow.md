@@ -8,6 +8,14 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - One outcome has one owner, one writer, one worktree and one acceptance contract. Parallel writers use isolated worktrees and hand off through immutable commits, never shared uncommitted state.
 - Delegate only when independent work gains from it. Workers do not fan out; add at most one read-only reviewer when risk warrants it.
 
+## Attempt context
+
+- The runner injects the whole project contract and every shared rule file at each attempt start and each resume. Shared rule files are all specq rule documents, principles included. Owner budget: about 50k tokens per start.
+- A header names the injected revisions and states precedence: the project contract overrides shared rules where they conflict.
+- Project `docs/` are not injected. The runner injects an index instead: one line per file, path plus a one-line summary. The agent loads a listed document on demand when the task touches it.
+- Acknowledging the injected rules is not evidence. Apply them to the work; evidence follows [verification](verification.md).
+- Consumer follow-up: the taskq runner builds this context in its `turn_text` ([taskqorg/taskq](https://github.com/taskqorg/taskq)). The consumer pins a specq revision and moves the pin with each specq release; pin drift is a defect.
+
 ## Prepare the task
 
 - For a substantial behavior change, walk the relevant [scenarios](use-cases.md) to uncover decisions missing from the request. Investigate facts in code and current state; bring only unresolved choices that change behavior, authority, cost or risk to the owner, with recommendations.
