@@ -8,6 +8,7 @@ specq owns the rules every taskqorg project shares. A project repository keeps o
 - Each project's `AGENTS.md` names specq as binding for every task and links the owner pages it uses. Example line (invented): `Shared rules: https://github.com/taskqorg/specq (binding for every task).`
 - A project links to specq, never copies it. A rule that two projects need moves here; a rule only one project needs stays in that project's spec ([spec first](spec-first.md)).
 - Effort follows result: pick the measure that removes most of the risk or work for the least effort, do it fully, and name what it leaves open. A heavier process waits for evidence that the light one failed.
+- Measure before optimizing: each product profiles its own operations by [built-in profiling](profiling.md), and optimization work cites that evidence before and after the change.
 - Owner pages keep their URLs. A move leaves the old path resolving, or updates every link from taskqorg projects in the same deliverable.
 
 ## Project docs cleanup
