@@ -18,7 +18,7 @@ Implementation and review follow [F1–F6](implementation-fidelity.md); product 
 - **D9. Density is not crowding.** Remove duplication and excess gaps before reducing width. Never shrink text to win a pixel count. Prevent multi-digit collisions.
 - **D10. Group counters.** Keep order and placement stable; pair values with semantic symbols. Hide zero only when absence conveys the same meaning. Unknown is not zero. Product specifications define exceptions.
 - **D11. Put small actions beside their subjects.** Prefer a compact icon to a separate full-width button when meaning remains clear. Preserve accessible names and usable hit targets; avoid decorative icons.
-- **D12. Keep specifications concise.** Follow the shared [documentation profile](../caveman/rules/documentation.md); do not restate it in each product.
+- **D12. Keep specifications concise.** Follow the [documentation profile](../caveman/rules/documentation.md).
 - **D13. Put attention first.** Decisions and failures precede ordinary lists. Completed conversations and maintenance details must not displace active work.
 - **D14. Put actions in their section headers.** Place add beside the section name and external links beside the entity name. Group settings by purpose with recognizable icons and labels.
 
