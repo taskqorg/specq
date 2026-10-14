@@ -18,6 +18,17 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - Waiting is not a question: a task that needs an owner action, a release or another task's close is parked with its dependency and resumes on it; an ask is only for a product, scope or spec-rule choice the agent cannot make. Technical choices inside the contract are the agent's.
 - Acceptance names evidence for the changed behavior only, on the host that runs the task; it never asks for a full snapshot or platform matrix ([run policy](verification.md#run-policy-by-stage)).
 
+## Runtime preference
+
+The task author may state a soft runtime preference by task kind with one label, `prefer-codex` or `prefer-claude`, or none.
+
+- UI, visual and usability work prefers codex: `prefer-codex`.
+- Code, infrastructure, release and host work prefers claude: `prefer-claude`.
+- Soft: when the preferred runtime has no free slot or is not installed on the host, the task runs on the available runtime.
+- Hard pins override the preference: a `run-<runtime>` label, or evidence only one runtime can produce (macOS snapshot evidence needs claude).
+- The reviewer rule is unchanged: the reviewer prefers the runtime other than the accepted worker's.
+- The scheduler that reads these labels belongs to the consumer project.
+
 ## Work cycle
 
 1. Inspect the relevant code, contract and current state. Discovery stays inside the exact project or worktree.
