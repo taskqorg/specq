@@ -41,12 +41,14 @@ Use [operator principles](operator-ui.md) and [engineering evidence](../engineer
 
 ## F5 Acceptance package
 
+Keep one project package index. It links the contract and shared rules; accepted decisions and unresolved proposals; use cases with requirement-to-scenario coverage; the [F1](#f1-source-and-change-control) implementation inventory, required backend work and preservation/removal decisions; editable references, generated previews, licensed assets and rendering constraints; and the items below with their artifact revisions. Required unresolved decisions have options and an owner; placeholders remain gaps.
+
 Deliver:
 1. Feature/navigation ledger: every required control, destination, supported state and requirement ID.
 2. Deterministic fixtures: normal, empty, long, dense, unknown, failure and boundary cases.
 3. Target-platform images and interaction evidence tied to exact artifact hashes; include environment, font, theme, scale and usable-area dimensions.
 4. Automated results separated into data/model, adapter, geometry and runtime checks.
-5. Findings: requirement, expected, observed, reproduction, severity, evidence and disposition.
+5. Review report findings: requirement, expected, observed, reproduction, severity, evidence and disposition.
 
 Every mandatory criterion is Pass, Fail or Not tested. “Looks close” is not a verdict. Missing platform evidence stays Not tested.
 Do not average away a failed action, missing state, wrong data meaning or unreachable control with a visual score.
@@ -59,3 +61,4 @@ Do not average away a failed action, missing state, wrong data meaning or unreac
 - Owner reviews design changes; unchanged requirements need no repeated design approval.
 - Freeze the candidate and repeat affected acceptance checks. Final report distinguishes design accepted, runtime verified and deployed.
 - Keep unresolved semantic or platform failures open. An implementation agent cannot declare its own changed design approved.
+- Builder, reviewer and owner are responsibilities, not a requirement to spawn separate agents.

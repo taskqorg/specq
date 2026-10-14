@@ -28,9 +28,11 @@ Implementation and review follow [F1–F6](implementation-fidelity.md); product 
 2. For each label, can it disappear because position, a shared heading or a semantic symbol already conveys its meaning? Compare before/after; retain it if removal introduces ambiguity. Remove duplicate rows and gaps before shrinking text.
 3. Are alignment, direct actions and accepted features preserved?
 4. Check long text, large fonts, narrow surfaces, both themes and system scaling.
+5. Review the complete route: list, detail, action, result, error and return. A polished home screen does not compensate for unusable deeper views.
 
 Validate one real component before spreading a rule. Inspect rendered output at its intended size; calculation tests alone do not establish visual quality.
 Product acceptance criteria define concrete fixtures, dimensions and platform checks.
+A product-specific exception needs a reason and an owner decision. Never silently substitute a spacious dashboard.
 
 ## Stable adaptation
 

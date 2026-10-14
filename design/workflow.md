@@ -32,7 +32,7 @@ After each iteration report: changed decision, canonical location, evidence and 
 
 ## Operator design default
 
-Use [D1–D14](operator-ui.md) as the preference profile.
+Use [D1–D14](operator-ui.md) as the preference profile and its [review checklist](operator-ui.md#review-each-change).
 
 ## Process every correction
 
@@ -46,7 +46,7 @@ Do not turn every bug into policy. Existing-rule violations need fixes; repeated
 
 ## Handoff and acceptance
 
-Deliver the [acceptance package](implementation-fidelity.md#f5-acceptance-package) and split builder, reviewer and owner work per [F6](implementation-fidelity.md#f6-build-polish-accept). The implementer continues from project state without the chat ([agent integration](../engineering/verification.md#agent-integration)). Report implemented, tested, published, deployed and verified separately ([core](../caveman/rules/core.md#write)).
+Keep the package index and deliver the [acceptance package](implementation-fidelity.md#f5-acceptance-package); split builder, reviewer and owner work per [F6](implementation-fidelity.md#f6-build-polish-accept). The implementer continues from project state without the chat ([agent integration](../engineering/verification.md#agent-integration)). Report implemented, tested, published, deployed and verified separately ([core](../caveman/rules/core.md#write)).
 
 ## End-to-end simplicity
 
