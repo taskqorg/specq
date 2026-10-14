@@ -7,24 +7,11 @@ Entry point for collaborative product and interface work. Adopt this workflow an
 - Start with the user's outcome and current product. Inspect the applicable contract, approved references and actual implementation before proposing replacements.
 - Read [spec first](../engineering/spec-first.md), [use cases](../engineering/use-cases.md) and [documentation style](../caveman/rules/documentation.md). Interface work also applies [dense operator design](operator-ui.md) and [implementation fidelity](implementation-fidelity.md).
 - Persistent specifications, interface copy and handoffs use concise English. Conversation follows the user's language. Remove words that add no meaning; preserve constraints, exceptions and evidence.
-- The agent resolves routine engineering details within approved constraints. Escalate API, synchronization or format choices only when they change product behavior, authority, cost or risk.
-- The owner chooses product direction. The agent investigates, recommends, records decisions and completes authorized work. Ask only for unresolved choices that materially change behavior, design or risk.
-- Accepted choices persist. Do not ask again, reintroduce rejected alternatives or treat a mock as approval of its incidental behavior.
+- Owner choices, escalation and reuse of accepted answers follow [prepare the task](../engineering/agent-workflow.md#prepare-the-task). A mock does not approve its incidental behavior.
 
-## One home per rule
+## Rule homes
 
-| Content | Canonical home |
-|---|---|
-| Reusable design, writing, workflow or verification principle | Applicable shared specification |
-| Product entities, state meanings, operations and authority | Project root contract and linked specifications |
-| Dimensions, assets, platform policies and acceptance fixtures | Project design package |
-| Scenarios and product-specific exceptions | Project use cases / contract |
-| Observations, screenshots and test results | Revision-specific evidence |
-
-Project documents link shared rules. Do not copy their prose. Shared rules contain no consumer names, paths, catalogs or product-specific thresholds.
-A correction that reveals a reusable principle follows [improve shared rules](../engineering/spec-first.md#improve-shared-rules). A local shared edit does not prove publication, consumer adoption or deployment.
-
-Dashboard and widget work also follows [W1–W15](dashboards.md): first-screen priorities, bars, trends, automatic refresh and legible changes.
+Each rule has one [canonical home](../engineering/principles.md#rule-homes); project documents link shared rules. Corrections that reveal a reusable principle follow [improve shared rules](../engineering/spec-first.md#improve-shared-rules). Dashboard and widget work also follows [W1–W15](dashboards.md).
 
 ## Iteration loop
 
@@ -45,13 +32,7 @@ After each iteration report: changed decision, canonical location, evidence and 
 
 ## Operator design default
 
-Use [D1–D14](operator-ui.md) as the preference profile: readable density, large adjustable type, stable alignment, direct actions, restrained semantic color and attention-first information.
-
-- Optimize useful information per area before styling. Extra gaps, repeated labels and decorative blocks must earn their space.
-- Keep frequent actions and consequential states close; preserve stable controls. Adapt content without moving targets unexpectedly.
-- Review the complete route: list, detail, action, result, error and return. A polished home screen cannot compensate for unusable deeper views.
-- Prefer compact groups and content-fit surfaces. Check long text, large values, large fonts and constrained screens before accepting a layout.
-- Product-specific exceptions require a reason and owner decision. Do not silently substitute a spacious dashboard or shrink text to simulate density.
+Use [D1–D14](operator-ui.md) as the preference profile.
 
 ## Process every correction
 
@@ -65,17 +46,7 @@ Do not turn every bug into policy. Existing-rule violations need fixes; repeated
 
 ## Handoff and acceptance
 
-Keep one project package index linking:
-
-- Contract and shared rules; accepted decisions and unresolved proposals.
-- Use cases and requirement-to-scenario coverage.
-- Current implementation inventory, required backend work and preservation/removal decisions.
-- Editable reference, generated preview, licensed assets and rendering constraints.
-- Deterministic fixtures, acceptance ledger, review report and artifact revisions.
-
-The implementer can proceed without the chat transcript. Required unresolved decisions have options and an owner; placeholders remain gaps.
-Builder supplies evidence; reviewer checks and polishes; owner decides design changes. These are responsibilities, not a requirement to spawn separate agents.
-Report design accepted, implementation verified, published and deployed separately. Unchecked platforms remain Not tested. Follow the project's required gates and the shared [verification rules](../engineering/verification.md).
+Deliver the [acceptance package](implementation-fidelity.md#f5-acceptance-package) and split builder, reviewer and owner work per [F6](implementation-fidelity.md#f6-build-polish-accept). The implementer continues from project state without the chat ([agent integration](../engineering/verification.md#agent-integration)). Report implemented, tested, published, deployed and verified separately ([core](../caveman/rules/core.md#write)).
 
 ## End-to-end simplicity
 
