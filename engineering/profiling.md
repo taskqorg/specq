@@ -1,6 +1,6 @@
 # Built-in profiling
 
-Every product measures its own operations, so optimization starts from evidence, not guesses. Product contracts name their operations, budgets, store path and bounds; this page defines the method.
+Every product measures its own operations, so optimization starts from evidence, not guesses. Product contracts name their operations, budgets, store path, bounds and export retention; this page defines the method.
 
 ## Counters
 
@@ -31,6 +31,23 @@ Agent work is an operation like any other: every task attempt is measured by des
 - Identify an attempt by its task and attempt ids, runtime and host name, as [run identity](#store) allows. Store no secrets, task text, prompts, model output or paths.
 - Write these records to the existing attempt log or profile store under its bound. Agent work adds no collector, hook service or second store.
 - A profile report for agent work ranks stages and runtimes by slowness, failure rate and retries, like any operation report.
+
+## System operations
+
+A service that runs work measures each of its own actions, not only attempts, with the counters, [store](#store) and run identity above.
+
+- Board operations: name each board or forge call by its kind, for example `board.issue.read` or `board.label.set` (invented). Keep the API rate-limit cost when the API reports it; none reported reads unknown.
+- Queue transitions: each change of a task's queue state is one record with the task id, from state, to state, time in the previous state, runtime and host. A missing entry time reads unknown, never zero.
+- Service passes: each pass of a scheduler, poller or pruner is one operation with its duration, outcome and count of items handled.
+
+## Analysis export
+
+- The export holds one record per observation: an operation call, an agent stage, a queue transition or a service pass.
+- Format: JSON lines or CSV with a header, one schema version per file. Each record carries its kind, operation name, UTC start time, duration, outcome, error class, run identity and the fields of its kind.
+- Store no secrets, task text, prompts, model output or paths, as in [store](#store).
+- The export is a plain file in the bounded store, or one command writes it. Reading it needs no board access.
+- The product spec names the retention window and a size bound, for example 90 days and 50 MB (invented). The pruner removes the oldest whole records; the export states the window it covers.
+- Reports and dashboards read these same records; no derived copy is a source of truth. Efficiency and cost questions, such as time per stage, board calls per task or wait time per queue state, are answered from them.
 
 ## Budgets and unknowns
 
