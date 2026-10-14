@@ -7,8 +7,8 @@ This is a style library, not a coding framework or a deployment policy.
 
 ## Choose a profile
 
-- [Core](rules/core.md): shared principles and precedence.
-- [Agent replies](rules/agents.md): coding conversations and ready-to-paste instructions.
+- [Core](rules/core.md): shared principles, precedence and agent reply shape.
+- [Agent replies](rules/agents.md): ready-to-paste instruction and upstream relationship.
 - [Change communication](rules/changes.md): commit subjects, merge requests and release messages.
 - [Notifications](rules/notifications.md): compact operational messages.
 - [Indicators](rules/indicators.md): icon vocabulary, ranges and reset notation.
@@ -22,9 +22,6 @@ This is a style library, not a coding framework or a deployment policy.
 Read Core, then only the profile needed. Link these files from your agent or
 project instructions. For agents without repository access, paste the block in
 Agent replies. Adopting this repository does not silently change other projects.
-
-Clarity, safety, exact facts and the user's requested format override brevity.
-Project content is English; conversational replies follow the user's language.
 
 ## Check
 

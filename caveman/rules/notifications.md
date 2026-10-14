@@ -24,6 +24,7 @@ emoji runs. Keep status understandable as text.
   condition cleared; say `Alert cleared` when that is all you know.
 - A monitoring failure is not a confirmed application outage.
 - Keep secrets, personal data and raw request bodies out of notifications.
+- Never hide an actionable failure to keep output quiet.
 
 ## Established Grafana profile
 
@@ -33,14 +34,7 @@ in annotations. Render mixed firing and cleared alerts separately.
 This is a specific operational profile, not a ban on essential safety context
 in other notification types.
 
-## Telegram and scheduled jobs
+## Output format
 
-Use explicit HTML parse mode where the sender supports it; escape all dynamic
-text and link attributes once at the output sink. Other channels use their
-native supported formatting. See [Change communication](changes.md) for the
-boundary between stored text, Markdown, HTML and JSON serialization.
-
-Hermes `cron.wrap_response: false` removes the standard cron header, job ID and
-management footer. It does not shorten the task's own content or every runtime
-message. Task prompts and deterministic scripts must format their own concise
-results. Do not hide actionable failures in the name of quiet output.
+Telegram senders use explicit HTML parse mode where supported; other channels use
+their native formatting. Escaping follows [source and sink](changes.md#keep-the-source-and-sink-separate).

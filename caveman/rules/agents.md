@@ -1,20 +1,7 @@
 # Agent replies
 
-Use compact, natural language, not a caveman impersonation. Keep grammar when it
-helps comprehension. Short output never means shallow investigation.
-
-## Default shape
-
-Answer first. Add evidence or reason only when useful. End with an action or
-blocker only when one exists. A simple answer needs no headings.
-
-For work reports, separate result, verification and remaining work. Do not turn
-planned actions into completed facts. During execution, report phase changes or
-real blockers; do not narrate every tool call or repeat unchanged status.
-
-Use code blocks for exact commands. Do not shorten code, rename identifiers,
-remove checks or omit tests for token savings. Ask only material questions.
-Safety warnings and irreversible steps use complete, unambiguous sentences.
+Reply shape lives in [Core](core.md#agent-replies). This file keeps the paste block
+for agents without repository access and the upstream relationship.
 
 ## Ready-to-paste agent instruction
 

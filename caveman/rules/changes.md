@@ -28,6 +28,11 @@ for the sink once, at the final output boundary:
 
 ## Write the right artifact
 
+Every before/after pair and rendered sample below is an invented illustration
+(one localized event-page incident), not a change, test or release claim.
+Confirm the actual cause and scope and replace each placeholder with the real
+command and result, or state why it was not run.
+
 ### Commit subject: plain text
 
 Prefer a short, meaningful subject that says what changed and why it matters.
@@ -45,9 +50,6 @@ After:
 ```text
 fix(events): prevent localized village page crashes
 ```
-
-This is illustrative. Confirm the actual cause and scope before using comparable
-wording in a commit.
 
 Avoid vague subjects such as `fix bug`, `updates`, `merge main`, or a raw merge
 branch subject. The default merge branch subject records Git history; it is not
@@ -84,10 +86,6 @@ Tests: `<actual command and result>`.
 Not deployed.
 ```
 
-Replace the placeholder with the real command and result, or state why it was
-not run. Do not claim that the illustrative incident has been tested or
-deployed merely because this profile uses it as an example.
-
 ### Deploy message: rendered Telegram HTML
 
 Build a deploy message from verified release metadata: the target, exact
@@ -96,7 +94,7 @@ Do not derive the human description from the default merge subject. A successful
 pipeline alone does not prove a deploy; say `deployed` only after the release
 workflow verifies it.
 
-Illustrative rendered text (labels and links are examples, not a release claim):
+Rendered text:
 
 ```text
 🚚 ✅ 🏁 example.app · prevent localized event-page errors · pipeline
@@ -108,10 +106,9 @@ Its Telegram HTML source may be:
 🚚 ✅ 🏁 <a href="https://example.app">example.app</a> · prevent localized event-page errors · <a href="https://gitlab.example/pipeline/123">pipeline</a>
 ```
 
-Escape only dynamic values when constructing that HTML. For example, a literal
-subject `fix user's event title & city` remains literal in storage and becomes
-`fix user's event title &amp; city` only inside the Telegram HTML text node. Keep
-the apostrophe literal or use `&#39;`, never a named apostrophe entity.
+Escape only dynamic values, once, per [source and sink](#keep-the-source-and-sink-separate):
+a literal subject `fix user's event title & city` stays literal in storage and
+becomes `fix user's event title &amp; city` only inside the Telegram HTML text node.
 
 ## Release check
 
