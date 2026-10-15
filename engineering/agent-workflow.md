@@ -10,10 +10,12 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 
 ## Attempt context
 
-- The runner injects the project contract and the shared core at each attempt start and each resume. The shared core applies to every attempt: [principles](principles.md), [spec first](spec-first.md), [Ponytail](ponytail.md), this file, [use cases](use-cases.md), [verification](verification.md), [security](security.md), [Caveman core](../caveman/rules/core.md), [documentation](../caveman/rules/documentation.md) and [change communication](../caveman/rules/changes.md).
-- Every other shared file is linked from the injected index and is not injected. The agent loads it on demand when the task touches its area.
+- The runner injects the project contract and the shared core at each attempt start. The shared core applies to every attempt: [principles](principles.md), [spec first](spec-first.md), [Ponytail](ponytail.md), this file, [use cases](use-cases.md), [verification](verification.md), [security](security.md), [Caveman core](../caveman/rules/core.md), [documentation](../caveman/rules/documentation.md) and [change communication](../caveman/rules/changes.md).
+- Every other shared file is linked from the injected index and is not injected. The agent loads it on demand when the task touches its area. Rule-repository contributor files (its `README.md`, `AGENTS.md`, `SECURITY.md`, scripts, vendor snapshots and audits) are neither injected nor indexed.
 - A header names the injected revisions and states precedence: the project contract overrides shared rules where they conflict.
 - Project `docs/` are not injected. The index lists them too: one line per file, path plus a one-line summary.
+- A resume repeats the header and the index, not file bodies already in the conversation.
+- Delivery uses the attempt brief only; no runtime-specific skill is required.
 - Acknowledging the injected rules is not evidence. Apply them to the work; evidence follows [verification](verification.md).
 
 ## Prepare the task
