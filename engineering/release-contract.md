@@ -35,6 +35,14 @@ Install once, then leave it. The service maintains itself.
 - Rollout and rollback are bounded in minutes and scripted; rollback is one command that activates the preserved previous version.
 - Measure lead time from merge to running version, deployment frequency, change failure rate and time to restore. A slow or manual step in that path is a defect to remove, not a routine to keep.
 
+## Release task
+
+- A release task ends when its version PR is merged. Acceptance names the version bump in the merged PR and nothing after it.
+- Tagging, release assets and host updates follow the merge automatically ([self-maintenance](#self-maintenance)). The task card has no tag, release-run or heartbeat condition, and no task or PM action starts them.
+- The worker does not produce rollout evidence. Rollout evidence is the version each host reports in its heartbeat.
+- The PM verifies rollout from host heartbeats and the DashQ hosts view.
+- A follow-up task is justified only when a host stays behind the released version for more than one update interval. It names the host, the reported version and the observed interval.
+
 ## Service
 
 - Define service ownership and lifecycle in the consumer contract; installation must not create competing owners.
