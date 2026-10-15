@@ -2,7 +2,7 @@
 
 Question ([#36](https://github.com/taskqorg/specq/issues/36)): should each attempt start with the whole contract and every shared rule in context ([#33](https://github.com/taskqorg/specq/issues/33)), or with an obligation, an index and rules loaded on demand through a mandatory skill?
 
-Status: proposal for owner approval ([spec first](../spec-first.md#improve-shared-rules)). The active rule is [Attempt context](../agent-workflow.md#attempt-context) as amended by [#52](https://github.com/taskqorg/specq/pull/52): the whole project contract and the shared core are injected, every other file is indexed. This audit does not change it.
+Status: approved on 2026-10-15 ([#56](https://github.com/taskqorg/specq/issues/56)). [Attempt context](../agent-workflow.md#attempt-context), as amended by [#52](https://github.com/taskqorg/specq/pull/52), now holds the [rule text](#proposal): the whole project contract and the shared core are injected at attempt start, every other rule file is indexed, a resume repeats only the header and the index, and no native skill is required.
 
 Short answer: keep the #52 hybrid and amend it for resume, the index and skills ([proposal](#proposal)). On three real taskq tasks, spec-first and ask-before-code compliance was 40 of 40 in every mode, from full injection down to skill-only; card format held in 59 of 60 final calls (one Claude `proposal` ask exceeded the option limit by 2 characters). Only the defect task separated the modes: full injection kept its rules in 4 of 4 runs, #52 in 2 of 4, and every smaller mode in at most 2 of 4. Full injection costs 26,000 Claude and 16,000 Codex start tokens more than #52; skill-only saves 46,000 and 30,000 tokens but loses on the defect task.
 
