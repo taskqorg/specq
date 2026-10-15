@@ -27,6 +27,9 @@ Every product measures its own operations, so optimization starts from evidence,
 Agent work is an operation like any other: every task attempt is measured by design, always on, by the service that runs it.
 
 - Per attempt, record each stage that occurred: `claim`, `start`, `build`, `checks`, `review`, `ask`, `close`. Per stage keep the duration, outcome and error class, with the counters above.
+- Every attempt ends with a terminal stage record: `ok`, `failed` or `cancelled`, with a stable error class (`none` when no error occurred). The product contract bounds how long a stage may remain open; past that window, the service closes it as `failed` with an error class, never leaves it open silently or reports it as `ok`.
+- Children and background jobs follow the same rule. A child or job that reports `failed` or `stopped`, or vanishes, makes the service close its open stage as `failed` with the corresponding error class within one service pass.
+- The service itself detects attempts without a terminal stage record and reports them as defects in its profile report and self-check; this check must not depend on a person reading logs. A missing record reads [unknown, never healthy](verification.md#unknown-is-never-healthy); it is not evidence of a successful attempt.
 - Record model calls and context tokens per stage when the client reports them. A client that reports none reads unknown, never zero.
 - Identify an attempt by its task and attempt ids, runtime and host name, as [run identity](#store) allows. Store no secrets, task text, prompts, model output or paths.
 - Write these records to the existing attempt log or profile store under its bound. Agent work adds no collector, hook service or second store.
