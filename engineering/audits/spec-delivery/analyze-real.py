@@ -174,9 +174,10 @@ for rep, d in sorted((n, x) for n, R in enumerate(RS, 1) for x in glob.glob(R + 
              valid_first=bool(term) and not term[0]["errors"], limits_first=bool(term) and not limits(term[0]["argv"]),
              limits_final=bool(final) and not limits(final["argv"]), task_rule=rule, commit=commit, outside=outside)
     rows.append(r)
-    evidence.append(dict(r, calls=[dict(argv=[clean(x, d) for x in c["argv"]], stub_errors=c["errors"], limit_violations=limits(c["argv"])) for c in term],
+    ci_line = "Do not wait for CI" in open(d + "/brief.txt").read()
+    evidence.append(dict(r, ci_line=ci_line, calls=[dict(argv=[clean(x, d) for x in c["argv"]], stub_errors=c["errors"], limit_violations=limits(c["argv"])) for c in term],
                          requests=len(tokens), tokens=tokens))
-    traces.append(dict(rep=rep, run=r["run"], trace=[(k, v[:200]) for k, v in acts]))
+    traces.append(dict(rep=rep, run=r["run"], ci_line=ci_line, trace=[(k, v[:200]) for k, v in acts]))
 keys = list(rows[0])
 print("| " + " | ".join(keys) + " |"); print("|" + "---|" * len(keys))
 for r in rows:

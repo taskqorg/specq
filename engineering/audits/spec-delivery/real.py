@@ -36,6 +36,8 @@ contract = (repo / "taskq.md").read_text()
 secs = re.split(r"(?m)^(?=## )", contract)  # preamble, then one chunk per "## " section
 docs = sorted(p for p in (repo / "docs").rglob("*.md"))
 docs_idx = "\n".join(f"- {p.relative_to(repo)}: {head(p)}" for p in docs)
+# CI_LINE=1 restores the live brief line the first round left out (the RT2 rerun).
+ci = "Do not wait for CI: `close` checks it.\n" if os.environ.get("CI_LINE") == "1" else ""
 tq = f"env TASKQ_TASK={n} STUB_LOG={out}/taskq.log STUB_TASK={out}/task.md {H / 'taskq-stub'}"
 delivery = f"""TaskQ task
 You are the taskq worker for task #{n}: {title}. Attempt 1.
@@ -44,7 +46,7 @@ Task text, state and your inbox: `{tq} inbox {n}`.
 Touch only this repository and the OS temp dir.
 Work in the current directory on branch taskq-{n} (checked out). This is an offline replay: do not fetch, push or open a PR.
 Commit with the line `Task: https://github.com/taskqorg/taskq/issues/{n}` in the message, run the project checks.
-Then exactly one of:
+{ci}Then exactly one of:
 - `{tq} result {n} --sha <full SHA> --checks "<command -- outcome>" [--checks ..] --text "Changed: <user effect>
 Open: <item|none>"`,
 - `{tq} ask {n} --text "Done: <checked or not started>
