@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-# Summarize real-task runs in $RUNS (one directory per repetition, separated by ":"): per-run table on stdout, per-run evidence (metrics and ordered action trace) to $EVIDENCE.
+# Summarize real-task runs in $RUNS (one directory per repetition, separated by ":"): per-run table on stdout;
+# full per-run evidence (metrics, every taskq call verbatim with stub and limit verdicts, token usage per request) to $EVIDENCE;
+# action-trace excerpts (each entry cut at 200 characters) to $TRACES.
 import glob, json, os, re, subprocess
 RS = [os.path.normpath(r) for r in os.environ["RUNS"].split(":")]
 HOME = os.path.expanduser("~")
@@ -9,11 +11,79 @@ EXPECT = {"RT1": ("result", "ask"), "RT2": ("result",), "RT3": ("ask",)}
 RULE = re.compile(r"\.taskq/specq/|SKILL\.md|specq skill")
 
 
+HARNESS = os.path.dirname(os.path.abspath(__file__))
+
+
 def clean(s, d):
-    # Evidence is public: relativize run paths, hide the home directory.
+    # Evidence is public: relativize run paths, name the harness, hide the home directory. Never truncates.
     for p in (os.path.realpath(d) + "/repo/", d + "/repo/", os.path.realpath(d) + "/repo", d + "/repo", os.path.realpath(d) + "/", d + "/"):
         s = s.replace(p, "")
-    return s.replace(HOME, "~")[:200]
+    return s.replace(HARNESS + "/", "<harness>/").replace(HOME, "~")
+
+
+def opts(argv, name):
+    return [argv[i + 1] for i, x in enumerate(argv) if x == name and i + 1 < len(argv)]
+
+
+def limits(argv):
+    # Every taskq.md limit a result or ask card has (§ 2 Ask card, § 7 Result and close verdicts, R7 counting:
+    # logical nonblank lines, Unicode characters, labels and numbering included). Strict: the R7 exemption for
+    # exact commands and paths is not applied, so a long check command is reported, not excused.
+    v, cmd = [], argv[0]
+    text = [l for l in "\n".join(opts(argv, "--text")).splitlines() if l.strip()]
+    links = opts(argv, "--link")
+    if len(opts(argv, "--text")) > 1: v.append("--text given more than once")
+    if cmd == "ask":
+        o, rec = opts(argv, "--option"), opts(argv, "--recommend")
+        if not text or not text[0].startswith("Done: "): v.append("line 1 is not Done:")
+        elif len(text[0]) > 160: v.append(f"Done {len(text[0])} > 160")
+        if len(text) < 2 or not text[1].startswith("Problem: "): v.append("line 2 is not Problem:")
+        prob = text[1:]
+        if not 1 <= len(prob) <= 2: v.append(f"Problem {len(prob)} lines, want 1-2")
+        v += [f"Problem line {len(l)} > 240" for l in prob if len(l) > 240]
+        if o and not 2 <= len(o) <= 4: v.append(f"{len(o)} options, want 2-4 (or none for an owner action)")
+        if o and (len(rec) != 1 or not rec[0].isdigit() or not 1 <= int(rec[0]) <= len(o)): v.append(f"--recommend {rec}, want exactly one of 1-{len(o)}")
+        for k, x in enumerate(o, 1):
+            n = len(f"{k}. {x}") + (2 if rec == [str(k)] else 0)
+            if n > 160: v.append(f"option {k} {n} > 160")
+        if len(links) > 2: v.append(f"{len(links)} links > 2")
+        lines = len(text) + (1 if links else 0) + len(o) + 1
+        if lines > 9: v.append(f"card {lines} lines > 9")
+    elif cmd == "result":
+        sha, checks = opts(argv, "--sha"), opts(argv, "--checks")
+        if len(sha) != 1 or not re.fullmatch(r"[0-9a-f]{40}", sha[0]): v.append("--sha is not one full SHA")
+        if not 1 <= len(checks) <= 8: v.append(f"{len(checks)} checks, want 1-8")
+        v += [f"check without 'command -- outcome': {c[:40]}" for c in checks if " -- " not in c]
+        v += [f"Checks line {len('Checks: ' + c)} > 240" for c in checks if len("Checks: " + c) > 240]
+        i_open = next((i for i, l in enumerate(text) if l.startswith("Open: ")), None)
+        if not text or not text[0].startswith("Changed: "): v.append("line 1 is not Changed:")
+        if i_open is None: v.append("no Open: line")
+        else:
+            if not 1 <= i_open <= 2: v.append(f"Changed {i_open} lines, want 1-2")
+            if not 1 <= len(text) - i_open <= 2: v.append(f"Open {len(text) - i_open} lines, want 1-2")
+        v += [f"line {len(l)} > 240" for l in text if len(l) > 240]
+        if len(text) + len(checks) > 12: v.append(f"body {len(text) + len(checks)} lines > 12")
+        if links: v.append("--link on a result without a decision card")
+    return v
+
+
+def usage(d, rt, ev):
+    # Per-request token usage events, in order.
+    if rt == "claude":
+        seen, out = set(), []
+        for e in ev:
+            if e.get("type") == "assistant" and e["message"]["id"] not in seen:
+                seen.add(e["message"]["id"]); u = e["message"]["usage"]
+                out.append({k: u.get(k, 0) for k in ("input_tokens", "cache_creation_input_tokens", "cache_read_input_tokens", "output_tokens")})
+        return out
+    tid = next(e["thread_id"] for e in ev if e["type"] == "thread.started")
+    roll = glob.glob(os.path.expanduser(f"~/.codex/sessions/*/*/*/rollout-*-{tid}.jsonl"))[0]
+    out = []
+    for l in open(roll):
+        p = json.loads(l).get("payload", {})
+        if p.get("type") == "token_count" and p.get("info"):
+            out.append(p["info"]["last_token_usage"])
+    return out
 
 
 def shell_edits(c):
@@ -23,7 +93,7 @@ def shell_edits(c):
     return [("edit", f) for f in dict.fromkeys(re.findall(r"(?:src/[\w/]+\.rs|taskq\.md|tests/[\w/.-]+|docs/[\w/.-]+\.md|CHANGELOG\.md)", c))]
 
 
-rows, evidence = [], []
+rows, evidence, traces = [], [], []
 for rep, d in sorted((n, x) for n, R in enumerate(RS, 1) for x in glob.glob(R + "/RT*") if os.path.exists(x + "/exit")):
     task, mode, rt = os.path.basename(d).split("-")
     ev = [json.loads(l) for l in open(d + "/out.jsonl") if l.strip().startswith("{")]
@@ -64,6 +134,7 @@ for rep, d in sorted((n, x) for n, R in enumerate(RS, 1) for x in glob.glob(R + 
             if e["type"] == "turn.completed":
                 total = (total or 0) + e["usage"]["input_tokens"]; out = (out or 0) + e["usage"]["output_tokens"]
     acts = [(k, clean(v, d)) for k, v in acts]
+    tokens = usage(d, rt, ev)
     calls = [json.loads(l) for l in open(d + "/taskq.log")] if os.path.exists(d + "/taskq.log") else []
     term = [c for c in calls if c["argv"][0] in ("result", "ask", "requeue")]
     final = next((c for c in term if not c["errors"]), None)
@@ -100,15 +171,18 @@ for rep, d in sorted((n, x) for n, R in enumerate(RS, 1) for x in glob.glob(R + 
     r = dict(rep=rep, run=f"{task} {mode} {rt}", start=start, total=total, out=out, secs=int(open(d + "/secs").read()),
              contract_read=before(i_contract) if mode != "full" else "n/a (full)", rules_read=before(i_rule),
              command=got + ("" if got in EXPECT[task] else f" (want {EXPECT[task][0]})"), repro=repro,
-             valid_first=bool(term) and not term[0]["errors"], task_rule=rule, commit=commit, outside=outside)
+             valid_first=bool(term) and not term[0]["errors"], limits_first=bool(term) and not limits(term[0]["argv"]),
+             limits_final=bool(final) and not limits(final["argv"]), task_rule=rule, commit=commit, outside=outside)
     rows.append(r)
-    evidence.append(dict(r, final=[clean(x, d) for x in final["argv"]] if final else None,
-                         rejected=[c["errors"] for c in term if c["errors"]], trace=acts))
+    evidence.append(dict(r, calls=[dict(argv=[clean(x, d) for x in c["argv"]], stub_errors=c["errors"], limit_violations=limits(c["argv"])) for c in term],
+                         requests=len(tokens), tokens=tokens))
+    traces.append(dict(rep=rep, run=r["run"], trace=[(k, v[:200]) for k, v in acts]))
 keys = list(rows[0])
 print("| " + " | ".join(keys) + " |"); print("|" + "---|" * len(keys))
 for r in rows:
     print("| " + " | ".join("" if r[k] is None else str(r[k]) for k in keys) + " |")
-if os.environ.get("EVIDENCE"):
-    with open(os.environ["EVIDENCE"], "w") as f:
-        for e in evidence:
-            f.write(json.dumps(e) + "\n")
+for var, recs in (("EVIDENCE", evidence), ("TRACES", traces)):
+    if os.environ.get(var):
+        with open(os.environ[var], "w") as f:
+            for e in recs:
+                f.write(json.dumps(e, ensure_ascii=False) + "\n")

@@ -4,7 +4,7 @@ Question ([#36](https://github.com/taskqorg/specq/issues/36)): should each attem
 
 Status: proposal for owner approval ([spec first](../spec-first.md#improve-shared-rules)). The active rule is [Attempt context](../agent-workflow.md#attempt-context) as amended by [#52](https://github.com/taskqorg/specq/pull/52): the whole project contract and the shared core are injected, every other file is indexed. This audit does not change it.
 
-Short answer: keep the #52 hybrid and amend it for resume, the index and skills ([proposal](#proposal)). On three real taskq tasks, spec-first and ask compliance was 40 of 40 in every mode, from full injection down to skill-only. Only the defect task separated the modes: full injection kept its rules in 4 of 4 runs, #52 in 2 of 4, and every smaller mode in at most 2 of 4. Full injection costs 26,000 Claude and 16,000 Codex start tokens more than #52; skill-only saves 46,000 and 30,000 tokens but loses on the defect task.
+Short answer: keep the #52 hybrid and amend it for resume, the index and skills ([proposal](#proposal)). On three real taskq tasks, spec-first and ask-before-code compliance was 40 of 40 in every mode, from full injection down to skill-only; card format held in 59 of 60 final calls (one Claude `proposal` ask exceeded the option limit by 2 characters). Only the defect task separated the modes: full injection kept its rules in 4 of 4 runs, #52 in 2 of 4, and every smaller mode in at most 2 of 4. Full injection costs 26,000 Claude and 16,000 Codex start tokens more than #52; skill-only saves 46,000 and 30,000 tokens but loses on the defect task.
 
 Measured on 2026-10-15 with Claude Code 2.1.299 (`claude-opus-5-5`, default effort) and codex-cli 0.159.3 (`gpt-6.1-sol`, effort `low`, the host default), on macOS (macbook-m2). Real-task runs use specq `317ea57c97f809bd65fc08ff80383147561df642`.
 
@@ -46,24 +46,24 @@ Modes, largest first:
 
 On-demand files are a local copy under `.taskq/specq/`. Indexes leave out specq contributor files (`README.md`, `AGENTS.md`, `SECURITY.md`, `scripts/`, `vendor/`, `audits/`, `docs/`).
 
-Each of 30 combinations (3 tasks, 5 modes, 2 runtimes) ran twice: 60 runs. Builder: [real.py](spec-delivery/real.py); runner: [run-real.sh](spec-delivery/run-real.sh); metrics: [analyze-real.py](spec-delivery/analyze-real.py). Per-run evidence, including the final taskq call and the ordered trace of reads, edits and commands with home and run paths removed: [real-runs.jsonl](spec-delivery/real-runs.jsonl).
+Each of 30 combinations (3 tasks, 5 modes, 2 runtimes) ran twice: 60 runs. Builder: [real.py](spec-delivery/real.py); runner: [run-real.sh](spec-delivery/run-real.sh); metrics: [analyze-real.py](spec-delivery/analyze-real.py). Full per-run evidence: [real-runs.jsonl](spec-delivery/real-runs.jsonl) holds the metrics, every `result`, `ask` and `requeue` call with its complete arguments, the stub verdict and the taskq.md limit recheck, and the token usage of every model request (Claude: one entry per message; Codex: every `token_count` event of the session log, which may repeat an event, so two Codex runs sum above their `turn.completed` total). Excerpts, not evidence: [real-traces.jsonl](spec-delivery/real-traces.jsonl) holds the ordered trace of reads, edits and commands, each entry cut at 200 characters. Run and home paths are removed from both.
 
-Metrics: start tokens are the input of the first model request (Claude: input plus cache write plus cache read; Codex: the first `token_count` event). Total input sums every request, cached reads included. `contract_read` and `rules_read`: the run opened `taskq.md` or an on-demand rule (the skill or a `.taskq/specq/` file) before its first edit and before its taskq command; `late` means after. In `core` and `proposal` the shared core is injected, so `rules_read` counts only further files. Valid first: the stub accepted the first `result`, `ask` or `requeue`. Outside: commands that touched paths outside the run directory.
+Metrics: start tokens are the input of the first model request (Claude: input plus cache write plus cache read; Codex: the first `token_count` event). Total input sums every request, cached reads included. `contract_read` and `rules_read`: the run opened `taskq.md` or an on-demand rule (the skill or a `.taskq/specq/` file) before its first edit and before its taskq command; `late` means after. In `core` and `proposal` the shared core is injected, so `rules_read` counts only further files. Valid first: the stub accepted the first `result`, `ask` or `requeue`. Limits first and final: the first and the accepted call keep every § 2 ask card and § 7 result limit, counted strictly (the R7 exemption for exact commands is not applied). Outside: commands that touched paths outside the run directory.
 
 ### Summary
 
-| Runtime | Mode | Runs | Start tokens (mean) | Total input (mean) | Time s (mean) | Expected command | Valid first try | Task rule kept | Outside |
-|---|---|---|---|---|---|---|---|---|---|
-| claude | full | 6 | 108,307 | 765,654 | 75 | 6/6 | 6/6 | 6/6 | 0/6 |
-| claude | core | 6 | 81,980 | 617,217 | 72 | 6/6 | 4/6 | 6/6 | 0/6 |
-| claude | proposal | 6 | 55,489 | 471,001 | 74 | 6/6 | 6/6 | 4/6 | 0/6 |
-| claude | hybrid | 6 | 45,078 | 571,009 | 115 | 6/6 | 5/6 | 5/6 | 0/6 |
-| claude | skill | 6 | 35,768 | 601,058 | 87 | 6/6 | 6/6 | 5/6 | 0/6 |
-| codex | full | 6 | 66,058 | 605,475 | 55 | 6/6 | 6/6 | 6/6 | 0/6 |
-| codex | core | 6 | 50,340 | 554,091 | 66 | 6/6 | 6/6 | 4/6 | 0/6 |
-| codex | proposal | 6 | 32,210 | 245,170 | 37 | 4/6 | 6/6 | 4/6 | 0/6 |
-| codex | hybrid | 6 | 26,541 | 235,247 | 40 | 4/6 | 6/6 | 4/6 | 0/6 |
-| codex | skill | 6 | 20,293 | 520,162 | 69 | 4/6 | 6/6 | 4/6 | 0/6 |
+| Runtime | Mode | Runs | Start tokens (mean) | Total input (mean) | Time s (mean) | Expected command | Valid first try | Limits kept (first / final call) | Task rule kept | Outside |
+|---|---|---|---|---|---|---|---|---|---|---|
+| claude | full | 6 | 108,307 | 765,654 | 75 | 6/6 | 6/6 | 6/6 / 6/6 | 6/6 | 0/6 |
+| claude | core | 6 | 81,980 | 617,217 | 72 | 6/6 | 4/6 | 4/6 / 6/6 | 6/6 | 0/6 |
+| claude | proposal | 6 | 55,489 | 471,001 | 74 | 6/6 | 6/6 | 5/6 / 5/6 | 4/6 | 0/6 |
+| claude | hybrid | 6 | 45,078 | 571,009 | 115 | 6/6 | 5/6 | 5/6 / 6/6 | 5/6 | 0/6 |
+| claude | skill | 6 | 35,768 | 601,058 | 87 | 6/6 | 6/6 | 6/6 / 6/6 | 5/6 | 0/6 |
+| codex | full | 6 | 66,058 | 605,475 | 55 | 6/6 | 6/6 | 6/6 / 6/6 | 6/6 | 0/6 |
+| codex | core | 6 | 50,340 | 554,091 | 66 | 6/6 | 6/6 | 6/6 / 6/6 | 4/6 | 0/6 |
+| codex | proposal | 6 | 32,210 | 245,170 | 37 | 4/6 | 6/6 | 6/6 / 6/6 | 4/6 | 0/6 |
+| codex | hybrid | 6 | 26,541 | 235,247 | 40 | 4/6 | 6/6 | 6/6 / 6/6 | 4/6 | 0/6 |
+| codex | skill | 6 | 20,293 | 520,162 | 69 | 4/6 | 6/6 | 6/6 / 6/6 | 4/6 | 0/6 |
 
 Findings:
 
@@ -76,7 +76,7 @@ Findings:
   - Codex `skill` committed a fix and then sent `requeue` twice, because `cargo test --locked` failed one sandbox test (`seatbelt_keeps_workers_out_of_the_policy_store`) that also fails on the unchanged base on this host. Every Claude run and Codex `full` and `core` reported it as pre-existing.
   - Codex `core` sent `result` twice with neither a reproduction nor a reason.
   - Claude reproduced the race (forcing the trimmer to lose) in 8 of 10 runs, at least once in every mode. Four Claude runs (`proposal` 2, `hybrid` 1, `skill` 1) named the enforced rule only in prose ("every retained record is a successful append", "taskq.md profiling rule") instead of `§ 4` or an R-number.
-- Format: 57 of 60 first taskq calls passed the stub; three Claude calls (two `core`, one `hybrid`) exceeded a limit or missed `command -- outcome` and passed on the second try. The commands and limits sit in the brief in every mode.
+- Format: the stub accepted 57 of 60 first taskq calls. A recheck of the full saved calls against every taskq.md card limit (R7 counting, numbering and `★` included) finds 56 of 60 first calls and 59 of 60 final calls within limits. Misses, all Claude: `core` sent a check without `command -- outcome` and a 264-character result line, `hybrid` a 166-character option, each fixed on the second try; `proposal` sent a 162-character option (157 characters plus `1. ` and ` ★`) as its final ask, which the stub accepted because it did not count numbering. No Codex call missed a limit. The commands and limits sit in the brief in every mode.
 
 Limits:
 
@@ -86,68 +86,68 @@ Limits:
 
 ### Per run
 
-| rep | run | start | total | out | secs | contract_read | rules_read | command | repro | valid_first | task_rule | commit | outside |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | RT1 core claude | 80920 | 496706 | 2125 | 32 | late | no | ask |  | yes | yes |  | 0 |
-| 1 | RT1 core codex | 48862 | 226306 | 847 | 33 | yes | no | ask |  | yes | yes |  | 0 |
-| 1 | RT1 full claude | 107152 | 440519 | 2310 | 36 | n/a (full) | n/a (full) | ask |  | yes | yes |  | 0 |
-| 1 | RT1 full codex | 65295 | 215930 | 699 | 26 | n/a (full) | n/a (full) | ask |  | yes | yes |  | 0 |
-| 1 | RT1 hybrid claude | 44946 | 430498 | 4220 | 51 | yes | yes | ask |  | no | yes |  | 0 |
-| 1 | RT1 hybrid codex | 27405 | 153622 | 1068 | 33 | yes | yes | ask |  | yes | yes |  | 0 |
-| 1 | RT1 proposal claude | 55136 | 366066 | 3422 | 48 | yes | no | ask |  | yes | yes |  | 0 |
-| 1 | RT1 proposal codex | 31644 | 230681 | 1083 | 33 | yes | yes | ask |  | yes | yes |  | 0 |
-| 1 | RT1 skill claude | 35691 | 506394 | 3311 | 51 | yes | yes | ask |  | yes | yes |  | 0 |
-| 1 | RT1 skill codex | 21712 | 185002 | 1059 | 35 | yes | yes | ask |  | yes | yes |  | 0 |
-| 1 | RT2 core claude | 81699 | 983533 | 4760 | 143 | no | no | result | recorded why | no | yes | yes | 0 |
-| 1 | RT2 core codex | 49399 | 1296716 | 2972 | 131 | yes | yes | result | none | yes | no | yes | 0 |
-| 1 | RT2 full claude | 107931 | 1411380 | 4736 | 143 | n/a (full) | n/a (full) | result | recorded why | yes | yes | yes | 0 |
-| 1 | RT2 full codex | 65832 | 1376318 | 2797 | 117 | n/a (full) | n/a (full) | result | recorded why | yes | yes | yes | 0 |
-| 1 | RT2 hybrid claude | 44922 | 817682 | 7295 | 215 | no | yes | result | reproduced | yes | no | yes | 0 |
-| 1 | RT2 hybrid codex | 25467 | 408415 | 1805 | 66 | yes | yes | ask (want result) | none | yes | no |  | 0 |
-| 1 | RT2 proposal claude | 55395 | 725969 | 5119 | 129 | no | no | result | reproduced | yes | no | yes | 0 |
-| 1 | RT2 proposal codex | 31851 | 239091 | 1009 | 52 | yes | yes | ask (want result) | none | yes | no |  | 0 |
-| 1 | RT2 skill claude | 35761 | 890808 | 5990 | 187 | yes | yes | result | reproduced | yes | yes | yes | 0 |
-| 1 | RT2 skill codex | 19575 | 1597393 | 5048 | 168 | yes | yes | requeue (want result) | none | yes | no |  | 0 |
-| 1 | RT3 core claude | 83398 | 253585 | 1797 | 32 | late | no | ask |  | yes | yes |  | 0 |
-| 1 | RT3 core codex | 52745 | 246986 | 664 | 19 | yes | no | ask |  | yes | yes |  | 0 |
-| 1 | RT3 full claude | 109820 | 445336 | 2437 | 35 | n/a (full) | n/a (full) | ask |  | yes | yes |  | 0 |
-| 1 | RT3 full codex | 67033 | 221017 | 606 | 22 | n/a (full) | n/a (full) | ask |  | yes | yes |  | 0 |
-| 1 | RT3 hybrid claude | 45539 | 449293 | 3868 | 54 | yes | yes | ask |  | yes | yes |  | 0 |
-| 1 | RT3 hybrid codex | 25662 | 206279 | 953 | 32 | yes | yes | ask |  | yes | yes |  | 0 |
-| 1 | RT3 proposal claude | 55729 | 357287 | 2631 | 38 | yes | no | ask |  | yes | yes |  | 0 |
-| 1 | RT3 proposal codex | 32046 | 292618 | 1024 | 37 | yes | yes | ask |  | yes | yes |  | 0 |
-| 1 | RT3 skill claude | 35786 | 356241 | 3478 | 53 | yes | yes | ask |  | yes | yes |  | 0 |
-| 1 | RT3 skill codex | 19576 | 176604 | 998 | 28 | yes | yes | ask |  | yes | yes |  | 0 |
-| 2 | RT1 core claude | 80933 | 416026 | 2377 | 34 | late | no | ask |  | yes | yes |  | 0 |
-| 2 | RT1 core codex | 48873 | 166672 | 702 | 21 | yes | no | ask |  | yes | yes |  | 0 |
-| 2 | RT1 full claude | 107165 | 440438 | 1966 | 38 | n/a (full) | n/a (full) | ask |  | yes | yes |  | 0 |
-| 2 | RT1 full codex | 65306 | 215969 | 692 | 22 | n/a (full) | n/a (full) | ask |  | yes | yes |  | 0 |
-| 2 | RT1 hybrid claude | 44769 | 448037 | 3876 | 65 | yes | yes | ask |  | yes | yes |  | 0 |
-| 2 | RT1 hybrid codex | 27416 | 205540 | 1145 | 44 | yes | yes | ask |  | yes | yes |  | 0 |
-| 2 | RT1 proposal claude | 55339 | 289782 | 2381 | 39 | yes | no | ask |  | yes | yes |  | 0 |
-| 2 | RT1 proposal codex | 31655 | 228373 | 915 | 30 | yes | yes | ask |  | yes | yes |  | 0 |
-| 2 | RT1 skill claude | 35797 | 683294 | 4267 | 58 | yes | yes | ask |  | yes | yes |  | 0 |
-| 2 | RT1 skill codex | 19579 | 222895 | 1099 | 40 | yes | yes | ask |  | yes | yes |  | 0 |
-| 2 | RT2 core claude | 81522 | 1214062 | 5983 | 161 | no | no | result | reproduced | no | yes | yes | 0 |
-| 2 | RT2 core codex | 51555 | 1216096 | 4041 | 174 | yes | yes | result | none | yes | no | yes | 0 |
-| 2 | RT2 full claude | 107944 | 1411233 | 5105 | 168 | n/a (full) | n/a (full) | result | reproduced | yes | yes | yes | 0 |
-| 2 | RT2 full codex | 65843 | 1300902 | 2796 | 114 | n/a (full) | n/a (full) | result | reproduced | yes | yes | yes | 0 |
-| 2 | RT2 hybrid claude | 44935 | 1019303 | 7737 | 265 | no | yes | result | reproduced | yes | yes | yes | 0 |
-| 2 | RT2 hybrid codex | 25478 | 217171 | 1182 | 32 | yes | yes | ask (want result) | none | yes | no |  | 0 |
-| 2 | RT2 proposal claude | 55598 | 733763 | 6004 | 154 | yes | no | result | reproduced | yes | no | yes | 0 |
-| 2 | RT2 proposal codex | 31862 | 232111 | 814 | 38 | yes | yes | ask (want result) | none | yes | no |  | 0 |
-| 2 | RT2 skill claude | 35774 | 778486 | 5338 | 138 | yes | yes | result | reproduced | yes | no | yes | 0 |
-| 2 | RT2 skill codex | 19587 | 707653 | 3387 | 108 | yes | yes | requeue (want result) | none | yes | no |  | 0 |
-| 2 | RT3 core claude | 83411 | 339391 | 2218 | 34 | late | no | ask |  | yes | yes |  | 0 |
-| 2 | RT3 core codex | 50611 | 171774 | 619 | 19 | yes | no | ask |  | yes | yes |  | 0 |
-| 2 | RT3 full claude | 109833 | 445020 | 1975 | 31 | n/a (full) | n/a (full) | ask |  | yes | yes |  | 0 |
-| 2 | RT3 full codex | 67044 | 302716 | 813 | 29 | n/a (full) | n/a (full) | ask |  | yes | yes |  | 0 |
-| 2 | RT3 hybrid claude | 45362 | 261245 | 2932 | 44 | yes | yes | ask |  | yes | yes |  | 0 |
-| 2 | RT3 hybrid codex | 27818 | 220457 | 1083 | 38 | yes | yes | ask |  | yes | yes |  | 0 |
-| 2 | RT3 proposal claude | 55742 | 353144 | 2615 | 38 | yes | no | ask |  | yes | yes |  | 0 |
-| 2 | RT3 proposal codex | 34202 | 248150 | 1081 | 37 | yes | yes | ask |  | yes | yes |  | 0 |
-| 2 | RT3 skill claude | 35799 | 391129 | 3008 | 40 | yes | yes | ask |  | yes | yes |  | 0 |
-| 2 | RT3 skill codex | 21733 | 231430 | 1219 | 40 | yes | yes | ask |  | yes | yes |  | 0 |
+| rep | run | start | total | out | secs | contract_read | rules_read | command | repro | valid_first | limits_first | limits_final | task_rule | commit | outside |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 1 | RT1 core claude | 80920 | 496706 | 2125 | 32 | late | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT1 core codex | 48862 | 226306 | 847 | 33 | yes | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT1 full claude | 107152 | 440519 | 2310 | 36 | n/a (full) | n/a (full) | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT1 full codex | 65295 | 215930 | 699 | 26 | n/a (full) | n/a (full) | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT1 hybrid claude | 44946 | 430498 | 4220 | 51 | yes | yes | ask |  | no | no | yes | yes |  | 0 |
+| 1 | RT1 hybrid codex | 27405 | 153622 | 1068 | 33 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT1 proposal claude | 55136 | 366066 | 3422 | 48 | yes | no | ask |  | yes | no | no | yes |  | 0 |
+| 1 | RT1 proposal codex | 31644 | 230681 | 1083 | 33 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT1 skill claude | 35691 | 506394 | 3311 | 51 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT1 skill codex | 21712 | 185002 | 1059 | 35 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT2 core claude | 81699 | 983533 | 4760 | 143 | no | no | result | recorded why | no | no | yes | yes | yes | 0 |
+| 1 | RT2 core codex | 49399 | 1296716 | 2972 | 131 | yes | yes | result | none | yes | yes | yes | no | yes | 0 |
+| 1 | RT2 full claude | 107931 | 1411380 | 4736 | 143 | n/a (full) | n/a (full) | result | recorded why | yes | yes | yes | yes | yes | 0 |
+| 1 | RT2 full codex | 65832 | 1376318 | 2797 | 117 | n/a (full) | n/a (full) | result | recorded why | yes | yes | yes | yes | yes | 0 |
+| 1 | RT2 hybrid claude | 44922 | 817682 | 7295 | 215 | no | yes | result | reproduced | yes | yes | yes | no | yes | 0 |
+| 1 | RT2 hybrid codex | 25467 | 408415 | 1805 | 66 | yes | yes | ask (want result) | none | yes | yes | yes | no |  | 0 |
+| 1 | RT2 proposal claude | 55395 | 725969 | 5119 | 129 | no | no | result | reproduced | yes | yes | yes | no | yes | 0 |
+| 1 | RT2 proposal codex | 31851 | 239091 | 1009 | 52 | yes | yes | ask (want result) | none | yes | yes | yes | no |  | 0 |
+| 1 | RT2 skill claude | 35761 | 890808 | 5990 | 187 | yes | yes | result | reproduced | yes | yes | yes | yes | yes | 0 |
+| 1 | RT2 skill codex | 19575 | 1597393 | 5048 | 168 | yes | yes | requeue (want result) | none | yes | yes | yes | no |  | 0 |
+| 1 | RT3 core claude | 83398 | 253585 | 1797 | 32 | late | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT3 core codex | 52745 | 246986 | 664 | 19 | yes | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT3 full claude | 109820 | 445336 | 2437 | 35 | n/a (full) | n/a (full) | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT3 full codex | 67033 | 221017 | 606 | 22 | n/a (full) | n/a (full) | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT3 hybrid claude | 45539 | 449293 | 3868 | 54 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT3 hybrid codex | 25662 | 206279 | 953 | 32 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT3 proposal claude | 55729 | 357287 | 2631 | 38 | yes | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT3 proposal codex | 32046 | 292618 | 1024 | 37 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT3 skill claude | 35786 | 356241 | 3478 | 53 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 1 | RT3 skill codex | 19576 | 176604 | 998 | 28 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT1 core claude | 80933 | 416026 | 2377 | 34 | late | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT1 core codex | 48873 | 166672 | 702 | 21 | yes | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT1 full claude | 107165 | 440438 | 1966 | 38 | n/a (full) | n/a (full) | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT1 full codex | 65306 | 215969 | 692 | 22 | n/a (full) | n/a (full) | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT1 hybrid claude | 44769 | 448037 | 3876 | 65 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT1 hybrid codex | 27416 | 205540 | 1145 | 44 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT1 proposal claude | 55339 | 289782 | 2381 | 39 | yes | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT1 proposal codex | 31655 | 228373 | 915 | 30 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT1 skill claude | 35797 | 683294 | 4267 | 58 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT1 skill codex | 19579 | 222895 | 1099 | 40 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT2 core claude | 81522 | 1214062 | 5983 | 161 | no | no | result | reproduced | no | no | yes | yes | yes | 0 |
+| 2 | RT2 core codex | 51555 | 1216096 | 4041 | 174 | yes | yes | result | none | yes | yes | yes | no | yes | 0 |
+| 2 | RT2 full claude | 107944 | 1411233 | 5105 | 168 | n/a (full) | n/a (full) | result | reproduced | yes | yes | yes | yes | yes | 0 |
+| 2 | RT2 full codex | 65843 | 1300902 | 2796 | 114 | n/a (full) | n/a (full) | result | reproduced | yes | yes | yes | yes | yes | 0 |
+| 2 | RT2 hybrid claude | 44935 | 1019303 | 7737 | 265 | late | yes | result | reproduced | yes | yes | yes | yes | yes | 0 |
+| 2 | RT2 hybrid codex | 25478 | 217171 | 1182 | 32 | yes | yes | ask (want result) | none | yes | yes | yes | no |  | 0 |
+| 2 | RT2 proposal claude | 55598 | 733763 | 6004 | 154 | yes | no | result | reproduced | yes | yes | yes | no | yes | 0 |
+| 2 | RT2 proposal codex | 31862 | 232111 | 814 | 38 | yes | yes | ask (want result) | none | yes | yes | yes | no |  | 0 |
+| 2 | RT2 skill claude | 35774 | 778486 | 5338 | 138 | yes | yes | result | reproduced | yes | yes | yes | no | yes | 0 |
+| 2 | RT2 skill codex | 19587 | 707653 | 3387 | 108 | yes | yes | requeue (want result) | none | yes | yes | yes | no |  | 0 |
+| 2 | RT3 core claude | 83411 | 339391 | 2218 | 34 | late | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT3 core codex | 50611 | 171774 | 619 | 19 | yes | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT3 full claude | 109833 | 445020 | 1975 | 31 | n/a (full) | n/a (full) | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT3 full codex | 67044 | 302716 | 813 | 29 | n/a (full) | n/a (full) | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT3 hybrid claude | 45362 | 261245 | 2932 | 44 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT3 hybrid codex | 27818 | 220457 | 1083 | 38 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT3 proposal claude | 55742 | 353144 | 2615 | 38 | yes | no | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT3 proposal codex | 34202 | 248150 | 1081 | 37 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT3 skill claude | 35799 | 391129 | 3008 | 40 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
+| 2 | RT3 skill codex | 21733 | 231430 | 1219 | 40 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
 
 Rerun: create `$BASES/base-rt1..3` as clones of taskq at the base commits above with `cargo build --tests --locked` done, then `BASES=<dir> SPECQ=<specq checkout> RUNS=<empty dir> engineering/audits/spec-delivery/run-real.sh RT2 core codex`; `RUNS=<dir>[:<dir>] python3 engineering/audits/spec-delivery/analyze-real.py` prints the table. Runs are paid model calls; rerun only when the delivery logic or a runtime version changes.
 
@@ -157,11 +157,11 @@ The first round used an invented toy project (a contract `toyq.md` with three ru
 
 | Runtime | Mode | Runs | Start tokens (mean) | Total input (mean) | Time s (mean) | Right command, valid on first try | Task rule kept | Commands outside the project |
 |---|---|---|---|---|---|---|---|---|
-| claude | full | 6 | 65,919 | 361,238 | 57 | 6/6 | 6/6 | 0/6 |
-| claude | skill | 6 | 34,602 | 395,675 | 73 | 6/6 | 6/6 | 0/6 |
+| claude | full | 6 | 65,919 | 361,238 | 57 | 6/6 | 6/6 | 6/6 / 6/6 | 0/6 |
+| claude | skill | 6 | 34,602 | 395,675 | 73 | 6/6 | 6/6 | 6/6 / 6/6 | 0/6 |
 | claude | index | 6 | 35,613 | 302,231 | 66 | 6/6 | 6/6 | 0/6 |
-| codex | full | 6 | 38,866 | 203,095 | 28 | 6/6 | 4/6 | 4/6 |
-| codex | skill | 6 | 19,934 | 180,383 | 33 | 6/6 | 5/6 | 0/6 |
+| codex | full | 6 | 38,866 | 203,095 | 28 | 6/6 | 4/6 | 6/6 / 6/6 | 4/6 |
+| codex | skill | 6 | 19,934 | 180,383 | 33 | 6/6 | 5/6 | 6/6 / 6/6 | 0/6 |
 | codex | index | 6 | 19,379 | 165,245 | 35 | 6/6 | 6/6 | 0/6 |
 
 In 4 of 6 Codex `full` toy runs Codex ran `python3 caveman/scripts/check.py` in the local specq checkout and listed it as a project check: specq's own `README.md` and `AGENTS.md`, injected as "every specq file", direct work in the rule repository. Codex `full` also omitted before/after evidence on the toy defect in both runs.
