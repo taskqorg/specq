@@ -149,7 +149,26 @@ Limits:
 | 2 | RT3 skill claude | 35799 | 391129 | 3008 | 40 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
 | 2 | RT3 skill codex | 21733 | 231430 | 1219 | 40 | yes | yes | ask |  | yes | yes | yes | yes |  | 0 |
 
-Rerun: create `$BASES/base-rt1..3` as clones of taskq at the base commits above with `cargo build --tests --locked` done, then `BASES=<dir> SPECQ=<specq checkout> RUNS=<empty dir> engineering/audits/spec-delivery/run-real.sh RT2 core codex`; `RUNS=<dir>[:<dir>] python3 engineering/audits/spec-delivery/analyze-real.py` prints the table. Runs are paid model calls; rerun only when the delivery logic or a runtime version changes.
+Rerun: create `$BASES/base-rt1..3` as clones of taskq at the base commits above with `cargo build --tests --locked` done, then `BASES=<dir> SPECQ=<specq checkout> RUNS=<empty dir> engineering/audits/spec-delivery/run-real.sh RT2 core codex` (add `CI_LINE=1` for the live CI line); `RUNS=<dir>[:<dir>] python3 engineering/audits/spec-delivery/analyze-real.py` prints the table. Runs are paid model calls; rerun only when the delivery logic or a runtime version changes.
+
+### RT2 rerun with the live CI line
+
+Question ([#57](https://github.com/taskqorg/specq/issues/57)): was the `core` RT2 result of 2 of 4 a replay confound of the missing line "Do not wait for CI: `close` checks it"? Four new runs on 2026-10-15, same host, runtime versions, base clone and specq `317ea57c97f809bd65fc08ff80383147561df642` as the main table; the only brief change is that line, restored after the commit line (`CI_LINE=1` in [real.py](spec-delivery/real.py)). They are records 61-64 of [real-runs.jsonl](spec-delivery/real-runs.jsonl) and [real-traces.jsonl](spec-delivery/real-traces.jsonl), `rep` 3 and 4, `ci_line: true`; the first 60 records have no `ci_line` field and ran without the line.
+
+| rep | run | start | total | out | secs | contract_read | rules_read | command | repro | valid_first | limits_first | limits_final | task_rule | commit | outside |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 3 | RT2 core claude | 81742 | 1071210 | 5365 | 125 | no | no | result | reproduced | yes | yes | yes | yes | yes | 0 |
+| 3 | RT2 core codex | 51608 | 1158576 | 2674 | 107 | yes | yes | result | none | yes | yes | yes | no | yes | 0 |
+| 4 | RT2 core claude | 81742 | 1005548 | 5642 | 113 | no | no | result | none | no | no | yes | no | yes | 0 |
+| 4 | RT2 core codex | 49463 | 246171 | 1050 | 40 | yes | yes | ask (want result) | none | yes | yes | yes | no |  | 0 |
+
+Result: RT2 task rule kept in 1 of 4 `core` runs with the CI line present (Claude 1 of 2, Codex 0 of 2), against 2 of 4 without it. The earlier 2 of 4 was not a CI-line confound:
+
+- No run asked about CI or waited for it. All three results listed CI as unknown under `Open:`, as the line intends. In the first round, too, both `core` Codex runs had already sent `result`; the line changes only the CI-driven asks seen in `hybrid` and `proposal`.
+- The misses have other causes. Codex rep 3 forced the lock contention before and after the fix ("before: count 1 != 0; after: pass") but named the rule as "section 4", so the strict criterion (`R<n>` or `§`, and "fail" or "reproduced" in the evidence) scores it as missed. Claude rep 4 did not force the race, gave the cause from code ("race not forced") and named the rule only in prose. Codex rep 4 asked before any code: taskq.md § 7 rule 4 at that base requires a changed rule for any changed existing test, a defensible reading of the contract that the CI line does not touch.
+- Read leniently (rule named in words, evidence in any wording), `core` keeps the rule in 2 of 4 runs again: Claude rep 3 and Codex rep 3.
+
+Limits: two runs per runtime; a difference of one run is not significant. The strict criterion is unchanged from the main table so that the counts compare.
 
 ## Supplement: toy project
 
