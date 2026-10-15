@@ -2,6 +2,15 @@
 
 Every product measures its own operations, so optimization starts from evidence, not guesses. Product contracts name their operations, budgets, store path, bounds and export retention; this page defines the method.
 
+## Coverage by construction
+
+- Coverage includes every product action and execution path: user input, window creation/show/hide, layout, resize, render submission and observed paint, command dispatch, service work, board calls, agent/model/tool calls, context loading and compression. A short operation catalog is not an exemption for other paths.
+- Use the shared implementation and automatic instrumentation at execution boundaries. New methods and handlers inherit instrumentation; a manual list that silently omits new code does not satisfy coverage. The collector's own internals exclude recursive self-observation and expose collection health separately.
+- Link input, dispatch, execution and observed result with one operation identity and parent spans. Record failures, refusals, cancellation and unknown results as well as success. A submitted render is not proof of paint; an accepted command is not proof of its effective state.
+- Record model, input/output/cache tokens, context size and compression before/after when the runtime exposes them. Missing observations carry a reason; never infer them from elapsed time or report them as zero.
+- Collection is built in and local first, with no enrollment, credentials, extra service or per-feature setup required. Products share the implementation rather than copying collectors. Optional synchronization reads committed local observations and advances only on verified durable acceptance; disconnection never disables local analysis.
+- Acceptance checks coverage against the full handler/method inventory and exercises an input-to-observed-result trace, including failure and newly added code. Passing tests for the instrumented subset is not proof of complete coverage.
+
 ## Counters
 
 - Name each measured operation once, in the product spec, for example `sync.board` or `render.menu` (invented). A name is stable; a renamed operation starts a new series.
