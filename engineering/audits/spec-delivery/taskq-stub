@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+# Stub taskq: validates result/ask format (taskq.md section 7 / ask card limits), logs every call.
+import json, os, re, sys, time
+a = sys.argv[1:]
+log = os.environ["STUB_LOG"]
+def opt(name, many=False):
+    vals = [a[i + 1] for i, x in enumerate(a) if x == name and i + 1 < len(a)]
+    return vals if many else (vals[0] if vals else None)
+cmd = a[0] if a else ""
+errs = []
+if cmd == "result":
+    if not re.fullmatch(r"[0-9a-f]{40}", opt("--sha") or ""): errs.append("--sha must be a full SHA")
+    checks = opt("--checks", True)
+    if not 1 <= len(checks) <= 8: errs.append("1-8 --checks")
+    if any(" -- " not in c for c in checks): errs.append("check must be 'command -- outcome'")
+    lines = [l for l in (opt("--text") or "").splitlines() if l.strip()]
+    if not lines or not lines[0].startswith("Changed: ") or not any(l.startswith("Open: ") for l in lines): errs.append("--text needs Changed: and Open: lines")
+    if any(len(l) > 240 for l in lines + checks): errs.append("line over 240")
+elif cmd == "ask":
+    lines = [l for l in (opt("--text") or "").splitlines() if l.strip()]
+    if len(lines) < 2 or not lines[0].startswith("Done: ") or not lines[1].startswith("Problem: "): errs.append("--text needs Done: and Problem: lines")
+    if lines and len(lines[0]) > 160: errs.append("Done over 160")
+    o = opt("--option", True)
+    if not 2 <= len(o) <= 4 or any(len(x) > 160 for x in o): errs.append("2-4 options of at most 160")
+    if not opt("--recommend"): errs.append("--recommend required")
+elif cmd in ("inbox", "requeue"):
+    pass
+else:
+    errs.append("unknown command")
+with open(log, "a") as f:
+    f.write(json.dumps({"t": time.time(), "argv": a, "errors": errs}) + "\n")
+if errs:
+    print("taskq: rejected: " + "; ".join(errs)); sys.exit(1)
+print(open(os.environ["STUB_TASK"]).read() if cmd == "inbox" and os.environ.get("STUB_TASK") else "taskq: " + cmd + " recorded" if cmd != "inbox" else "#7 task text is in the brief")
