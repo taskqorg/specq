@@ -26,7 +26,7 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - One task is one user-visible outcome; its steps, hosts and surfaces are acceptance items, not tasks. A batch of fixes to the same screen, module or file goes to one task and one session, and a new fix for that surface joins its open task instead of starting a parallel writer. A repeated check (a probe per host, a periodic measure) is one recipe run, not one task per run.
 - A gap found in review is fixed inside the task, up to three review rounds; a task stays open until its outcome is proved rather than spawning follow-up tasks for its own acceptance ([review](#review)).
 - Waiting is not a question: a task that needs an owner action, a release or another task's close is parked with its dependency and resumes on it; an ask is only for a product, scope or spec-rule choice the agent cannot make. Technical choices inside the contract are the agent's.
-- A result that ends with proposals or open decisions (a design page marked for approval, rules left inactive, choices deferred to the owner) is delivered like an ask: whoever supervises the board lists each decision with its options and a recommendation, before any dependent task starts. A closed task never buries a decision.
+- A task whose outcome is a decision (research, design, proposal) ends with an ask, not with the decision in its result text: each open choice as options with a recommendation. The answer records the decision; the task then closes or files the dependent tasks. A closed task never buries a decision. If one slips through (a design page marked for approval, rules left inactive, choices deferred to the owner), whoever supervises the board delivers it the same way before any dependent task starts.
 - Acceptance names evidence for the changed behavior only, on the host that runs the task; it never asks for a full snapshot or platform matrix ([run policy](verification.md#run-policy-by-stage)).
 
 ## Runtime preference
@@ -48,6 +48,7 @@ If the same command or failure repeats twice, stop and change strategy. Dispatch
 
 - Report task fit and implementation quality separately: missing, incorrect or unrequested behavior versus concrete standards violations and maintenance risks. Neither result substitutes for the other.
 - Distinguish binding violations from judgement calls. A code smell alone is not a rejection; follow the project's acceptance rules. Tool-enforced rules need no duplicate manual checklist.
+- A deferred decision without an ask is a task-fit gap: a research, design or proposal task is not done until its open choices are asked.
 - Report every gap in one pass over the whole result. A later round checks only the requested fixes and their direct effects; a new finding on unchanged lines is a separate task or a note, not a rejection.
 - Two axes do not require two agents. Keep safety, compatibility and architectural constraints available to the implementer; load detailed review guidance when needed.
 
