@@ -12,6 +12,7 @@ Use the shared [Core review](../caveman/rules/core.md#review) for reporting; the
 
 - A collection error, unsupported platform, corrupt state or stale value reads unknown with a reason.
 - Never report such a value as ok, zero or success. Health, status and counts follow this rule in every interface.
+- For attempts without a terminal stage record, apply the service detection and reporting rule in [Agent work profiling](profiling.md#agent-work).
 
 ## Remediation
 
