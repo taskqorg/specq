@@ -18,6 +18,7 @@ Stop at the first rung that holds.
 - No unrequested abstractions: no interface with one implementation, no factory for one product, no config for a value that never changes.
 - No scaffolding for later. Deletion over addition. Boring over clever.
 - Fewest files, shortest working diff.
+- For owned code, prefer ordinary source modules and existing language, build or shared execution boundaries over text rewriting or source-fragment extraction. A custom transform needs a demonstrated gap and behavior/diagnostic equivalence evidence; this does not prohibit standard compilation, bundling, templates or generated protocol code.
 - Mark a deliberate simplification with a `ponytail:` comment naming the ceiling and the upgrade path: `// ponytail: global lock; per-account locks if throughput matters`.
 - Verification of non-trivial logic follows [Testing](testing.md#before-adding-or-changing-a-test).
 - Never simplify away validation at trust boundaries, error handling that prevents data loss, security, accessibility basics, or anything explicitly requested.
