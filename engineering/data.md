@@ -9,6 +9,11 @@ Rules for the state a tool keeps on disk. Consumer contracts name their store, s
 - One writer connection with prepared statements and a `busy_timeout`; readers may use separate connections. Let the database build the response shape (for example JSON) when that removes an object layer.
 - Group commit is allowed: several requests' writes share one transaction, and every response waits for that commit. A failed batch fails every waiting request honestly and rolls back; nothing uncommitted is visible.
 
+## State boundaries
+
+- Name the authoritative owner and write path of each state; caches and projections cannot become fallback authority. Values under one authority that share a consistency invariant should commit in one document or transaction. Separate files are not a transaction; when atomic commit is unavailable, specify partial outcomes, reconciliation and acknowledgment before adding a cross-file protocol.
+- Keep structured values through internal producers and readers; encode/decode at storage, transport, import or presentation boundaries. A legacy format adapter belongs at that boundary, not around every new internal operation. Keep compatibility required by consumers until its retirement is qualified.
+
 ## Files
 
 - Write a state file atomically: temporary file in the same directory, fsync, rename, directory fsync. Readers never see a partial file.

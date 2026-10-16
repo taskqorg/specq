@@ -5,6 +5,7 @@ Each project keeps its decisions, including product decisions, in one root contr
 - Edit the contract before changing a decision. Update implementation and supporting documents in the same deliverable.
 - A conflicting task becomes a question with options. Only the owner approves decision changes.
 - Verify implemented behavior against the contract. Keep design targets distinct from shipped behavior.
+- When replacing an authority, state format or shared mechanism, name the current and target owners, affected readers/writers, overlap rule, rollback floor and observable retirement condition. A temporary adapter has a removal condition; cutover is incomplete while the old path can still act as authority. Reconcile command tables, examples and linked contract details with the changed rule in the same deliverable; use the existing task/result, not a new mandatory report.
 
 Product/interface collaboration follows the [design workflow](../design/workflow.md); it connects these ownership rules to use cases, iterations and acceptance.
 
