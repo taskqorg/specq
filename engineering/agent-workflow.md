@@ -27,7 +27,7 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - A gap found in review is fixed inside the task, up to three review rounds; a task stays open until its outcome is proved rather than spawning follow-up tasks for its own acceptance ([review](#review)).
 - Waiting is not a question: a task that needs an owner action, a release or another task's close is parked with its dependency and resumes on it; an ask is only for a product, scope or spec-rule choice the agent cannot make. Technical choices inside the contract are the agent's.
 - A task whose outcome is a decision (research, design, proposal) ends with an ask, not with the decision in its result text: each open choice as options with a recommendation. The answer records the decision; the task then closes or files the dependent tasks. A closed task never buries a decision. If one slips through (a design page marked for approval, rules left inactive, choices deferred to the owner), whoever supervises the board delivers it the same way before any dependent task starts.
-- Acceptance names evidence for the changed behavior only, on the host that runs the task; it never asks for a full snapshot or platform matrix ([run policy](verification.md#run-policy-by-stage)).
+- Acceptance follows the [run policy](testing.md#run-policy-by-stage); it names evidence for changed behavior and its risks without adding unrelated snapshots or platform matrices.
 
 ## Runtime preference
 
@@ -37,8 +37,8 @@ UI, visual and usability work prefers codex; code, infrastructure, release and h
 
 1. Inspect the relevant code, contract and current state. Discovery stays inside the exact project or worktree.
 2. Implement the smallest coherent change ([Ponytail](ponytail.md)).
-3. Run focused tests while iterating.
-4. Freeze the diff and run the project's canonical gate once.
+3. Run checks selected under [Testing](testing.md#run-policy-by-stage) while iterating.
+4. Freeze the diff and run the project's selected canonical gate once. Rerun only when changes, failures or invalidated evidence require it.
 5. Review only the frozen result when review is warranted, using the two axes below.
 6. Report the actual outcome with its evidence ([verification](verification.md)).
 
