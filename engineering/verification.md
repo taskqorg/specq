@@ -21,22 +21,11 @@ Use the shared [Core review](../caveman/rules/core.md#review) for reporting; the
 
 ## Test classes
 
-- A test is an instrument, never a goal. Two classes exist: development checks and chain checks.
-- Write a test only when no existing chain check, trace or readback answers the question. The author names the question and the cheaper proof rejected, with the reason.
-- A development check answers one question about one change. Delete it when the question is answered, or promote it to a chain check. Do not keep it because it exists.
-- A chain check proves that one named chain works end to end (a requirement, a lifecycle path, a user scenario). It names the chain and the distinct failure risk it catches, and uses the cheapest run that proves the chain.
-- Each persistent test names its requirement and its distinct failure risk; one that names no chain is deleted. Remove a redundant test only after another check covers its risk. Prefer executable traces, data cases and generated sequences to authored per-function tests.
-- No coverage percentage targets, snapshot churn or tests of trivial helpers.
-- The persistent set runs with one command in minutes, in CI on every merge candidate. Nothing in it needs a human, a paid service or hours.
-- Looks, sound and feel are accepted by the owner from pictures or video; a numeric gate for them is written only after the owner accepted the result, and encodes what was accepted.
-- A test review is a normal task: inventory, name each kept test's chain, delete the rest, make the set run cleanly.
+Definitions and the decision procedure live in [Testing](testing.md#before-adding-or-changing-a-test). This heading preserves existing links.
 
 ## Run policy by stage
 
-- During development: run only the check the change affects. Do not repeat unrelated checks or suites.
-- For a defect fix, first reproduce the failure with the smallest safe check at the affected behavior boundary, then run the same check after the fix. Reuse chain checks where possible. If reproducing is unsafe or unavailable, record why and the alternative evidence; do not claim a before/after proof. This is not mandatory test-first work for trivial or documentation changes.
-- Merge candidate: run cheap deterministic core acceptance and the checks the diff affects. Capture seed, version, step events and native logs. A failure names the broken chain before anyone isolates the step.
-- Release candidate: run the platform and client matrix, lifecycle and outage cases, and bounded live probes of changed integration paths. Run expensive or paid evaluations only when the logic they measure changed, never for doc edits or unchanged redeploys.
+The canonical [run policy](testing.md#run-policy-by-stage) lives in Testing. This heading preserves existing links.
 
 ## State-driven systems
 
