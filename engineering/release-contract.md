@@ -30,15 +30,18 @@ Install once, then leave it. The service maintains itself.
 
 ## Delivery speed
 
-- A merge to the main branch is a deployment candidate. The gates are the checks selected by [Testing](testing.md#run-policy-by-stage) and this release contract.
-- One approval per task, recorded in the task contract ([approval boundaries](agent-workflow.md#approval-boundaries)); no approval per step and no manual queue between merge and rollout.
+- Development and release are separate channels. The main branch is the development channel; the release branch (`live` unless the consumer contract names another) is the release channel.
+- A merge to main is a development candidate. The development host builds it locally from source and runs it within minutes; no release run, tag or host rollout waits on it. The gates are the checks selected by [Testing](testing.md#run-policy-by-stage).
+- Live acceptance of a merged change runs on the development build right after merge. Tasks depend on merge or close, never on a release; a check that needs a released artifact on every host goes to the next release task.
+- A release fast-forwards the release branch to a main commit that already passed merge-queue CI. That push tags, publishes and rolls out to every host automatically. The owner decides when to release; that push is the only manual step.
+- One approval per task, recorded in the task contract ([approval boundaries](agent-workflow.md#approval-boundaries)); no approval per step and no manual queue between merge and the development build.
 - Rollout and rollback are bounded in minutes and scripted; rollback is one command that activates the preserved previous version.
 - Measure lead time from merge to running version, deployment frequency, change failure rate and time to restore. A slow or manual step in that path is a defect to remove, not a routine to keep.
 
 ## Release task
 
-- A release task ends when its version PR is merged. Acceptance names the version bump in the merged PR and nothing after it.
-- Tagging, release assets and host updates follow the merge automatically ([self-maintenance](#self-maintenance)). The task card has no tag, release-run or heartbeat condition, and no task or PM action starts them.
+- A release task ends when its version PR is merged to main and the release branch is fast-forwarded to that merge commit. Acceptance names the version bump and the release-branch commit, nothing after it.
+- Tagging, release assets and host updates follow the release-branch push automatically ([self-maintenance](#self-maintenance)). The task card has no tag, release-run or heartbeat condition, and no task or PM action starts them.
 - The worker does not produce rollout evidence. Rollout evidence is the version each host reports in its heartbeat.
 - The PM verifies rollout from host heartbeats and the DashQ hosts view.
 - A follow-up task is justified only when a host stays behind the released version for more than one update interval. It names the host, the reported version and the observed interval.
