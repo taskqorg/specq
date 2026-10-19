@@ -31,7 +31,7 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 
 ## Runtime preference
 
-UI, visual and usability work prefers codex; code, infrastructure, release and host work prefers claude. The preference is soft: an unavailable runtime yields to the available one. How a task states it belongs to the consumer contract.
+Design, UI, visual and image work runs on codex; all other work (code, infrastructure, release, host, docs, research) runs on claude. Every review runs on claude, including review of codex work. The rule is hard: work waits for its runtime instead of moving to the other one. How a task states it belongs to the consumer contract.
 
 ## Work cycle
 
