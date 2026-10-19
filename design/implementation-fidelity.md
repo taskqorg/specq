@@ -62,3 +62,12 @@ Do not average away a failed action, missing state, wrong data meaning or unreac
 - Freeze the candidate and repeat affected acceptance checks. Final report distinguishes design accepted, runtime verified and deployed.
 - Keep unresolved semantic or platform failures open. An implementation agent cannot declare its own changed design approved.
 - Builder, reviewer and owner are responsibilities, not a requirement to spawn separate agents.
+
+## F7 Stable view URLs
+
+- Give each tab and navigable view a stable URL. Opening it directly, reloading it or sharing it resolves to the same view and URL-encoded state, subject to the recipient's permissions and current data availability.
+- Keep the selected tab/view and address in sync. Browser Back and Forward restore the corresponding view and its navigation state; apply [F3](#f3-scroll-and-focus) to scroll and focus.
+- Preserve filters when navigating away and back. Encode filters needed to reproduce a shared view in the URL; distinguish that shareable state from local drafts and transient interaction state. Never put secrets in URLs.
+- Unknown paths, unsupported state and unavailable destinations remain explicit. Do not silently display another tab as though the requested destination loaded. Explain the limitation and provide a valid recovery destination without claiming the original view was restored.
+- Consumer contracts define route syntax, initial destinations, filter defaults and which state is shareable or local. Keep these product choices out of shared rules.
+- Verify direct entry, tab changes, Back/Forward, reload, shared filtered views and unknown paths against the same navigation ledger. A shared specification change alone does not prove consumer adoption.
