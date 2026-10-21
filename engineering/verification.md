@@ -7,6 +7,7 @@ Use the shared [Core review](../caveman/rules/core.md#review) for reporting; the
 - Keep missing, stale or untested observations unknown; name the affected claim or platform.
 - Separate model, adapter, process and target-platform checks. Passing one does not qualify the others.
 - Verify the exact candidate or artifact being accepted; identify relevant checks and remaining gaps.
+- Visual evidence follows the [review set](../design/workflow.md#review-sets) cap.
 
 ## Unknown is never healthy
 

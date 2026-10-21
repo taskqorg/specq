@@ -44,6 +44,12 @@ Use [D1–D14](operator-ui.md) as the preference profile and its [review checkli
 
 Do not turn every bug into policy. Existing-rule violations need fixes; repeated ambiguity may need a clearer rule. Useful implementation deviations need review before becoming the new reference.
 
+## Review sets
+
+- A set of screens shown to the owner or a reviewer holds at most 10 screens: one per distinct decision or gap.
+- A set holds no variants that differ only by size, color or theme.
+- Matrix coverage (themes, text sizes, widths, states) is a script check that reports pass or gap per cell. A passing cell commits no screenshot; a gap may enter the set as its own screen.
+
 ## Handoff and acceptance
 
 Keep the package index and deliver the [acceptance package](implementation-fidelity.md#f5-acceptance-package); split builder, reviewer and owner work per [F6](implementation-fidelity.md#f6-build-polish-accept). The implementer continues from project state without the chat ([agent integration](../engineering/verification.md#agent-integration)). Report implemented, tested, published, deployed and verified separately ([core](../caveman/rules/core.md#write)).
