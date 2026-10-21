@@ -46,7 +46,7 @@ Keep one project package index. It links the contract and shared rules; accepted
 Deliver:
 1. Feature/navigation ledger: every required control, destination, supported state and requirement ID.
 2. Deterministic fixtures: normal, empty, long, dense, unknown, failure and boundary cases.
-3. Target-platform images and interaction evidence tied to exact artifact hashes; include environment, font, theme, scale and usable-area dimensions.
+3. Target-platform images and interaction evidence tied to exact artifact hashes; include environment, font, theme, scale and usable-area dimensions. Shown images follow the [review set](workflow.md#review-sets) cap.
 4. Automated results separated into data/model, adapter, geometry and runtime checks.
 5. Review report findings: requirement, expected, observed, reproduction, severity, evidence and disposition.
 
