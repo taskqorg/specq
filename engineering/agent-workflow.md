@@ -25,7 +25,6 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - Split functional work into small, independently verifiable user scenarios across the required layers, with only real blocking dependencies. Size by a coherent outcome and manageable context, not a fixed token quota. Research and mechanical migrations may use a different split when each step has a clear check and preserves compatibility.
 - One task is one user-visible outcome; its steps, hosts and surfaces are acceptance items, not tasks. A batch of fixes to the same screen, module or file goes to one task and one session, and a new fix for that surface joins its open task instead of starting a parallel writer. A repeated check (a probe per host, a periodic measure) is one recipe run, not one task per run.
 - A gap found in review is fixed inside the task, up to three review rounds; a task stays open until its outcome is proved rather than spawning follow-up tasks for its own acceptance ([review](#review)).
-- Waiting is not a question: a task that needs an owner action, a release or another task's close is parked with its dependency and resumes on it; an ask is only for a product, scope or spec-rule choice the agent cannot make. Technical choices inside the contract are the agent's.
 - A task whose outcome is a decision (research, design, proposal) ends with an ask, not with the decision in its result text: each open choice as options with a recommendation. The answer records the decision; the task then closes or files the dependent tasks. A closed task never buries a decision. If one slips through (a design page marked for approval, rules left inactive, choices deferred to the owner), whoever supervises the board delivers it the same way before any dependent task starts.
 - Acceptance follows the [run policy](testing.md#run-policy-by-stage); it names evidence for changed behavior and its risks without adding unrelated snapshots or platform matrices.
 
@@ -39,6 +38,15 @@ Workers must not claim a task before its body is final.
 - A started task body is not edited. A change to started work goes through a steer or a requeue with its reason.
 - No trial or placeholder task is added to a live board.
 - Intake gates only new work: a started task never waits for the PM.
+
+## Queue flow
+
+Every wait has an automatic exit.
+
+- No free-text wait: a worker that cannot finish files the blocker as a task and links it with `Depends on`; the task resumes when the blocker closes. Parking a task with `later` stays an owner or PM decision.
+- A broken check, script or workflow in the task's own repository is not an external blocker: fix it in the same PR when small, otherwise file it as a task and depend on it.
+- A task with no movement for 2 hours (held draft, ask, later, waiting on a closed dependency, doing without a heartbeat) is shown as stuck and notified. Stuck detection observes and never gates.
+- Technical choices are the worker's own: take the recommended option. An ask is only for a product, scope or visual choice. Review rejects only against the task's acceptance and never adds new proof demands.
 
 ## Runtime preference
 
