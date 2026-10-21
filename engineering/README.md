@@ -10,7 +10,7 @@ Reusable engineering rules. Projects link to the applicable rule and define thei
 - [Verification](verification.md): evidence boundaries, unknown health, scoped remediation and behavioral models.
 - [Testing](testing.md): test decisions, risk coverage, run selection, time budgets and disagreements.
 - [Data and storage](data.md): store, durability, atomic files, bounds and crash checks.
-- [Performance and capacity](performance.md): targets, order of work and resource budgets.
+- [Performance and capacity](performance.md): observe-not-gate rule, load tasks, order of work and resource budgets.
 - [Built-in profiling](profiling.md): operation counters, agent work stages, system operations, traces, bounded store, analysis export and profile reports.
 - [Release, update, service](release-contract.md): verifiable releases, safe updates, self-maintenance and service ownership.
 - [Permission authority](permission-authority.md): trust boundaries for agent access.
