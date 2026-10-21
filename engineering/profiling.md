@@ -1,6 +1,6 @@
 # Built-in profiling
 
-Every product measures its own operations, so optimization starts from evidence, not guesses. Product contracts name their operations, budgets, store path, bounds and export retention; this page defines the method.
+Every product measures its own operations, so optimization starts from evidence, not guesses. Product contracts name their operations, store path, bounds and export retention; this page defines the method.
 
 ## Counters
 
@@ -18,9 +18,10 @@ Every product measures its own operations, so optimization starts from evidence,
 
 ## Report
 
-- A profile report ranks operations by slowness against budget, failure rate and instability, worst first, with the measured window and sample count.
+- A profile report ranks operations by slowness, failure rate and instability, worst first, with the measured window and sample count.
+- The always-on report compares each operation with the previous window of the same length and flags the ones that got worse. A large degradation becomes its own task; it never blocks the task that caused it ([performance](performance.md#observe-do-not-gate)).
 - An incident links to the profile report of its window.
-- An optimization task cites the report before the change and the same report after it, in the same environment ([performance](performance.md#target)). A change without a before and after comparison is not an optimization result.
+- Optimization is a dedicated task. It cites the report before the change and the same report after it, in the same environment ([performance](performance.md#load-and-optimization-tasks)). A change without a before and after comparison is not an optimization result.
 
 ## Agent work
 
@@ -54,5 +55,5 @@ A service that runs work measures each of its own actions, not only attempts, wi
 
 ## Budgets and unknowns
 
-- Each product spec lists its measured operations with a time budget, such as p95, and an error budget.
+- Each product spec lists its measured operations. A time or error reference value, if any, comes from the operation's own telemetry history and follows [observe, do not gate](performance.md#observe-do-not-gate); a spec never asks for invented numbers.
 - An operation with no samples, a failed collection or a pruned window reads unknown with a reason, never zero or ok ([unknown is never healthy](verification.md#unknown-is-never-healthy)).
