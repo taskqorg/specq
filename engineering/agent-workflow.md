@@ -29,6 +29,17 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - A task whose outcome is a decision (research, design, proposal) ends with an ask, not with the decision in its result text: each open choice as options with a recommendation. The answer records the decision; the task then closes or files the dependent tasks. A closed task never buries a decision. If one slips through (a design page marked for approval, rules left inactive, choices deferred to the owner), whoever supervises the board delivers it the same way before any dependent task starts.
 - Acceptance follows the [run policy](testing.md#run-policy-by-stage); it names evidence for changed behavior and its risks without adding unrelated snapshots or platform matrices.
 
+## Task intake
+
+Workers must not claim a task before its body is final.
+
+- Every new task enters the board held, as a draft: a PM task, a worker follow-up, a retro item or a review finding alike.
+- The PM (whoever supervises the board) starts a draft only after reading it back from the board and confirming: one goal, verifiable acceptance, scope, dependencies, no duplicate of an open task and no conflict with a specification.
+- A draft that fails the readback is edited or closed by the PM; it is never started as is.
+- A started task body is not edited. A change to started work goes through a steer or a requeue with its reason.
+- No trial or placeholder task is added to a live board.
+- Intake gates only new work: a started task never waits for the PM.
+
 ## Runtime preference
 
 Design, UI, visual and image work runs on codex; all other work (code, infrastructure, release, host, docs, research) runs on claude. Every review runs on claude, including review of codex work. The rule is hard: work waits for its runtime instead of moving to the other one. How a task states it belongs to the consumer contract.
