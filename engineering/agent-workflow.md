@@ -35,6 +35,7 @@ Workers must not claim a task before its body is final.
 - Every new task enters the board held, as a draft: a PM task, a worker follow-up, a retro item or a review finding alike.
 - The PM (whoever supervises the board) starts a draft only after reading it back from the board and confirming: one goal, verifiable acceptance, scope, dependencies, no duplicate of an open task and no conflict with a specification.
 - A draft that fails the readback is edited or closed by the PM; it is never started as is.
+- A draft that passes the readback is started at once, plan tasks included; `Depends on` orders them. A draft is never kept held to wait for another task: hold has no automatic exit. Only an owner gate keeps it held, and the card names who releases it.
 - A started task body is not edited. A change to started work goes through a steer or a requeue with its reason.
 - No trial or placeholder task is added to a live board.
 - A third follow-up for the same symptom is not started, whoever files it (PM, worker, retro or review). Same symptom means the same observable signal: the same failing check, error text or telemetry metric, not similar title wording. The PM files one root-cause task instead; it names the earlier tasks, and its acceptance proves the symptom is gone (a test, or a telemetry window without the signal). Earlier open follow-ups depend on it or close as superseded.
