@@ -37,6 +37,7 @@ Workers must not claim a task before its body is final.
 - A draft that fails the readback is edited or closed by the PM; it is never started as is.
 - A started task body is not edited. A change to started work goes through a steer or a requeue with its reason.
 - No trial or placeholder task is added to a live board.
+- A third follow-up for the same symptom is not started, whoever files it (PM, worker, retro or review). Same symptom means the same observable signal: the same failing check, error text or telemetry metric, not similar title wording. The PM files one root-cause task instead; it names the earlier tasks, and its acceptance proves the symptom is gone (a test, or a telemetry window without the signal). Earlier open follow-ups depend on it or close as superseded.
 - Intake gates only new work: a started task never waits for the PM.
 
 ## Queue flow
