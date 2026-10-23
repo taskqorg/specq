@@ -52,7 +52,7 @@ Every wait has an automatic exit.
 
 ## Runtime preference
 
-Design, UI, visual and image work runs on codex; all other work (code, infrastructure, release, host, docs, research) runs on claude. Every review runs on claude, including review of codex work. The rule is hard: work waits for its runtime instead of moving to the other one. How a task states it belongs to the consumer contract.
+Design, UI, visual and image work runs on codex; all other work (code, infrastructure, release, host, docs, research) runs on claude. Every review runs on claude, including review of codex work. Exception: a host the owner runs without claude runs its own work and reviews on codex; tasks bound to that host carry no claude requirement. The rule is hard: work waits for its runtime instead of moving to the other one. How a task states it belongs to the consumer contract.
 
 ## Work cycle
 
