@@ -4,7 +4,7 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 
 ## Ownership
 
-- The human owns product intent, architecture, risk, approvals and final acceptance.
+- The human owns product intent, architecture, risk, approvals and decided rules. AI review accepts a task against its acceptance; the owner joins only through an ask the AI cannot resolve, such as a visual acceptance ([Testing](testing.md#keep-or-remove)).
 - One outcome has one owner, one writer, one worktree and one acceptance contract. Parallel writers use isolated worktrees and hand off through immutable commits, never shared uncommitted state.
 - Delegate only when independent work gains from it. Workers do not fan out; add at most one read-only reviewer when risk warrants it.
 
@@ -24,9 +24,18 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - Group independent choices in a short round; ask dependent questions after their prerequisites are settled. Reuse accepted answers. Resolve material choices before dependent implementation; routine changes need no interview or extra approval round.
 - One worker delivers one coherent outcome, across the required layers, in one task and one session, even when the diff is large; fewer tasks mean less coordination. Split only for a real blocking dependency, a step on a different host or owner, or context the worker cannot hold. Diff or review size alone is never a split reason, and a worker does not ask to split for it.
 - One task is one user-visible outcome; its steps, hosts and surfaces are acceptance items, not tasks. A batch of fixes to the same screen, module or file goes to one task and one session, and a new fix for that surface joins its open task instead of starting a parallel writer. A repeated check (a probe per host, a periodic measure) is one recipe run, not one task per run.
+- A plan or chain of changes on one surface is one task. Owner feedback on that surface steers its open task; it does not start a new one.
+- A complex task lists ordered stages (analyse, change, verify) as acceptance items, each ending in a checkpoint the worker reports on the task. The PM steers at checkpoints. No stage becomes its own task.
 - A gap found in review is fixed inside the task, up to three review rounds; a task stays open until its outcome is proved rather than spawning follow-up tasks for its own acceptance ([review](#review)).
 - A task whose outcome is a decision (research, design, proposal) ends with an ask, not with the decision in its result text: each open choice as a [decision question](../caveman/rules/core.md#decision-questions). The answer records the decision; the task then closes or files the dependent tasks. A closed task never buries a decision. If one slips through (a design page marked for approval, rules left inactive, choices deferred to the owner), whoever supervises the board delivers it the same way before any dependent task starts.
 - Acceptance follows the [run policy](testing.md#run-policy-by-stage); it names evidence for changed behavior and its risks without adding unrelated snapshots or platform matrices.
+
+## Decided rules
+
+A spec rule, or a test assertion that guards it, records an owner decision.
+
+- A worker changes or deletes a decided rule or its guarding assertion only when the task names that rule and the owner decision to change it.
+- Otherwise the worker does not edit the rule or the assertion; it asks the owner, even when the task acceptance conflicts with the rule. A failing guard is fixed in the code, never by rewriting the guard ([Testing](testing.md#when-evidence-disagrees)).
 
 ## Task intake
 
@@ -34,6 +43,8 @@ Workers must not claim a task before its body is final.
 
 - Every new task enters the board held, as a draft: a PM task, a worker follow-up, a retro item or a review finding alike.
 - The PM (whoever supervises the board) starts a draft only after reading it back from the board and confirming: one goal, verifiable acceptance, scope, dependencies, no duplicate of an open task and no conflict with a specification.
+- Triage comes before filing or starting: the PM reads the open tasks on the same surface and picks one of steer the open task, merge the drafts into one, add a dependency, file a new task, or reject. The PM checks the acceptance against the specification of that surface; acceptance that contradicts a [decided rule](#decided-rules) is rejected or becomes an owner ask.
+- The PM decides triage without an owner confirmation; the owner joins only when the PM escalates an ask it cannot resolve.
 - A draft that fails the readback is edited or closed by the PM; it is never started as is.
 - A draft that passes the readback is started at once, plan tasks included; `Depends on` orders them. A draft is never kept held to wait for another task: hold has no automatic exit. Only an owner gate keeps it held, and the card names who releases it.
 - A started task body is not edited. A change to started work goes through a steer or a requeue with its reason.
@@ -69,6 +80,7 @@ If the same command or failure repeats twice, stop and change strategy. Dispatch
 
 - Report task fit and implementation quality separately: missing, incorrect or unrequested behavior versus concrete standards violations and maintenance risks. Neither result substitutes for the other.
 - Distinguish binding violations from judgement calls. A code smell alone is not a rejection; follow the project's acceptance rules. Tool-enforced rules need no duplicate manual checklist.
+- Reject every changed or deleted spec line or guarding test assertion that the acceptance does not name as an approved rule change ([decided rules](#decided-rules)).
 - A deferred decision without an ask is a task-fit gap: a research, design or proposal task is not done until its open choices are asked.
 - Diff size alone is never a finding; review does not ask to split a coherent outcome ([prepare the task](#prepare-the-task)).
 - Report every gap in one pass over the whole result. A later round checks only the requested fixes and their direct effects; a new finding on unchanged lines is a separate task or a note, not a rejection.
