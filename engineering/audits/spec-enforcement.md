@@ -4,9 +4,9 @@ Question ([#93](https://github.com/taskqorg/specq/issues/93)): taskqorg rules ar
 
 Status: proposal. This page changes no rule. The [ask](#ask) at the end holds the decision; nothing here is active until the owner answers.
 
-Short answer: no popular spec-driven tool checks that a requirement survives a later change; they check that a spec is well formed, and the rest is LLM self-review. Formal languages (Lean, TLA+, Alloy) check a model, not our Markdown rules, and a hand-kept model drifts. Both taskq regressions would have been caught by a cheap deterministic check: a CI gate that lists every changed or removed rule and guarding test assertion, and refuses the change unless the PR names those rule IDs and the task or an owner answer authorizes them. Recommended: that gate first, piloted in taskq; rule-to-check coverage second; a property-based model of `fold` and board-log monitors only where evidence shows a gap.
+Short answer: no popular spec-driven tool checks that a requirement survives a later change; they check that a spec is well formed, and the rest is LLM self-review. Formal languages (Lean, TLA+, Alloy) check a model, not our Markdown rules, and a hand-kept model drifts. Since [#94](https://github.com/taskqorg/specq/pull/94), [decided rules](../agent-workflow.md#decided-rules) forbid changing a rule or its guarding assertion unless the task names it, but only review applies that rule, and review already missed both taskq regressions. A cheap deterministic check would have caught both: a CI gate that lists every changed or removed rule block and guarding assertion and fails unless the linked task names each one. Recommended: that gate first, piloted in taskq; rule-to-check coverage second; a property-based model of `fold` and board-log monitors only where evidence shows a gap.
 
-Revisions read on 2026-10-29: specq `a21e49e53c8234ba8922b2b325c3a489aad89eb2`, taskq `d4ba0706d2b9e3a41dee9bc459202f77aaba0371`. External sources were read on the same day; items not confirmed from a primary page are marked unverified.
+Revisions read on 2026-10-29: specq `75417548f88706fe1460ae980b2628fc3b1d7eb0` (after #94), taskq `d4ba0706d2b9e3a41dee9bc459202f77aaba0371`. External sources were read on the same day; items not confirmed from a primary page are marked unverified.
 
 ## 1. What spec-driven tools enforce
 
@@ -80,7 +80,8 @@ Control: **none** (nothing checks it), **review** (an agent or the owner reads i
 | Runtime names in adapters only | — | taskq docs/runtime-qualification.md | test: `scripts/check.py` `runtime_names` | none |
 | Change rule | Rule changes name the R-number; numbers kept | taskq.md Change rule | review (result text) | Nothing lists removed or changed R-numbers or sections. |
 | Spec first | Edit the contract first; conflicts are asks | taskq R13, [spec first](../spec-first.md) | review | Nothing links a changed rule to an authorizing Acceptance item or owner answer. |
-| PM intake triage | Classify each request, one confirm card | taskq.md v3 § 7 "Take requests" (#464) | was test (`tests/test_single.py` asserted `taskq pm` prints it); now none in taskq; specq [task intake](../agent-workflow.md#task-intake) keeps only the draft readback, by review | Lost in the v4 rewrite (regression 2). |
+| Decided rules | A rule or guarding assertion changes only when the task names it and the owner decision | specq [decided rules](../agent-workflow.md#decided-rules) (#94) | review: reject unnamed rule changes | Review must find every changed rule line by reading the diff; nothing lists them. |
+| PM intake triage | Classify each request, one confirm card | taskq.md v3 § 7 "Take requests" (#464) | was test (`tests/test_single.py` asserted `taskq pm` prints it); now none in taskq; since #94 specq [task intake](../agent-workflow.md#task-intake) holds a triage rule (steer, merge, dependency, new, reject; acceptance checked against decided rules), by review | Lost in the v4 rewrite (regression 2); restored as prose, still unchecked. |
 | UI layout rules | Menu host strip label rule | taskq docs/design/menu.md M3 "Running agents" | test: `tests/menu-host-strip.browser.cjs` | The test cites issue numbers, not a rule ID; rule and test can change together unnoticed (regression 1). |
 | Owner design corrections | R01-R44, D1-D8 | taskq docs/design/review-handoff.md, ai-workspace.md | review: native audit tables | Rules overlap and conflict across pages (R16 vs M3); nothing detects a conflict. |
 | Test weakening | "Do not change expected output just to make a failure green" | specq [testing](../testing.md#when-evidence-disagrees) | review | No check flags a changed or deleted assertion. |
@@ -102,41 +103,41 @@ Traceability today in taskq: 409 `// Chain:` comments name their requirement and
 
 - [taskq#464](https://github.com/taskqorg/taskq/issues/464) restored the intake algorithm as taskq.md § 7 "Take requests" (`eae8ed1`, #468): collect, read the board once, classify (amend, merge, new, dep, reject, ask), name conflicts, one confirm card, apply only rows answered yes. A test asserted that `taskq pm` prints it.
 - `ecb1e57d` (2026-10-12, "taskq v4 contract and Rust binary") replaced the 2,845-line v3 contract with a 297-line v4 contract and moved v3 to `docs/legacy/taskq-v3.md`. 60 of 72 v3 headings have no heading of the same name in v4; "Take requests" is one of them. The new test capped the contract at 300 lines.
-- How it slipped: the rewrite had no inventory of what each removed section became (moved, merged or dropped); the old guard test stayed with v3 and no v4 test replaced it; the size cap rewarded deletion; the text survived only in a legacy file that no agent must read, which counts as removal.
+- How it slipped: the rewrite had no inventory of what each removed section became (moved, merged or dropped); the old guard test stayed with v3 and no v4 test replaced it; the size cap rewarded deletion; the text survived only in a legacy file that no agent must read, which counts as removal. specq #94 restored a shorter triage rule on 2026-10-29, again guarded only by review.
 
 ## 4. Options
 
 Each option is judged against the two regressions and the three rule kinds.
 
-1. **Rule-change gate in CI.** A script compares the PR with its base. It lists every changed or removed rule block (taskq.md R-sections and § headings, § 2 rows, ID'd design headings and table rows) and every changed or deleted assertion or `Chain:` line that cites a rule ID or issue. The PR must name each listed ID in a `Rules:` line, and each removal needs a destination or "dropped". The reviewer checks each named ID against the task Acceptance or an owner answer.
-   - Plus: catches both regressions (#1776 changes M3 and two #1729 assertions; `ecb1e57d` removes 60 headings); deterministic; one script in the existing gate.
-   - Minus: every rule edit costs a `Rules:` line; the final judgment stays with the reviewer; design rules need IDs first.
+1. **Rule-change gate in CI.** A script compares the PR with its base. It lists every changed or removed rule block (taskq.md R-sections and § headings, § 2 rows, ID'd design headings and table rows) and every changed or deleted assertion or `Chain:` line that cites a rule ID or issue. The gate reads the task named by the commit's `Task:` line and fails unless its body names each listed ID; each removal also needs a destination (moved to a path) or a named owner decision. This is the mechanical form of [decided rules](../agent-workflow.md#decided-rules): review then checks a short list instead of the whole diff.
+   - Plus: catches both regressions (#1776 changes M3 and two #1729 assertions that #1775 did not name; `ecb1e57d` removes 60 headings); deterministic; one script in the existing gate.
+   - Minus: tasks that change rules must name rule IDs; design rules need IDs first; the gate needs a board read in CI.
 2. **Rule IDs mapped to checks.** Every rule that a check can test gets a stable ID and at least one `Chain:` citation; a coverage report lists rules without a check or marked `review-only`. Report only at first, then a gate for new rules.
    - Plus: shows which rules are protected at all; uses the existing `Chain:` convention; answers the owner's "rules as entities" ask without a new language.
    - Minus: a citation proves that a test exists, not that it tests the rule; it does not by itself stop a rule and its test from changing together.
 3. **Formal model layer.** Generated event sequences with invariants against `fold` (S), clause-level property and geometry tests for UI rules (U), and board-log monitors for process rules (P), for example "a research task closed without an ask".
    - Plus: strongest semantic checks; P monitors check what agents actually did.
    - Minus: highest cost; S is already modeled; a model is rewritten as easily as a test, so neither regression is stopped.
-4. **Review checklist only.** Add "rule changed or removed: authorized?" to the reviewer brief.
-   - Plus: no code.
-   - Minus: both regressions already passed review; prose rules are what failed.
+4. **Keep review only (status quo since #94).** [Decided rules](../agent-workflow.md#decided-rules) and the review line that rejects unnamed rule changes stay the only control.
+   - Plus: already active; no code.
+   - Minus: both regressions passed review; a cut from 2,845 to 297 lines or two changed assertions in a 53-file diff are easy to miss by reading.
 
-Recommended: option 1 now, option 2 as its second stage, option 3 only per proven gap. Option 1 is the only one that targets the failure we observed (a change that rewrites or drops a rule together with its guard), it is deterministic, and it reuses the existing check and review. Option 2 makes the gate precise. Option 3 is justified per rule kind only when a defect escapes 1 and 2.
+Recommended: option 1 now, option 2 as its second stage, option 3 only per proven gap. Option 1 is the only one that targets the failure we observed (a change that rewrites or drops a rule together with its guard), it is deterministic, and it turns the rule #94 just adopted into a check. Option 2 makes the gate precise. Option 3 is justified per rule kind only when a defect escapes 1 and 2.
 
 ### Staged plan
 
-1. **Pilot in taskq (one task).** Add the rule-change gate to `scripts/check.py` for `taskq.md`, `docs/design/menu.md` and `tests/`. Give the M3 sub-rules IDs (for example `M3.1` host strip labels; invented). Acceptance: replaying `bf4a2be` and `ecb1e57d` against their parents fails with the changed IDs listed; adding `Rules:` lines makes them pass; a docs-only typo fix outside rule blocks passes untouched. Measure false positives over the next 20 merged PRs.
-2. **Shared rule in specq.** After the pilot, add the gate rule to [spec first](../spec-first.md) and the guarding-test rule to [testing](../testing.md); the script stays in each consumer. Restore PM intake triage as its own task (taskq or specq [task intake](../agent-workflow.md#task-intake)).
+1. **Pilot in taskq (one task).** Add the rule-change gate to `scripts/check.py` for `taskq.md`, `docs/design/menu.md` and `tests/`. Give the M3 sub-rules IDs (for example `M3.1` host strip labels; invented). Acceptance: replaying `bf4a2be` and `ecb1e57d` against their parents fails with the changed IDs listed; naming the IDs in the task body makes them pass; a docs-only typo fix outside rule blocks passes untouched. Measure false positives over the next 20 merged PRs.
+2. **Shared rule in specq.** After the pilot, add one line to [decided rules](../agent-workflow.md#decided-rules): projects enforce it with a rule-change gate; the script and ID syntax stay in each consumer.
 3. **Coverage report.** Rule IDs mapped to `Chain:` citations, report only; gate for new rules once the report is clean.
 4. **Per-kind models, on evidence.** Board-log monitors for process rules first (the board log is already folded); generated `fold` sequences when a lifecycle defect escapes the golden traces; no Lean.
 
 ## Ask
 
-Rule enforcement: today a task can rewrite or drop an approved rule and its test in one PR, and review alone missed both cases.
+Rule enforcement: a task can still rewrite or drop a decided rule and its test in one PR; only review checks it, and review missed both taskq cases.
 
-1. Rule-change gate in CI. Plus: catches both regressions, deterministic. Minus: every rule edit needs a `Rules:` line.
+1. Rule-change gate in CI. Plus: catches both regressions, deterministic. Minus: tasks must name rule IDs they change.
 2. Rule IDs mapped to checks. Plus: shows unprotected rules. Minus: does not stop a rule and its test changing together.
 3. Formal model layer. Plus: strongest semantic checks. Minus: highest cost; a model is rewritten as easily as a test.
-4. Review checklist only. Plus: no code. Minus: review already missed both cases.
+4. Keep review only (since #94). Plus: no code. Minus: review already missed both cases.
 
 Recommended: 1, piloted in taskq, then 2; 3 only per proven gap, because 1 is the only option that targets the observed failure.
