@@ -127,7 +127,7 @@ Recommended: option 1 now, option 2 as its second stage, option 3 only per prove
 ### Staged plan
 
 1. **Pilot in taskq (one task).** Add the rule-change gate to `scripts/check.py` for `taskq.md`, `docs/design/menu.md` and `tests/`. Give the M3 sub-rules IDs (for example `M3.1` host strip labels; invented). Acceptance: replaying `bf4a2be` and `ecb1e57d` against their parents fails with the changed IDs listed; naming the IDs in the task body makes them pass; a docs-only typo fix outside rule blocks passes untouched. Measure false positives over the next 20 merged PRs.
-2. **Shared rule in specq.** After the pilot, add one line to [decided rules](../agent-workflow.md#decided-rules): projects enforce it with a rule-change gate; the script and ID syntax stay in each consumer.
+2. **Shared rule in specq.** Done in [#96](https://github.com/taskqorg/specq/issues/96). After the pilot, add one line to [decided rules](../agent-workflow.md#decided-rules): projects enforce it with a rule-change gate; the script and ID syntax stay in each consumer.
 3. **Coverage report.** Rule IDs mapped to `Chain:` citations, report only; gate for new rules once the report is clean.
 4. **Per-kind models, on evidence.** Board-log monitors for process rules first (the board log is already folded); generated `fold` sequences when a lifecycle defect escapes the golden traces; no Lean.
 
