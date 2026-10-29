@@ -36,6 +36,7 @@ A spec rule, or a test assertion that guards it, records an owner decision.
 
 - A worker changes or deletes a decided rule or its guarding assertion only when the task names that rule and the owner decision to change it.
 - Otherwise the worker does not edit the rule or the assertion; it asks the owner, even when the task acceptance conflicts with the rule. A failing guard is fixed in the code, never by rewriting the guard ([Testing](testing.md#when-evidence-disagrees)).
+- Projects enforce this rule with a rule-change gate: CI fails when a change edits or removes a rule or its guarding assertion that the task does not name. The gate script and the rule-ID syntax stay in each consumer contract; pilot: [taskq#1794](https://github.com/taskqorg/taskq/issues/1794).
 
 ## Task intake
 
