@@ -2,7 +2,7 @@
 
 Question ([#93](https://github.com/taskqorg/specq/issues/93)): taskqorg rules are linked from every entry file, but nothing stops a later change from rewriting or dropping them. How do spec-driven teams enforce specs, which formal checks fit our rule kinds, and what should we add?
 
-Status: proposal. This page changes no rule. The [ask](#ask) at the end holds the decision; nothing here is active until the owner answers.
+Status: approved on 2026-10-29. The owner took the full recommendation ([decision](#decision)): option 1 piloted in taskq, then option 2; option 3 only per proven gap. This page changes no rule; implementation is the staged task [taskq#1794](https://github.com/taskqorg/taskq/issues/1794).
 
 Short answer: no popular spec-driven tool checks that a requirement survives a later change; they check that a spec is well formed, and the rest is LLM self-review. Formal languages (Lean, TLA+, Alloy) check a model, not our Markdown rules, and a hand-kept model drifts. Since [#94](https://github.com/taskqorg/specq/pull/94), [decided rules](../agent-workflow.md#decided-rules) forbid changing a rule or its guarding assertion unless the task names it, but only review applies that rule, and review already missed both taskq regressions. A cheap deterministic check would have caught both: a CI gate that lists every changed or removed rule block and guarding assertion and fails unless the linked task names each one. Recommended: that gate first, piloted in taskq; rule-to-check coverage second; a property-based model of `fold` and board-log monitors only where evidence shows a gap.
 
@@ -141,3 +141,7 @@ Rule enforcement: a task can still rewrite or drop a decided rule and its test i
 4. Keep review only (since #94). Plus: no code. Minus: review already missed both cases.
 
 Recommended: 1, piloted in taskq, then 2; 3 only per proven gap, because 1 is the only option that targets the observed failure.
+
+## Decision
+
+Owner, 2026-10-29: take the full recommendation. Option 1, the rule-change gate, is piloted in taskq; option 2, the rule-ID coverage report, follows; option 3 models are added only per proven gap. Implementation is one staged taskq task: [taskq#1794](https://github.com/taskqorg/taskq/issues/1794). A shared rule in specq follows the pilot ([staged plan](#staged-plan), step 2) as its own change.
