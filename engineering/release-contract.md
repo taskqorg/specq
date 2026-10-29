@@ -46,6 +46,16 @@ Install once, then leave it. The service maintains itself.
 - The PM verifies rollout from host heartbeats and the DashQ hosts view.
 - A follow-up task is justified only when a host stays behind the released version for more than one update interval. It names the host, the reported version and the observed interval.
 
+## Host requirements
+
+A missing or outdated host tool is a product defect, not a host patch.
+
+- The consumer contract lists every external tool and library the product runs on a host (for example `gh`, `git`, `codex`, `claude`, a system library), each with its minimum version and what needs it.
+- The product's doctor or selftest checks each listed requirement on the installed host. A missing tool or a version below the minimum fails with the tool, the found version, the required minimum and the fix.
+- Install, onboarding and the update check bring listed requirements up to their minimum on hosts the product manages. When they cannot, they report the exact step and the doctor stays failed.
+- A change that starts using a new tool, flag or API raises the listed minimum in the same change. Tests cover the oldest supported version.
+- A failed call to an external tool is logged with the command and its error; it never reads as an empty result.
+
 ## Service
 
 - Define service ownership and lifecycle in the consumer contract; installation must not create competing owners.
