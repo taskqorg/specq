@@ -6,7 +6,7 @@ Reusable engineering rules. Projects link to the applicable rule and define thei
 - [Spec first](spec-first.md): canonical decisions, project boundaries and the improvement route.
 - [Project contracts](contracts.md): contract shape, writing rules, size budget, overflow path and lint.
 - [Ponytail](ponytail.md): the smallest change that fully solves the task.
-- [Agent workflow](agent-workflow.md): ownership, work cycle, approval boundaries and completion.
+- [Agent workflow](agent-workflow.md): ownership, experiment tasks, work cycle, approval boundaries and completion.
 - [Use cases](use-cases.md): scenario structure, overlap and requirement coverage.
 - [Verification](verification.md): evidence boundaries, unknown health, scoped remediation and behavioral models.
 - [Testing](testing.md): test decisions, risk coverage, run selection, time budgets and disagreements.
