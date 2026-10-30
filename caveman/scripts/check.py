@@ -1,9 +1,10 @@
-"""Validate local Markdown links and unmodified upstream snapshots."""
+"""Validate local Markdown links, unmodified upstream snapshots and the specq contract lint."""
 import hashlib
 import json
 import pathlib
 import re
 import subprocess
+import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 errors = []
@@ -26,6 +27,11 @@ for name, entry in manifest['files'].items():
     digest = hashlib.sha256((ROOT / 'caveman/vendor/caveman' / name).read_bytes()).hexdigest()
     if digest != entry['sha256']:
         errors.append(f'Changed upstream snapshot: {name}')
+lint = ROOT / 'engineering/scripts'
+for command in ([sys.executable, lint / 'contract_lint.py', ROOT / 'specq.md'],
+                [sys.executable, '-m', 'unittest', '-q', 'contract_lint_test']):
+    if subprocess.run(command, cwd=lint).returncode:
+        errors.append(f'Failed: {" ".join(map(str, command[1:]))}')
 if errors:
     raise SystemExit('\n'.join(errors))
-print(f'PASS: {len(files)} Markdown files; local links and upstream checksums verified.')
+print(f'PASS: {len(files)} Markdown files; local links, upstream checksums and contract lint verified.')

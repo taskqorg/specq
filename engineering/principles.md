@@ -21,6 +21,7 @@ specq owns the rules every taskqorg project shares. A project repository keeps o
 | Dimensions, assets, platform policies and acceptance fixtures | Project design package |
 | Scenarios and product-specific exceptions | Project use cases / contract |
 | Observations, screenshots and test results | Revision-specific evidence |
+| Decision history, dates and owner or task attributions | Tasks, pull requests and git history |
 
 Shared rules contain no consumer names, paths, catalogs or product-specific thresholds. A local shared edit does not prove publication, consumer adoption or deployment.
 
@@ -29,6 +30,6 @@ Shared rules contain no consumer names, paths, catalogs or product-specific thre
 Check each page of the project, one item at a time.
 
 - Moves to specq: a style, notification, design or engineering rule that is not about this project alone. Move it to the area's owner page, then link it from the project.
-- Stays in the project: the project spec (`<project>.md`) with its decisions, thresholds and names; README usage; project-only examples and golden traces.
+- Stays in the project: the project spec (`<project>.md`) with its decisions, thresholds and names, in the [contract shape](contracts.md); README usage; project-only examples and golden traces.
 - Deleted: a copy or paraphrase of a specq rule; a page that only restates the spec or another page; instructions for a removed feature.
 - After the cleanup: `AGENTS.md` names specq as binding; no project page repeats a specq rule; every changed link resolves.

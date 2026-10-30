@@ -4,6 +4,7 @@ Reusable engineering rules. Projects link to the applicable rule and define thei
 
 - [Working principles](principles.md): shared-rule ownership and project boundaries.
 - [Spec first](spec-first.md): canonical decisions, project boundaries and the improvement route.
+- [Project contracts](contracts.md): contract shape, writing rules, size budget, overflow path and lint.
 - [Ponytail](ponytail.md): the smallest change that fully solves the task.
 - [Agent workflow](agent-workflow.md): ownership, work cycle, approval boundaries and completion.
 - [Use cases](use-cases.md): scenario structure, overlap and requirement coverage.

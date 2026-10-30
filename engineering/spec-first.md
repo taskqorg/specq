@@ -1,6 +1,6 @@
 # Spec first
 
-Each project keeps its decisions, including product decisions, in one root contract. Supporting specifications link to it; shared rules have their home in [principles](principles.md#rules).
+Each project keeps its decisions, including product decisions, in one root contract, shaped and budgeted by [project contracts](contracts.md). Supporting specifications link to it; shared rules have their home in [principles](principles.md#rules).
 
 - Edit the contract before changing a decision. Update implementation and supporting documents in the same deliverable.
 - A conflicting task becomes a question with options. Only the owner approves decision changes.
