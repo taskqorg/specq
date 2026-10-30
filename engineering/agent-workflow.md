@@ -27,8 +27,23 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 - A plan or chain of changes on one surface is one task. Owner feedback on that surface steers its open task; it does not start a new one.
 - A complex task lists ordered stages (analyse, change, verify) as acceptance items, each ending in a checkpoint the worker reports on the task. The PM steers at checkpoints. No stage becomes its own task.
 - A gap found in review is fixed inside the task, up to three review rounds; a task stays open until its outcome is proved rather than spawning follow-up tasks for its own acceptance ([review](#review)).
-- A task whose outcome is a decision (research, design, proposal) ends with an ask, not with the decision in its result text: each open choice as a [decision question](../caveman/rules/core.md#decision-questions). The answer records the decision; the task then closes or files the dependent tasks. A closed task never buries a decision. If one slips through (a design page marked for approval, rules left inactive, choices deferred to the owner), whoever supervises the board delivers it the same way before any dependent task starts.
+- A task whose outcome is a decision (research, design, proposal, "try method X") is an [experiment task](#experiment-tasks). A closed task never buries a decision.
 - Acceptance follows the [run policy](testing.md#run-policy-by-stage); it names evidence for changed behavior and its risks without adding unrelated snapshots or platform matrices.
+
+## Experiment tasks
+
+An experiment task tests an idea and ends in a decision, whatever its type label. It never just ends.
+
+- At filing, the body states the Hypothesis (the expected result and why), the Metric or decision rule (the observation that confirms or refutes it, fixed before the work) and the Budget (the most time, attempts or cost to spend).
+- When the owner's words lack a field, the PM fills it at the [intake](#task-intake) readback.
+- Close carries a Verdict, `confirmed`, `refuted` or `inconclusive`, with its evidence against the decision rule, a Recommendation and the proposed next tasks. An empty list proposes no task.
+- An `inconclusive` verdict names the missing evidence and how to get it. A spent budget without a result is `inconclusive`, never a silent extension.
+- No verdict, no close: review returns a hand-in without one to the worker ([review](#review)).
+- Review closes the task against its acceptance. The outcome is then undecided: it stays in the supervisor's focus (board status and each PM tick) until Make tasks, Drop, or Later with a revisit date. Later without a date is not a decision; at the date the outcome returns to focus.
+- The PM decides technical outcomes. It asks the owner only product, scope or visual outcomes, as [decision questions](../caveman/rules/core.md#decision-questions).
+- No task starts on an undecided outcome. When another task already depends on the decision, the worker raises the decision as an ask before close.
+
+Sources: [autoresearch](https://github.com/karpathy/autoresearch) (fixed budget, one metric, keep or discard), [long-running agent harnesses](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents) (verified state, never done without a test), [Kanban explicit policies](https://kanban.university/kanban-guide/), [ADR](https://adr.github.io/) (each decision has a status).
 
 ## Decided rules
 
@@ -82,7 +97,7 @@ If the same command or failure repeats twice, stop and change strategy. Dispatch
 - Report task fit and implementation quality separately: missing, incorrect or unrequested behavior versus concrete standards violations and maintenance risks. Neither result substitutes for the other.
 - Distinguish binding violations from judgement calls. A code smell alone is not a rejection; follow the project's acceptance rules. Tool-enforced rules need no duplicate manual checklist.
 - Reject every changed or deleted spec line or guarding test assertion that the acceptance does not name as an approved rule change ([decided rules](#decided-rules)).
-- A deferred decision without an ask is a task-fit gap: a research, design or proposal task is not done until its open choices are asked.
+- An experiment task without a verdict, recommendation and proposed next tasks is a task-fit gap ([experiment tasks](#experiment-tasks)).
 - Diff size alone is never a finding; review does not ask to split a coherent outcome ([prepare the task](#prepare-the-task)).
 - Report every gap in one pass over the whole result. A later round checks only the requested fixes and their direct effects; a new finding on unchanged lines is a separate task or a note, not a rejection.
 - Two axes do not require two agents. Keep safety, compatibility and architectural constraints available to the implementer; load detailed review guidance when needed.
