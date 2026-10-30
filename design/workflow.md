@@ -48,6 +48,7 @@ Do not turn every bug into policy. Existing-rule violations need fixes; repeated
 
 - A set of screens shown to the owner or a reviewer holds at most 10 screens: one per distinct decision or gap.
 - A set holds no variants that differ only by size, color or theme.
+- Every shown image renders for every board reader, private repositories included: upload it with `--image`, or link the commit-pinned `https://github.com/<owner>/<repo>/raw/<sha>/<path>`. `raw.githubusercontent.com`, `/blob/` and branch links show broken images on a private repository.
 - Matrix coverage (themes, text sizes, widths, states) is a script check that reports pass or gap per cell. A passing cell commits no screenshot; a gap may enter the set as its own screen.
 
 ## Handoff and acceptance
