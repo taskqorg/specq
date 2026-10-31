@@ -24,7 +24,7 @@ Headings alone read as a usable outline ([Documentation review](../caveman/rules
 
 - The default cap is 60 KiB (61440 bytes) and 300 lines. A contract may declare its own cap in one comment line, for example (invented values): `<!-- contract-budget: bytes=81920 lines=400 -->`. A declared cap is a decision of that contract.
 - A cleaned contract stays at or below 70% of its cap. The rest is headroom for new rules.
-- A change that would cross the cap moves the lowest-priority detail to a linked file until the contract is back at or below 70%. Linked files are not injected; the attempt index lists them ([attempt context](agent-workflow.md#attempt-context)).
+- A change that would cross the cap moves the lowest-priority detail to a linked file until the contract is back at or below 70%. Linked files are not injected; the attempt index lists them ([attempt context](rule-delivery.md#attempt-context)).
 - Never squeeze wording, drop a condition or merge ideas to fit the cap ([Documentation review](../caveman/rules/documentation.md#review)).
 
 ## Lint

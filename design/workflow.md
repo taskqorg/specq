@@ -7,7 +7,7 @@ Entry point for collaborative product and interface work. Adopt this workflow an
 - Start with the user's outcome and current product. Inspect the applicable contract, approved references and actual implementation before proposing replacements.
 - Read [spec first](../engineering/spec-first.md), [use cases](../engineering/use-cases.md) and [documentation style](../caveman/rules/documentation.md). Interface work also applies [dense operator design](operator-ui.md) and [implementation fidelity](implementation-fidelity.md).
 - Persistent specifications, interface copy and handoffs use concise English. Conversation follows the user's language. Remove words that add no meaning; preserve constraints, exceptions and evidence.
-- Owner choices, escalation and reuse of accepted answers follow [prepare the task](../engineering/agent-workflow.md#prepare-the-task). A mock does not approve its incidental behavior.
+- Owner choices, escalation and reuse of accepted answers follow [prepare the task](../engineering/task-planning.md#prepare-the-task). A mock does not approve its incidental behavior.
 
 ## Rule homes
 
@@ -53,7 +53,7 @@ Do not turn every bug into policy. Existing-rule violations need fixes; repeated
 
 ## Handoff and acceptance
 
-Keep the package index and deliver the [acceptance package](implementation-fidelity.md#f5-acceptance-package); split builder, reviewer and owner work per [F6](implementation-fidelity.md#f6-build-polish-accept). The implementer continues from project state without the chat ([agent integration](../engineering/verification.md#agent-integration)). Report implemented, tested, published, deployed and verified separately ([core](../caveman/rules/core.md#write)).
+Keep the package index and deliver the [acceptance package](implementation-fidelity.md#f5-acceptance-package); split builder, reviewer and owner work per [F6](implementation-fidelity.md#f6-build-polish-accept). The implementer continues from project state without the chat ([agent integration](../engineering/rule-delivery.md#agent-integration)). Report implemented, tested, published, deployed and verified separately ([core](../caveman/rules/core.md#write)).
 
 ## End-to-end simplicity
 

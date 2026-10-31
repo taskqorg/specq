@@ -34,7 +34,7 @@ helps comprehension. Short output never means shallow investigation.
 - A simple answer needs no headings. A work report separates result, verification and remaining work.
 - During execution, report phase changes or real blockers; do not narrate every tool call or repeat unchanged status.
 - Use code blocks for exact commands. Never shorten code, rename identifiers, remove checks or omit tests to save tokens.
-- Ask only [material questions](https://github.com/taskqorg/specq/blob/main/engineering/agent-workflow.md#prepare-the-task), shaped as [decision questions](#decision-questions).
+- Ask only [material questions](https://github.com/taskqorg/specq/blob/main/engineering/task-planning.md#prepare-the-task), shaped as [decision questions](#decision-questions).
 - Safety warnings and irreversible steps use complete, unambiguous sentences.
 
 ## Decision questions

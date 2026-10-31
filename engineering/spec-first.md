@@ -25,7 +25,7 @@ An agent that sees a better way during any task follows this order: propose, cha
 
 - When work exposes a reusable gap, propose a change here with the problem, general rule, affected consumers and verification. A project-only improvement is proposed to the project contract the same way.
 - Do not implement an improvement that changes a decision before the owning specification changes.
-- Discuss the proposal before adoption: the proposing task closes with its options and a recommendation, and the owner decides it as a decision question ([experiment tasks](agent-workflow.md#experiment-tasks)). Keep unresolved proposals separate from active rules.
+- Discuss the proposal before adoption: the proposing task closes with its options and a recommendation, and the owner decides it as a decision question ([experiment tasks](task-planning.md#experiment-tasks)). Keep unresolved proposals separate from active rules.
 - After approval, update the canonical shared rule; remove duplicate wording from project specifications.
 - Review consumer compatibility explicitly. A shared edit does not silently change deployed behavior or override a project contract.
 - Keep product names, implementation references, dependency versions and project-specific thresholds in consumer specifications.

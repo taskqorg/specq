@@ -9,7 +9,8 @@ This is a style library, not a coding framework or a deployment policy.
 
 - [Core](rules/core.md): shared principles, precedence and agent reply shape.
 - [Agent replies](rules/agents.md): ready-to-paste instruction and upstream relationship.
-- [Change communication](rules/changes.md): commit subjects, merge requests and release messages.
+- [Change communication](rules/changes.md): commit subjects and source and sink encoding.
+- [Merge and release](rules/merge-and-release.md): merge-request descriptions, deploy messages and the release check.
 - [Notifications](rules/notifications.md): compact operational messages.
 - [Indicators](rules/indicators.md): icon vocabulary, ranges and reset notation.
 - [Documentation](rules/documentation.md): scannable, compact persistent writing.
