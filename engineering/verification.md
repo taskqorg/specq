@@ -1,4 +1,4 @@
-# Evidence and behavioral models
+# Evidence
 
 Report what observations establish. Delivery, exit code and a finished conversation do not prove application or completion.
 Use the shared [Core review](../caveman/rules/core.md#review) for reporting; the rules below define engineering evidence.
@@ -30,18 +30,12 @@ The canonical [run policy](testing.md#run-policy-by-stage) lives in Testing. Thi
 
 ## State-driven systems
 
-- Keep transitions in an explicit behavioral model; adapters handle external effects.
-- Change the transition specification, executable traces, model and adapters in that order.
-- Trace initial state and events to expected state, including ignored events.
-- Cover duplicates, stale events, ordering and human-authored input where supported.
-- Keep product states, commands, fixture paths and acceptance thresholds in the consumer contract.
+See [behavioral models](behavioral-models.md#state-driven-systems).
 
 ## Formal checks (optional)
 
-- Formalize only risky state transitions, for example mutual exclusion of operations, no activation before verification, drain before switch, no deletion outside owned files, stable IDs against double counting. Tie each invariant to a requirement ID.
-- Default: one state model plus generated operation sequences in the project's existing test tools. Adopt a heavier tool (for example P, Quint or TLA+) only after a one-scenario spike finds real defects at lower ongoing cost than targeted checks.
-- A model check proves the model within its bounds; a trace check proves observed runs. Neither proves all code.
+See [behavioral models](behavioral-models.md#formal-checks-optional).
 
 ## Agent integration
 
-The entry stays thin ([principles](principles.md#rules)) and loads the compatible installed contract. Qualify integration presence, actual instruction loading and the complete user flow separately. Report unavailable capabilities explicitly. Keep provider-specific commands, versions and qualification fixtures in the consumer project. A second supported client must be able to continue from authoritative project state without the original chat.
+See [rule delivery](rule-delivery.md#agent-integration).
