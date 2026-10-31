@@ -96,6 +96,7 @@ If the same command or failure repeats twice, stop and change strategy. Dispatch
 
 - Report task fit and implementation quality separately: missing, incorrect or unrequested behavior versus concrete standards violations and maintenance risks. Neither result substitutes for the other.
 - Distinguish binding violations from judgement calls. A code smell alone is not a rejection; follow the project's acceptance rules. Tool-enforced rules need no duplicate manual checklist.
+- Read the owner's original text that the task quotes or links, not only the spec. Reject a change that narrows it, in the spec, the code or a simplification marker ([keep the owner's request](spec-first.md#keep-the-owners-request)). A spec change made for an owner request without that quote or link is a task-fit gap.
 - Reject every changed or deleted spec line or guarding test assertion that the acceptance does not name as an approved rule change ([decided rules](#decided-rules)).
 - An experiment task without a verdict, recommendation and proposed next tasks is a task-fit gap ([experiment tasks](#experiment-tasks)).
 - Diff size alone is never a finding; review does not ask to split a coherent outcome ([prepare the task](#prepare-the-task)).

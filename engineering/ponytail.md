@@ -19,5 +19,6 @@ Stop at the first rung that holds.
 - No scaffolding for later. Deletion over addition. Boring over clever.
 - Fewest files, shortest working diff.
 - Mark a deliberate simplification with a `ponytail:` comment naming the ceiling and the upgrade path: `// ponytail: global lock; per-account locks if throughput matters`.
+- A simplification marker, such as a `ponytail:` comment, simplifies how a requirement is met. It never narrows an owner or spec requirement: no dropped case, path, condition or quality. A shortcut that would narrow one is a decision change for the owner ([keep the owner's request](spec-first.md#keep-the-owners-request)).
 - Verification of non-trivial logic follows [Testing](testing.md#before-adding-or-changing-a-test).
 - Never simplify away validation at trust boundaries, error handling that prevents data loss, security, accessibility basics, or anything explicitly requested.
