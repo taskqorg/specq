@@ -46,4 +46,11 @@ Workers must not claim a task before its body is final.
 
 ## Runtime preference
 
-Design, UI, visual and image work runs on codex; all other work (code, infrastructure, release, host, docs, research) runs on claude. Every review runs on claude, including review of codex work. Exception: a host the owner runs without claude runs its own work and reviews on codex; tasks bound to that host carry no claude requirement. The rule is hard: work waits for its runtime instead of moving to the other one. How a task states it belongs to the consumer contract.
+Design, UI, visual and image work prefers codex; all other work (code, infrastructure, release, host, docs, research) prefers claude. Every review prefers claude, including review of codex work.
+
+- At work and review intake, automatically use eligible codex when claude is unavailable, including disabled capacity `0`, missing installation or login, or a quota hold. No owner ask is needed for fallback. A type preference must not become a mandatory `run-claude` label.
+- An explicit owner runtime pin takes precedence; fallback never overrides it. Eligibility respects runtime grants ([permission authority](permission-authority.md)), configured capacity and common admission gates. Fallback never weakens security or enlarges permissions.
+- Fallback selects new launches only. Preserve active sessions and work; never duplicate or migrate a live execution. Unknown liveness does not permit a replacement launch.
+- If neither runtime is eligible, or an owner pin excludes the eligible alternative, report the factual blocker and automatic recheck condition. Keep unknown evidence unknown; missing evidence does not establish availability.
+
+How a task states its preference or pin, how eligibility is checked and when automatic rechecks run belong to the consumer contract.
