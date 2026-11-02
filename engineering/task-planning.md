@@ -46,7 +46,7 @@ Workers must not claim a task before its body is final.
 
 ## Runtime preference
 
-Design, UI, visual and image work prefers codex; all other work (code, infrastructure, release, host, docs, research) prefers claude. Every review prefers claude, including review of codex work.
+All work and every review prefer claude; no work type prefers codex.
 
 - At work and review intake, automatically use eligible codex when claude is unavailable, including disabled capacity `0`, missing installation or login, or a quota hold. No owner ask is needed for fallback. A type preference must not become a mandatory `run-claude` label.
 - An explicit owner runtime pin takes precedence; fallback never overrides it. Eligibility respects runtime grants ([permission authority](permission-authority.md)), configured capacity and common admission gates. Fallback never weakens security or enlarges permissions.
