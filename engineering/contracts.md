@@ -20,16 +20,32 @@ Headings alone read as a usable outline ([Documentation review](../caveman/rules
 - A task or issue number appears only where a rule needs a trace, such as a pilot or a recorded exception.
 - One idea per paragraph ([Documentation](../caveman/rules/documentation.md#structure)). A source line holds at most 400 visible characters, about three sentences of 20 words. Link targets and code blocks do not count.
 
+## Size budgets
+
+A size budget limits how much content a file or bundle may hold, so that it stays cheap to inject and read. Every budget keeps a buffer.
+
+- Each byte, line or count budget has a cap and a target of 70% of the cap. The target is the working limit; the cap is never the working limit.
+- Content above the target creates one compaction task at once. The project files it from its check output and does not file a second one while the first is open.
+- CI fails only above the cap. Above the target and at or below the cap, CI passes and the compaction task carries the work.
+- Compaction moves the lowest-priority detail to a linked file until the content is back at or below the target. Never squeeze wording, drop a condition or merge ideas to fit a budget ([Documentation review](../caveman/rules/documentation.md#review)).
+
+This rule covers these budgets:
+
+- Contract size in bytes and contract length in lines, defined below.
+- Injected rule size: the total of the contract, shared core and index that one attempt receives ([attempt context](rule-delivery.md#attempt-context)). The consumer that injects the rules states its cap.
+
+Display limits are format rules, not budgets: for example, title length, line length and the field limits of an ask card or a notification. Content at a display limit is valid; text over it is rejected or shortened at once, with no target and no compaction task.
+
 ## Budget
 
 - The default cap is 60 KiB (61440 bytes) and 300 lines. A contract may declare its own cap in one comment line, for example (invented values): `<!-- contract-budget: bytes=81920 lines=400 -->`. A declared cap is a decision of that contract.
-- A cleaned contract stays at or below 70% of its cap. The rest is headroom for new rules.
-- A change that would cross the cap moves the lowest-priority detail to a linked file until the contract is back at or below 70%. Linked files are not injected; the attempt index lists them ([attempt context](rule-delivery.md#attempt-context)).
-- Never squeeze wording, drop a condition or merge ideas to fit the cap ([Documentation review](../caveman/rules/documentation.md#review)).
+- The target is 70% of the cap ([size budgets](#size-budgets)). Linked files are not injected; the attempt index lists them ([attempt context](rule-delivery.md#attempt-context)).
 
 ## Lint
 
-`python3 engineering/scripts/contract_lint.py <contract.md>...` uses the Python standard library only. It prints bytes, lines and the longest line per file, then one finding per line. It exits 1 on any error; headroom above 70% is a warning.
+`python3 engineering/scripts/contract_lint.py <contract.md>...` uses the Python standard library only. It prints bytes, lines and the longest line per file, then one finding per line. It exits 1 on any error, including a file above its cap.
+
+- A file above the 70% target and at or below its cap gets one marker line, `COMPACT: <path>: <value> <bytes|lines> > target <target> (cap <cap>)`, and does not fail the lint. A project check turns each `COMPACT:` line into one compaction task ([size budgets](#size-budgets)).
 
 - Checks: cap, headroom, line length, ISO dates, decision-log phrases, and the outline: one H1 first, a purpose paragraph, `Principles` or `Rules` as the first section, no skipped level, no duplicate, generic or history heading.
 - Not checked: priority order, rule IDs and whether a task number is needed. Review judges these.

@@ -17,9 +17,29 @@ class ContractLintTest(unittest.TestCase):
     def test_clean_contract_passes(self):
         self.assertEqual(lint(CLEAN)[1], [])
 
-    def test_budget_cap_headroom_and_declared_cap(self):
-        self.assertTrue(any('lines > cap 300' in m for m in messages(CLEAN + 'x\n' * 300)))
-        self.assertTrue(any('70% of cap 300' in m for m in messages(CLEAN + 'x\n' * 200, 'warning')))
+    def test_budget_below_target_above_target_and_over_cap(self):
+        below = CLEAN + 'x\n' * (210 - CLEAN.count('\n'))  # exactly at target 210 lines
+        self.assertEqual(lint(below)[1], [])
+        above = below + 'x\n'
+        self.assertEqual(messages(above), [])
+        self.assertEqual(messages(above, 'compact'), ['211 lines > target 210 (cap 300)'])
+        over = CLEAN + 'x\n' * 300
+        self.assertTrue(any('lines > cap 300' in m for m in messages(over)))
+        self.assertEqual(messages(over, 'compact'), [])
+
+    def test_compact_marker_line_does_not_fail(self):
+        import contextlib, io, tempfile
+        from contract_lint import main
+        with tempfile.NamedTemporaryFile('w', suffix='.md', delete=False) as f:
+            f.write(CLEAN + 'x\n' * 250)
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            code = main([f.name])
+        pathlib.Path(f.name).unlink()
+        self.assertEqual(code, 0)
+        self.assertIn(f'COMPACT: {f.name}: ', out.getvalue())
+
+    def test_declared_cap(self):
         declared = '<!-- contract-budget: bytes=100000 lines=1000 -->\n' + CLEAN + 'x\n' * 300
         self.assertEqual([m for m in messages(declared) if 'cap' in m], [])
 

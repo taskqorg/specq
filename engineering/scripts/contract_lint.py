@@ -2,7 +2,9 @@
 
 Usage: python3 contract_lint.py <contract.md>...
 Prints size, lines and longest line per file, then one finding per line.
-Exits 1 when any error is found; headroom warnings do not fail.
+Exits 1 when any error is found, including a file above its cap.
+A file above the 70% target and at or below its cap prints one `COMPACT:` marker
+line for a compaction task and does not fail.
 """
 import pathlib
 import re
@@ -41,7 +43,7 @@ def lint(text):
         if value > cap:
             found.append(('error', 0, f'{value} {what} > cap {cap}; move lowest-priority detail to a linked file'))
         elif value > cap * HEADROOM:
-            found.append(('warning', 0, f'{value} {what} > {HEADROOM:.0%} of cap {cap}; no headroom left'))
+            found.append(('compact', 0, f'{value} {what} > target {int(cap * HEADROOM)} (cap {cap})'))
     in_code = False
     longest = 0
     headings = []
@@ -105,7 +107,10 @@ def main(paths):
               f"longest line {stats['longest']} chars (limit {MAX_LINE}), "
               f"{sum(level == 'error' for level, _, _ in found)} errors")
         for level, number, message in found:
-            print(f'{path}:{number}: {level}: {message}')
+            if level == 'compact':
+                print(f'COMPACT: {path}: {message}')
+            else:
+                print(f'{path}:{number}: {level}: {message}')
         failed = failed or any(level == 'error' for level, _, _ in found)
     print('FAIL' if failed else 'PASS')
     return 1 if failed else 0
