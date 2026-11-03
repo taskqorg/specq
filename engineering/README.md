@@ -16,7 +16,7 @@ Reusable engineering rules. Projects link to the applicable rule and define thei
 - [Testing](testing.md): test decisions, risk coverage, run selection, time budgets and disagreements.
 - [Data and storage](data.md): store, durability, atomic files, bounds and crash checks.
 - [Performance and capacity](performance.md): observe-not-gate rule, load tasks, order of work and resource budgets.
-- [Built-in profiling](profiling.md): operation counters, agent work stages, system operations, traces, bounded store, analysis export and profile reports.
+- [Built-in profiling](profiling.md): operation counters, agent work stages, system operations, traces, profile reports and the telemetry contract (one observation, one shipper, one store).
 - [Release, update, service](release-contract.md): verifiable releases, safe updates, self-maintenance, host requirements and service ownership.
 - [Permission authority](permission-authority.md): trust boundaries for agent access.
 - [Independent product connections](product-connections.md): consent, isolation, delivery, recovery and end-to-end evidence.
