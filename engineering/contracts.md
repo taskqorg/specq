@@ -27,7 +27,14 @@ A size budget limits how much content a file or bundle may hold, so that it stay
 - Each byte, line or count budget has a cap and a target of 70% of the cap. The target is the working limit; the cap is never the working limit.
 - Content above the target creates one compaction task at once. The project files it from its check output and does not file a second one while the first is open.
 - CI fails only above the cap. Above the target and at or below the cap, CI passes and the compaction task carries the work.
-- Compaction moves the lowest-priority detail to a linked file until the content is back at or below the target. Never squeeze wording, drop a condition or merge ideas to fit a budget ([Documentation review](../caveman/rules/documentation.md#review)).
+
+Compaction restores content to at or below the target in this order ([Documentation](../caveman/rules/documentation.md#density-without-ambiguity)):
+
+1. Make wording dense: every word carries meaning, and removing one changes it. Replace a phrase with one exact term where possible.
+2. Keep one source of truth: a repeated idea lives once; other mentions link to it.
+3. Only then move the lowest-priority detail to linked files.
+
+Never drop a condition during compaction.
 
 This rule covers these budgets:
 

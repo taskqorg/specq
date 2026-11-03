@@ -41,7 +41,7 @@ def lint(text):
     size = len(text.encode('utf-8'))
     for what, value, cap in (('bytes', size, max_bytes), ('lines', len(lines), max_lines)):
         if value > cap:
-            found.append(('error', 0, f'{value} {what} > cap {cap}; move lowest-priority detail to a linked file'))
+            found.append(('error', 0, f'{value} {what} > cap {cap}; compact to target following engineering/contracts.md#size-budgets'))
         elif value > cap * HEADROOM:
             found.append(('compact', 0, f'{value} {what} > target {int(cap * HEADROOM)} (cap {cap})'))
     in_code = False
