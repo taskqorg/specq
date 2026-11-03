@@ -31,10 +31,10 @@ Install once, then leave it. The service maintains itself.
 ## Delivery speed
 
 - Development and release are separate channels. The main branch is the development channel; the release branch (`live` unless the consumer contract names another) is the release channel.
-- A merge to main is a development candidate. The development host builds it locally from source and runs it within minutes; no release run, tag or host rollout waits on it. The gates are the checks selected by [Testing](testing.md#run-policy-by-stage).
-- Live acceptance of a merged change runs on the development build right after merge. Tasks depend on merge or close, never on a release; a check that needs a released artifact on every host goes to the next release task.
+- A merge to main is a development candidate. The development host builds it locally from source on demand: on an explicit request, or when a ready task depends on a merge that is not installed yet. One build takes the newest green main commit; no release run, tag or host rollout waits on it. Building every merge spends host CPU and holds spawns while nothing needs the build. The gates are the checks selected by [Testing](testing.md#run-policy-by-stage).
+- Live acceptance of a merged change runs on the development build once that build is installed; the check requests it. Tasks depend on merge or close, never on a release; a check that needs a released artifact on every host goes to the next release task.
 - A release fast-forwards the release branch to a main commit that already passed merge-queue CI. That push tags, publishes and rolls out to every host automatically. The owner decides when to release; that push is the only manual step.
-- One approval per task, recorded in the task contract ([approval boundaries](agent-workflow.md#approval-boundaries)); no approval per step and no manual queue between merge and the development build.
+- One approval per task, recorded in the task contract ([approval boundaries](agent-workflow.md#approval-boundaries)); no approval per step and no manual queue between a build request and the development build.
 - Rollout and rollback are bounded in minutes and scripted; rollback is one command that activates the preserved previous version.
 - Measure lead time from merge to running version, deployment frequency, change failure rate and time to restore. A slow or manual step in that path is a defect to remove, not a routine to keep.
 
