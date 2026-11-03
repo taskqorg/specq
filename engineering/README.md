@@ -19,6 +19,7 @@ Reusable engineering rules. Projects link to the applicable rule and define thei
 - [Built-in profiling](profiling.md): operation counters, agent work stages, system operations, traces, profile reports and the telemetry contract (one observation, one shipper, one store).
 - [Release, update, service](release-contract.md): verifiable releases, safe updates, self-maintenance, host requirements and service ownership.
 - [Permission authority](permission-authority.md): trust boundaries for agent access.
+- [Agent runtimes](agent-runtimes.md): one AgentQ runtime trait, runtime-neutral products, abstract permissions and the runtime-name check.
 - [Independent product connections](product-connections.md): consent, isolation, delivery, recovery and end-to-end evidence.
 - [Security baseline](security.md): secrets, [one durable GitHub token per host](security.md#one-durable-github-token-per-host) and untrusted agent input.
 - [Repository and release security](repository-security.md): repository protection, workflows, dependencies, releases and the review routine.
