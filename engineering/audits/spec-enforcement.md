@@ -27,7 +27,7 @@ Studies of context files:
 - [Gloaguen et al., arXiv:2602.11988](https://arxiv.org/abs/2602.11988): agents do follow `AGENTS.md`-style files, but the files tend to lower task success and raise cost by more than 20%; they help most for unusual conventions.
 - [Lulla et al., arXiv:2601.20404](https://arxiv.org/abs/2601.20404): on 124 PRs, a context file cut median runtime by 28.6% and output tokens by 16.6% at comparable completion; it measured efficiency, not rule compliance.
 - [dos Santos et al., arXiv:2606.15828](https://arxiv.org/abs/2606.15828): in 100 `AGENTS.md`/`CLAUDE.md` files the most common defect is "lint leakage" (62%): style rules a linter should enforce, written as prose.
-- Our own measurement ([spec delivery](spec-delivery.md)): on three real taskq tasks, injecting the whole contract kept the task rule in 4 of 4 defect runs; smaller modes kept it in at most 2 of 4. Delivery raises compliance; it does not make it certain.
+- Our own measurement ([spec delivery](https://github.com/taskqorg/specq/blob/3293cfb8e99a4ae122c8ac48f3bbd198d797e1a0/engineering/audits/spec-delivery.md)): on three real taskq tasks, injecting the whole contract kept the task rule in 4 of 4 defect runs; smaller modes kept it in at most 2 of 4. Delivery raises compliance; it does not make it certain.
 
 Criticism:
 
