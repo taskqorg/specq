@@ -5,7 +5,7 @@ Every product measures its own operations, so optimization starts from evidence,
 ## Counters
 
 - Name each measured operation once, in the product spec, for example `sync.board` or `render.menu` (invented). A name is stable; a renamed operation starts a new series.
-- Counters are always on and cheap: per operation, keep the count, p50, p95 and max duration, the outcome (`ok`, `failed`, `cancelled`, `retried`) and the error class.
+- Counters are always on and cheap: per operation, keep the count, p50, p95 and max duration, the outcome (`ok`, `failed`, `refused`, `cancelled`, `retried`) and the error class.
 - An error class is a short stable code, such as `timeout` or `auth`, never a raw message.
 - Retries and instability count separately from failures: an operation that succeeds after retries is unstable, not healthy.
 - A switch turns on detailed traces (per-call spans and step timings) for a bounded period or run. It is off by default and reports its own state.
@@ -41,6 +41,23 @@ A service that runs work measures each of its own actions, not only attempts, wi
 - Queue transitions: each change of a task's queue state is one record with the task id, from state, to state, time in the previous state, runtime and host. A missing entry time reads unknown, never zero.
 - Service passes: each pass of a scheduler, poller or pruner is one operation with its duration, outcome and count of items handled.
 - Host and service checks are observations of the same contract, with the check name as the operation.
+
+## Telemetry by design
+
+Telemetry is a development tool, not a report added later. A product is built so that any question about what it did is answered from its records.
+
+- **Context is inherited.** CoreQ carries `project`, `task`, `attempt`, `actor` and the trace from the caller to every nested record and child process. Product code never passes them by hand. A value with no caller reads null with a reason code.
+- **Code without telemetry fails the check.** A product's check fails when a command, route, service pass, worker stage or board call has no record, or when a failure path has no error class.
+- **A refusal is not an error.** An operation that declines by design, such as a cooldown, a load gate or a focus rule, has the outcome `refused` and its reason as the error class. Refusals are counted apart from failures.
+- **A question answered from a log is a defect.** When someone must read a log, a session file or a process list to learn what happened, the missing field or record is filed as a defect.
+- **Questions are tests.** The global store's check runs each question below on fixture records. Each returns an answer, or unknown with a reason, from one query:
+  - failures and unstable operations in a window, by product, operation and error class;
+  - calls, duration and outcome per operation;
+  - who worked on a task, with tokens, time and outcome per project, task, attempt and actor;
+  - board calls per product, host and task;
+  - time per stage and wait per queue state;
+  - asset pipelines compared by method, cost, time, retries and outcome.
+- **A change cites its query.** A task result that changes runtime behavior cites the query that shows the change working in the real environment, with the result before and after. When no record exists yet, the change adds it.
 
 ## Telemetry contract
 
@@ -82,7 +99,7 @@ One observation format, one local store per installation, one shipper and one gl
 
 ### Queries
 
-- One query over outcome and error class lists every failure, every unstable operation and every attempt without a terminal record. No separate detector or alert service exists.
+- One query over outcome and error class lists every failure, every unstable operation and every attempt without a terminal record; `refused` records are left out of it. No separate detector or alert service exists.
 - Efficiency and cost questions, such as time per stage, board calls per task, wait time per queue state or tokens per attempt, are answered from the same records.
 - An export, when needed, is one command against the global store: JSON lines or CSV with a header and one schema version per file, stating the window it covers.
 
@@ -97,10 +114,10 @@ One observation format, one local store per installation, one shipper and one gl
 Each repository changes in this order. A deletion waits until the new path shows parity with the old one for the same window.
 
 1. specq: this contract.
-2. coreq: observation schema, local store, shipper with durable cursors.
+2. coreq: observation schema, inherited context, local store, shipper with durable cursors.
 3. agentq: `agent.turn` and `agent.call` capture in agentq-runtime; hooks for manual and PM sessions. Then delete the agentq store and OTLP export.
 4. Products (taskq, pilotq, assetq, serverq): write observations to the local CoreQ store; serverq checks become observations. Then delete the PilotQ store, the taskq sync and parser and taskq R46.
-5. dashq: D11 as the global store and reader, read-time price table, errors query. Then delete Langfuse.
+5. dashq: D11 as the global store and reader, read-time price table, errors query, question tests. Then delete Langfuse; it needs no parity window, only the new reader showing records.
 
 ## Budgets and unknowns
 
