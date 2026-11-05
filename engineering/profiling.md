@@ -66,7 +66,7 @@ One observation format, one local store per installation, one shipper and one gl
 ### Observation
 
 - An observation is one CoreQ record. Every kind uses the same record: an operation call, an agent stage, a queue transition, a service pass, a check, `agent.turn` or `agent.call`.
-- Shared fields: schema version, kind, operation name, UTC start time, duration, outcome, error class, `project`, `task`, `attempt`, `actor`, `entry` (the board comment id that the record belongs to), `units`, `unit_kind`, `disk_bytes`, runtime name and version, host name.
+- Shared fields: schema version, kind, operation name, UTC start time, duration, outcome, error class, `project`, `task`, `attempt`, `actor`, `entry` (the board comment id that the record belongs to), `pipeline`, `pipeline_revision`, `step`, `units`, `unit_kind`, `disk_bytes`, runtime name and version, host name.
 - A record holds metadata only, as in [store](#store).
 - A value that was not collected is null with a reason code, never zero or a guess ([unknown is never healthy](verification.md#unknown-is-never-healthy)).
 
