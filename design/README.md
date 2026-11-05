@@ -10,4 +10,4 @@ Pages here hold specq rules only. Projects link them and keep their own dimensio
 - [Stable view URLs](implementation-fidelity.md#f7-stable-view-urls): tabs, browser history, reload/share, filter state and unknown destinations.
 - [Labels](labels.md): naming and status color across native platforms.
 
-Notification and indicator text: [notifications](../caveman/rules/notifications.md), [indicators](../caveman/rules/indicators.md).
+Notification and indicator text: [notifications](../caveman/rules/notifications.md), [indicators](../caveman/rules/indicators.md). Time on every surface: [time](../caveman/rules/indicators.md#time).

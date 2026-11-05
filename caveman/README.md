@@ -12,7 +12,7 @@ This is a style library, not a coding framework or a deployment policy.
 - [Change communication](rules/changes.md): commit subjects and source and sink encoding.
 - [Merge and release](rules/merge-and-release.md): merge-request descriptions, deploy messages and the release check.
 - [Notifications](rules/notifications.md): compact operational messages.
-- [Indicators](rules/indicators.md): icon vocabulary, ranges and reset notation.
+- [Indicators](rules/indicators.md): icon vocabulary, ranges and time notation.
 - [Documentation](rules/documentation.md): scannable, compact persistent writing.
 - [Examples](examples/messages.md): established patterns and illustrative rewrites.
 - [Notification scope](audits/notification-scope.md): adoption boundary; no integration or deployment claim.
