@@ -9,6 +9,7 @@ specq owns the rules every taskqorg project shares. A project repository keeps o
 - A project links to specq, never copies it. A rule that two projects need moves here; a rule only one project needs stays in that project's spec ([spec first](spec-first.md)).
 - Before creating, changing, reviewing, deleting or running tests, changing CI gates, or working on releases or deployments, agents must read and follow [Testing](testing.md).
 - Effort follows result: pick the measure that removes most of the risk or work for the least effort, do it fully, and name what it leaves open. A heavier process waits for evidence that the light one failed.
+- Best fit for our conditions: we control the servers and design the services, so a design may change anything, and its language, tools and hosting are chosen for the most stable and fastest result, not to fit the current setup. Stability comes first; speed is continuous optimization from telemetry. A plan, report or proposal sets no pass threshold, ceiling or limit on speed, overhead or resource use as a condition to build or adopt: what the logic of the system requires ships even when slower, and measurement shows what to optimize next ([observe, do not gate](performance.md#observe-do-not-gate)).
 - Measure before optimizing: each product profiles its own operations by [built-in profiling](profiling.md), and optimization work cites that evidence before and after the change.
 - Owner pages keep their URLs. A move leaves the old path resolving, or updates every link from taskqorg projects in the same deliverable.
 
