@@ -15,21 +15,29 @@ Each adapter implements the full trait. An operation that a runtime cannot suppo
 
 | Operation | Contract |
 |---|---|
-| `launch` | Start a run from a prompt, working directory and abstract permission policy. |
+| `launch` | Start a run from ordered input parts (text and images), working directory, abstract permission policy, tools and instructions. |
 | `resume` | Continue an existing session by its opaque session id. |
 | `input` | Send further user input to a running session. |
 | `cancel` | Stop a run; the result states whether it stopped. |
 | `poll` | Return the run state: running, finished, failed or unknown. |
 | `report` | Return the final result text and outcome of a finished run. |
-| `progress` | Return incremental progress events of a running session. |
+| `progress` | Return ordered typed events of a running session: text delta, complete message, tool start and end, quota windows, context use and other activity. |
 | `session_id` | Return the opaque session id of a run. |
 | `session_url` | Return a link to the session when the runtime has one, otherwise none. |
 | `transcript` | Return the session transcript or its location. |
 | `ready` | Report install, version and login state; each part reads ok, missing or unknown. |
-| `quota` | Report remaining quota before launch; a launch checks it first. |
+| `quota` | Report every quota window before launch, each with used fraction, reset and length; unread windows stay unknown; a launch checks them first. |
+| `catalogue` | List the models a login can use, or return unsupported. |
 | `running` | Return the count of runs active for this runtime. |
 | `protected_paths` | List paths the runtime owns that a run must not overwrite. |
 | `home_env` | Return the environment that isolates the runtime home for a run. |
+
+## One run path
+
+- A product states what a run needs: input parts, tools, instructions and live text. The adapter chooses the native transport from those needs; a product never names or selects a transport.
+- `progress` events have one meaning across runtimes. A product never parses a native record and never replies to a native protocol request. An event a runtime cannot produce stays absent, never invented.
+- Product tools reach every runtime over MCP, the one tool boundary. Native tool protocols of one runtime are not product interfaces.
+- A session under a protected host stays an explicit capability, because its authority comes from that host, not from the adapter.
 
 ## Permissions and descriptor
 
