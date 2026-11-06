@@ -6,6 +6,7 @@ How an agent takes a task from request to verified outcome. Projects keep their 
 
 - The human owns product intent, architecture, risk, approvals and decided rules. AI review accepts a task against its acceptance; the owner joins only through an ask the AI cannot resolve, such as a visual acceptance ([Testing](testing.md#keep-or-remove)).
 - One outcome has one owner, one writer, one worktree and one acceptance contract. Parallel writers use isolated worktrees and hand off through immutable commits, never shared uncommitted state.
+- Moving a task to another owner stops the old one first: stop its queue and running attempts, then hand it over. A second writer never starts on a task the queue can still dispatch.
 - Delegate only when independent work gains from it. Workers do not fan out; add at most one read-only reviewer when risk warrants it.
 
 ## Attempt context
