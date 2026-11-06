@@ -7,6 +7,7 @@ Use the shared [Core review](../caveman/rules/core.md#review) for reporting; the
 - Keep missing, stale or untested observations unknown; name the affected claim or platform.
 - Separate model, adapter, process and target-platform checks. Passing one does not qualify the others.
 - Verify the exact candidate or artifact being accepted; identify relevant checks and remaining gaps.
+- Task evidence goes in the pull request text. A repository file holds it only when the project contract names that record. Evidence changes alone do not start another code gate.
 - Visual evidence follows the [review set](../design/workflow.md#review-sets) cap.
 
 ## Unknown is never healthy

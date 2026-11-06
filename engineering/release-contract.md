@@ -18,6 +18,7 @@ A feature in a shared implementation reaches every consumer through its pin, so 
 - Each new tag of a shared implementation opens a pin update in each consumer automatically. A green merge queue merges it. A consumer whose pin is part of an approved signed or qualified identity names that exception in its contract, and its update goes through review.
 - A consumer that reaches one shared implementation both directly and through another pins the version the other resolves, and updates both in one change.
 - Merge-queue CI of a shared implementation builds and tests each consumer's main branch against the candidate. A consumer it breaks blocks the merge. The shared implementation's contract lists the checked consumers. A consumer behind on the pin joins that list once it has caught up.
+- The manifest holds the pin. A contract points at the manifest and does not repeat the version.
 - A breaking change ships with the consumer changes it needs.
 - A pin update does not adopt a new API. A task that adds a capability consumers must call lists those consumers in its acceptance, and it is done when they use it.
 - A merged pin update is a development candidate; it reaches hosts by [release](#delivery-speed).
