@@ -12,7 +12,7 @@ Every product measures its own operations, so optimization starts from evidence,
 
 ## Store
 
-- Store no secrets, user content, task text, prompts, model output or host paths: operation names, numbers, outcomes, error classes and run identity (stable ids, runtime name and version, host name) only. Traces follow the same rule.
+- Store no secrets, user content, task text, prompts, model output or host paths: operation names, numbers, outcomes, error classes and run identity (stable ids, runtime name and version, host name) only. Traces follow the same rule. Session content has one home outside telemetry: the [agent session archive](#agent-session-archive).
 - Reuse the [telemetry contract](#telemetry-contract): every product writes its observations to its installation's CoreQ local store. Never add a second collector, agent, store or service for profiling.
 
 ## Report
@@ -118,6 +118,21 @@ Each repository changes in this order. A deletion waits until the new path shows
 3. agentq: `agent.turn` and `agent.call` capture in agentq-runtime; hooks for manual and PM sessions. Then delete the agentq store and OTLP export.
 4. Products (taskq, pilotq, assetq, serverq): write observations to the local CoreQ store; serverq checks become observations. Then delete the PilotQ store, the taskq sync and parser and taskq R46.
 5. dashq: D11 as the global store and reader, read-time price table, errors query, question tests. Then delete Langfuse; it needs no parity window, only the new reader showing records.
+
+## Agent session archive
+
+Telemetry never holds content. An agent session archive holds content: the session's native bytes, from which its [step history](agent-runtimes.md#step-history-and-archive) is derived. The archive is a separate store, so neither one breaks the rules of the other.
+
+- **Separate store.** The archive shares no store, shipper, schema or retention with telemetry. It serves reading and comparing runs, not profiling, so it is not a second store under [store](#store).
+- **Explicit grant.** Capture and content reads need the archive's own grant, approved by the owner. Capture is off without that grant. A telemetry or observation grant never implies it.
+- **Access audit.** Every content read leaves an audit record with the reader, time, session and outcome. The audit record holds no content.
+- **Own retention.** The archive has its own configured and enforced retention, and a deletion can be verified. Telemetry [retention](#retention) does not apply to it.
+- **Never reachable from telemetry.** A telemetry record holds no archive content, location, link or credential. No telemetry query, report, export or dashboard returns archive content. The session id in `agent.turn` is an opaque join key and gives no access.
+- **One-way join.** A guarded archive reader may join telemetry records by `project`, `task` and `attempt`. Telemetry never joins the archive.
+- **Telemetry questions stay in telemetry.** A question about what a product did that only the archive answers is a missing record, the same defect as [a question answered from a log](#telemetry-by-design).
+- **Secrets.** Scrub known secret shapes before content leaves the host. Scrubbing is best effort, so treat archive content as possibly holding a secret.
+
+The consumer contract names the grant scope, reader roles, retention values and store location.
 
 ## Budgets and unknowns
 
