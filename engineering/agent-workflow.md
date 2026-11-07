@@ -23,11 +23,11 @@ See [task planning](task-planning.md#experiment-tasks).
 
 ## Decided rules
 
-A spec rule, or a test assertion that guards it, records an owner decision.
+A spec rule records an owner decision; its checks protect that behavior.
 
-- A worker changes or deletes a decided rule or its guarding assertion only when the task names that rule and the owner decision to change it.
-- Otherwise the worker does not edit the rule or the assertion; it asks the owner, even when the task acceptance conflicts with the rule. A failing guard is fixed in the code, never by rewriting the guard ([Testing](testing.md#when-evidence-disagrees)).
-- Projects enforce this rule with a rule-change gate: CI fails when a change edits or removes a rule or its guarding assertion that the task does not name. The gate script and the rule-ID syntax stay in each consumer contract; pilot: [taskq#1794](https://github.com/taskqorg/taskq/issues/1794).
+- Changing decided behavior or weakening its protection requires the named owner decision. Removing duplicate assertions while retaining the same failure detection follows [Testing](testing.md#keep-or-remove): name the retained check; no new owner decision is required.
+- Otherwise the worker does not change the decided behavior or weaken its protection; it asks the owner, even when the task acceptance conflicts with the rule. A failing guard is fixed in the code, never by rewriting the guard ([Testing](testing.md#when-evidence-disagrees)).
+- Projects enforce this rule with a rule-change gate: CI fails for unnamed rule changes. A changed guarding assertion names either the approved rule change or the retained check that detects the same failure; review validates that claim. The gate script and the rule-ID syntax stay in each consumer contract; pilot: [taskq#1794](https://github.com/taskqorg/taskq/issues/1794).
 
 ## Task intake
 
@@ -51,7 +51,7 @@ See [task planning](task-planning.md#runtime-preference).
 1. Inspect the relevant code, contract and current state. Discovery stays inside the exact project or worktree.
 2. Implement the smallest coherent change ([Ponytail](ponytail.md)).
 3. Run checks selected under [Testing](testing.md#run-policy-by-stage) while iterating.
-4. Freeze the diff and run the project's selected canonical gate once. Rerun only when changes, failures or invalidated evidence require it.
+4. Freeze the diff and run the applicable project-selected candidate gate once under [Testing](testing.md#run-policy-by-stage). Rerun only when changes, failures or invalidated evidence require it.
 5. Review only the frozen result when review is warranted, using the two axes of [review](review.md#review).
 6. Report the actual outcome with its evidence ([verification](verification.md)).
 

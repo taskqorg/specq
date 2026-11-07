@@ -20,17 +20,19 @@ Answer these questions in order. Reuse the task or change description; no separa
 
 ## Run policy by stage
 
-- **Development:** run the affected check. For a defect, reproduce it safely at the smallest behavior boundary, then rerun the same check after the fix. If reproduction is unsafe or unavailable, state why and give alternative evidence; do not claim before/after proof. Trivial and documentation changes need no mandatory test-first work.
+- **Development:** normally run one or two fast affected behavior checks, including necessary setup; this is not a test-count quota. Broaden for a named changed risk or unknown impact. For a defect, reproduce it safely at the smallest behavior boundary, then rerun the same check after the fix. If reproduction is unsafe or unavailable, state why and give alternative evidence; do not claim before/after proof. Trivial and documentation changes need no mandatory test-first work.
 - **Merge candidate:** run a cheap deterministic core plus checks affected through code or dependencies, new checks and previously failing checks. The stored suite is not the mandatory suite for every change. Documentation-only changes use documentation checks.
 - **Unknown impact:** broaden selection for shared code, configuration, build or dependency changes. If impact cannot be bounded, run the full relevant suite. Validate selection against full runs at project-defined triggers; a selector that misses failures needs repair before relying on it again.
 - **Release or deployment:** apply the [release contract](release-contract.md), including artifact verification. Run affected platform, client, lifecycle, outage and live integration checks before exposing the changed risk. Expensive or paid evaluations run only when the behavior they measure changes, not for documentation edits or unchanged redeploys.
+
+One owner qualifies the final integrated candidate; reviewers reuse valid evidence and run only missing, failed or invalidated checks.
 
 Keep the candidate revision, command, result and relevant seed, events or native logs with the evidence. Failures name the broken behavior. Reuse results only for unchanged tested code or artifacts, tests, dependencies and environment; mutable live state needs fresh evidence.
 
 ## Time budget
 
 - The project defines one command for its selected merge gate and a numeric elapsed-time budget on a named runner. Measure build, setup and execution, plus repeat runs caused by instability. The core is deterministic and needs neither a human nor a paid service.
-- Remove redundant runs, repeated setup and unnecessary external dependencies before adding parallelism. Replace fixed sleeps with bounded completion signals. Repair flaky checks; retries until green are not proof. Exceeding the budget requires diagnosis, not silently skipping required protection.
+- Remove redundant runs, repeated setup and unnecessary external dependencies before adding parallelism. Before proposing a scheduler, establish what existing direct shells, native subagents, fixture descendants and remote execution already cover; unknown coverage is not a scheduler requirement. Replace fixed sleeps with bounded completion signals. Process fixtures own their descendants and finish cleanup on timeout or failure; a direct-child exit alone does not prove cleanup. Repair flaky checks; retries until green are not proof. Exceeding the budget requires diagnosis, not silently skipping required protection.
 
 ## When evidence disagrees
 
