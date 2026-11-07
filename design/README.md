@@ -4,6 +4,7 @@ Owner page for shared design: look and feel of UI, tray, dashboard and notificat
 Pages here hold specq rules only. Projects link them and keep their own dimensions, assets, palettes and exceptions in their own contracts; they do not copy rule text.
 
 - [Product design workflow](workflow.md): start here for shared/project specifications, iterative design, operator preferences and acceptance.
+- [App UI checklist](app-ui.md): sourced navigation, header, target, density, state and focus checks; consumer-specific values stay local.
 - [Operator interfaces](operator-ui.md): density, hierarchy, alignment and visual review.
 - [Dashboards and widgets](dashboards.md): first-screen priorities, automatic refresh, trends and restrained change cues.
 - [Implementation fidelity](implementation-fidelity.md): reference ownership, native sizing, chart rasterization and acceptance.
