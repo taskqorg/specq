@@ -23,6 +23,14 @@ A feature in a shared implementation reaches every consumer through its pin, so 
 - A pin update does not adopt a new API. A task that adds a capability consumers must call lists those consumers in its acceptance, and it is done when they use it.
 - A merged pin update is a release candidate; it reaches hosts by [release](#delivery-speed).
 
+## Calendar product release identity
+
+- Every product release uses `4.YYMMDD.N`: the UTC release date supplies YYMMDD, and each product starts N at 1 per day. Same-day allocation increments N numerically, including 9 to 10; a new UTC day starts at 1 unless monotonicity requires a later existing identity.
+- The existing serialized release pipeline selects the maximum of the UTC floor `4.YYMMDD.1`, the product manifest and the highest stable product tag plus one patch. A clock rollback never downgrades a release. Tag-read, clock or source uncertainty refuses allocation; collisions never move an existing tag.
+- Allocate once per product/source and stamp that identity into every platform build, binary version, release tag, asset filename and URL, manifest/index, status, heartbeat and user interface. Do not require a Cargo bump commit, version PR or preparation task for each release. Resume only an exactly matching immutable source under the existing draft/unpublished-release contract; an already published source does not acquire a second tag.
+- Preserve existing tags/releases, current and previous installed versions, update comparison and rollback floors; do not mass-retag history. The numbering change is not protocol or API compatibility. Library API/protocol versions and exact dependency pins remain separate identities; changing a product release number does not require repinning an unchanged library.
+- Each consumer inventories every version-producing and version-consuming path, including CI, scripts, fixtures, update/rollback and UI, and proves UTC/day rollover, daily numbering, immutable collision refusal, legacy upgrade/rollback and one tag/build/index/status identity.
+
 ## Update
 
 - Keep installed releases immutable. Verify downloads before activation.
@@ -52,7 +60,7 @@ Install once, then leave it. The service maintains itself.
 
 ## Release task
 
-- A release task ends when its version PR is merged to main and the release branch is fast-forwarded to that merge commit. Acceptance names the version bump and the release-branch commit, nothing after it.
+- A release task ends when its accepted source PR is merged to main and the release branch is fast-forwarded to that merge commit. The pipeline allocates the calendar identity; no separate version PR or bump commit is required. Acceptance names the source and release-branch commit, nothing after it.
 - Tagging, release assets and host updates follow the release-branch push automatically ([self-maintenance](#self-maintenance)). The task card has no tag, release-run or heartbeat condition, and no task or PM action starts them.
 - The worker does not produce rollout evidence. Rollout evidence is the version each host reports in its heartbeat.
 - The PM verifies rollout from host heartbeats and the DashQ hosts view.
