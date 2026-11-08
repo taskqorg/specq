@@ -70,6 +70,8 @@ One observation format, one local store per installation, one shipper and one gl
 - A record holds metadata only, as in [store](#store).
 - A value that was not collected is null with a reason code, never zero or a guess ([unknown is never healthy](verification.md#unknown-is-never-healthy)).
 
+Request summaries distinguish observed counts from complete intervals using the [typed request coverage contract](request-coverage.md).
+
 ### Capture
 
 - agentq-runtime writes one `agent.turn` per agent run and one `agent.call` per model request. Products that start agents add no capture of their own.
