@@ -13,8 +13,8 @@ Repository settings, workflow, dependency and release controls of the [security 
 
 ## Dependencies and releases
 
-- The lockfile is committed and a dependency change is reviewed like code. An advisory that reaches a shipped code path is fixed in the next release; the rest wait for the normal upgrade cadence.
-- Releases publish checksums and installers verify them before activation ([release contract](release-contract.md#rules)). Build provenance attestation is the next step once checksums are in place, where the platform offers it at no cost.
+- The lockfile is committed and a dependency change is reviewed like code. An advisory on a shipped code path is fixed in the next release; the rest wait for the normal upgrade cadence.
+- Releases publish checksums and installers verify them before activation ([release contract](release-contract.md#rules)). Build provenance attestation follows once checksums are in place, where the platform offers it at no cost.
 
 ## Review
 

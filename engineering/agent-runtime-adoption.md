@@ -13,6 +13,6 @@ This note applies to TaskQ, PilotQ, Pipe/AssetQ and every product using AgentQ. 
 
 ## Current compatibility baseline
 
-The accepted baseline is `runtime-v0.16.0`, source `540f017124e096015b23237416bc580f8e1b1c49`. Its existing compatibility pins remain immutable. The shared [calendar format](release-contract.md#calendar-product-release-identity) governs each product's next real release under its own major; it does not require synchronized numbers, a parallel library identity or needless repinning.
+The accepted baseline is `runtime-v0.16.0`, source `540f017124e096015b23237416bc580f8e1b1c49`. Its existing compatibility pins remain immutable. The shared [calendar format](release-contract.md#calendar-product-release-identity) governs each product's next real release.
 
 For this baseline, native approval/steer, login/home isolation, platform parity and consumer lifecycle criteria require their own exact receipts. Historical owner-SKIPPED observations remain SKIPPED, not PASS. This note supplies adoption instructions, not those missing receipts or new account, model, grant, board or deployment authority.

@@ -1,17 +1,14 @@
 # Specification-led product design
 
-Entry point for collaborative product and interface work. Adopt this workflow and its linked rules; keep product decisions in the consuming project. Resume from recorded decisions, not from a fresh redesign.
+Entry point for product and interface work. Product decisions stay in the consuming project. Resume from recorded decisions, not from a fresh redesign.
 
 ## Working agreement
 
 - Start with the user's outcome and current product. Inspect the applicable contract, approved references and actual implementation before proposing replacements.
-- Read [spec first](../engineering/spec-first.md), [use cases](../engineering/use-cases.md) and [documentation style](../caveman/rules/documentation.md). Interface work also applies [dense operator design](operator-ui.md) and [implementation fidelity](implementation-fidelity.md).
-- Persistent specifications, interface copy and handoffs use concise English. Conversation follows the user's language. Remove words that add no meaning; preserve constraints, exceptions and evidence.
+- Read [spec first](../engineering/spec-first.md), [use cases](../engineering/use-cases.md) and [documentation style](../caveman/rules/documentation.md). Interface work applies [SPECQ-D1–D14](operator-ui.md) as the preference profile with its [review checklist](operator-ui.md#review-each-change), [implementation fidelity](implementation-fidelity.md) and, for dashboards and widgets, [SPECQ-W1–W15](dashboards.md).
+- Specifications, interface copy and handoffs follow the [documentation profile](../caveman/rules/documentation.md); preserve constraints, exceptions and evidence.
 - Owner choices, escalation and reuse of accepted answers follow [prepare the task](../engineering/task-planning.md#prepare-the-task). A mock does not approve its incidental behavior.
-
-## Rule homes
-
-Each rule has one [canonical home](../engineering/principles.md#rule-homes); project documents link shared rules. Corrections that reveal a reusable principle follow [improve shared rules](../engineering/spec-first.md#improve-shared-rules). Dashboard and widget work also follows [SPECQ-W1–W15](dashboards.md).
+- Each rule has one [canonical home](../engineering/principles.md#rule-homes); corrections that reveal a reusable principle follow [improve shared rules](../engineering/spec-first.md#improve-shared-rules).
 
 ## Iteration loop
 
@@ -28,11 +25,7 @@ Use the next incomplete step. Scale the work to the change; a small correction n
 
 Before closing an iteration, trace material requests through existing decision IDs, specifications, references, implementation and evidence. Report missing links and unresolved decisions; do not create a duplicate ledger or claim unimplemented links are complete.
 
-After each iteration report: changed decision, canonical location, evidence and next unresolved choice. Keep updates short; do not narrate routine tooling.
-
-## Operator design default
-
-Use [SPECQ-D1–D14](operator-ui.md) as the preference profile and its [review checklist](operator-ui.md#review-each-change).
+Each iteration reports the changed decision, its canonical location, evidence and the next unresolved choice; no narration of routine tooling.
 
 ## Process every correction
 
@@ -42,14 +35,14 @@ Use [SPECQ-D1–D14](operator-ui.md) as the preference profile and its [review c
 4. Update affected references and acceptance criteria. Add a focused fixture when it prevents recurrence; do not encode defects as new expected output.
 5. Recheck the original use case and adjacent affected states. Report remaining gaps explicitly.
 
-Do not turn every bug into policy. Existing-rule violations need fixes; repeated ambiguity may need a clearer rule. Useful implementation deviations need review before becoming the new reference.
+Not every bug becomes policy: a violated rule needs a fix; repeated ambiguity may need a clearer rule. A useful implementation deviation needs review before it becomes the reference.
 
 ## Review sets
 
 - A set of screens shown to the owner or a reviewer holds at most 10 screens: one per distinct decision or gap.
 - A set holds no variants that differ only by size, color or theme.
 - Every shown image renders for every board reader, private repositories included: upload it with `--image`, or link the commit-pinned `https://github.com/<owner>/<repo>/raw/<sha>/<path>`. `raw.githubusercontent.com`, `/blob/` and branch links show broken images on a private repository.
-- Select visual checks for the changed layout or interaction boundary. Do not automatically sweep every theme, font, width and state, or repeat the same interaction in each cell. Capture a failure or a distinct owner decision; passing checks need no screenshot. Additional cells need a distinct affected risk.
+- Select visual checks for the changed layout or interaction boundary; do not sweep every theme, font, width and state or repeat one interaction per cell. Capture a failure or a distinct owner decision; passing checks need no screenshot. Each additional cell needs a distinct affected risk.
 
 ## Handoff and acceptance
 
@@ -57,16 +50,15 @@ Keep the package index and deliver the [acceptance package](implementation-fidel
 
 ## End-to-end simplicity
 
-Compare the actions, concepts and manual setup required to complete the scenario. Reuse existing capabilities before adding a mechanism. Competitor research identifies the user need first; importing a competitor's architecture requires its own justification. Preserve required alternatives without burdening the default route.
+Compare the actions, concepts and manual setup the scenario requires. Reuse existing capabilities before adding a mechanism. Competitor research identifies the user need; importing a competitor's architecture needs its own justification. Keep required alternatives without burdening the default route.
 
 ## AI-assisted controls
 
-- Prefer the simplest composition that covers the scenario. Ship recommended flows as visible, editable defaults; expose useful alternatives on demand. Preserve explicit overrides when defaults evolve, and review any broader effects before applying them.
-
+- Prefer the simplest composition that covers the scenario. Ship recommended flows as visible, editable defaults; expose useful alternatives on demand. Preserve explicit overrides when defaults evolve, and review broader effects before applying them.
 - For AI-enabled tools, accept intent in ordinary language. Let AI propose a short, inspectable plan; expose only unresolved decisions and useful overrides.
 - Agents interpret, decompose and explain. The execution service enforces identity, confirmed effects, dependencies, capacity and receipts; a model's prose is not execution proof.
 - Put an explained question and its choices at the work item. A normal choice submits the displayed answer directly; consequential effects retain their explicit review.
 - Preserve choice identifiers across interfaces. Show the same source numbers, order, meaning and recommendation in buttons, text and receipts; presentation never changes answer identity.
 - Every manager report ends with `Next:` as numbered actions, the recommended one first and marked; the person picks by number in text and by button in a UI. The numbers are the same identifiers in every interface and in the receipt.
 
-Accepted refinement coverage: [workflow review](workflow-review.md). The linked owner sections below define the rules.
+Accepted refinement coverage: [workflow review](workflow-review.md).

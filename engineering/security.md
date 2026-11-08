@@ -1,6 +1,6 @@
 # Security baseline
 
-The minimum that keeps taskqorg repositories, releases and agent access from leaking data or accepting unreviewed changes. It follows [effort follows result](principles.md#rules): platform-native controls first, a heavier control only after a light one fails in evidence. Consumer contracts name their secret store, token owners and any exception.
+The minimum that keeps taskqorg repositories, releases and agent access from leaking data or accepting unreviewed changes. Platform-native controls first; a heavier control only after a light one fails in evidence ([effort follows result](principles.md#rules)). Consumer contracts name their secret store, token owners and any exception.
 
 ## Repository
 
@@ -12,7 +12,7 @@ See [repository and release security](repository-security.md#repository).
 - Fixtures and examples use values that cannot be real and are labeled as invented, for example `ghp_aaaaaaaaaaaaaaaaaaaaaaaa` (invented).
 - Report a secret as present or absent; never print its value, including in diagnostics.
 - A leaked secret is rotated first, then its history is cleaned. Cleaning history without rotation does not close the incident.
-- Each agent host uses its own fine-grained token with the smallest scope and a bounded expiry, named after the host. The owner's administrator credential is not an agent credential ([permission authority](permission-authority.md)).
+- Each agent host uses its own fine-grained token, named after the host, with the smallest scope and a bounded expiry. The owner's administrator credential is never an agent credential ([permission authority](permission-authority.md)).
 
 ### One durable GitHub token per host
 

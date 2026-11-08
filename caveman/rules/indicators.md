@@ -1,8 +1,9 @@
 # Indicators
 
 Use one visual family per metric. Keep direction consistent. Prefer a familiar
-Unicode symbol to a custom asset; emoji appearance varies across clients.
-Do not recolor standard emoji through unsupported text formatting.
+Unicode symbol to a custom asset; emoji appearance varies across clients, so
+verify glyphs and spacing per output channel. Do not recolor standard emoji
+through unsupported text formatting.
 
 ## Discrete operational status
 
@@ -32,9 +33,9 @@ sign halfway through its scale. Keep the exact value beside the quantized icon.
 - 80–89%: `😣`
 - 90% and above: `🥵`
 
-This describes occupancy, not measured loss of model intelligence. Use the same
-displayed percentage as the runtime; do not introduce independent rounding.
-Missing context may be omitted when the renderer cannot provide it.
+This describes occupancy, not measured loss of model intelligence. Use the
+runtime's displayed percentage without independent rounding. Omit context the
+renderer cannot provide.
 
 ### Weekly quota remaining
 
@@ -57,9 +58,6 @@ model · FACE context-used% · MOON quota-remaining% ↻ reset
 
 `↻` means quota reset, not server restart. The reset reads as a
 [countdown](#time). Do not imply that quota usage determines reset time.
-
-Footer layout must be verified for each output channel; do not assume identical
-glyphs or spacing across clients.
 
 ## Time
 

@@ -34,7 +34,7 @@ Every mandatory rule starts with a stable ID of the form `<SCOPE>-<prefix><n>`, 
 
 A size budget limits how much content a file or bundle may hold, so that it stays cheap to inject and read. Every budget keeps a buffer.
 
-- Each byte, line or count budget has a cap and a target of 70% of the cap. The target is the working limit; the cap is never the working limit.
+- Each byte, line or count budget has a cap and a target of 70% of the cap. The target is the working limit, never the cap.
 - Content above the target creates one compaction task at once. The project files it from its check output and does not file a second one while the first is open.
 - CI fails only above the cap. Above the target and at or below the cap, CI passes and the compaction task carries the work.
 
@@ -56,14 +56,13 @@ Display limits are format rules, not budgets: for example, title length, line le
 ## Budget
 
 - The default cap is 60 KiB (61440 bytes) and 300 lines. A contract may declare its own cap in one comment line, for example (invented values): `<!-- contract-budget: bytes=81920 lines=400 -->`. A declared cap is a decision of that contract.
-- The target is 70% of the cap ([size budgets](#size-budgets)). Linked files are not injected; the attempt index lists them ([attempt context](rule-delivery.md#attempt-context)).
+- Linked files are not injected; the attempt index lists them ([attempt context](rule-delivery.md#attempt-context)).
 
 ## Lint
 
 `python3 engineering/scripts/contract_lint.py <contract.md>...` uses the Python standard library only. It prints bytes, lines and the longest line per file, then one finding per line. It exits 1 on any error, including a file above its cap.
 
-- A file above the 70% target and at or below its cap gets one marker line, `COMPACT: <path>: <value> <bytes|lines> > target <target> (cap <cap>)`, and does not fail the lint. A project check turns each `COMPACT:` line into one compaction task ([size budgets](#size-budgets)).
-
+- A file above the target and at or below its cap gets one marker line, `COMPACT: <path>: <value> <bytes|lines> > target <target> (cap <cap>)`, and passes. A project check turns each marker into the compaction task of [size budgets](#size-budgets).
 - Checks: cap, headroom, line length, ISO dates, decision-log phrases, and the outline: one H1 first, a purpose paragraph, `Principles` or `Rules` as the first section, no skipped level, no duplicate, generic or history heading.
 - Not checked: priority order, rule ID numbering and whether a task number is needed. Review judges these.
 - specq runs the lint on [specq.md](../specq.md) inside `caveman/scripts/check.py`, in CI.

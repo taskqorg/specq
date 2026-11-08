@@ -1,9 +1,6 @@
 # Dense operator interfaces
 
-Maximize readable, useful information within the smallest practical area.
-Apply to operator tools; product contracts define entities, status semantics, dimensions and controls.
-
-Implementation and review follow [SPECQ-F1–F6](implementation-fidelity.md); product contracts supply dimensions, fixtures and platform evidence.
+Maximize readable, useful information within the smallest practical area. Applies to operator tools. Product contracts define entities, status semantics, dimensions, controls, fixtures and platform evidence; implementation and review follow [SPECQ-F1–F6](implementation-fidelity.md).
 
 ## Principles
 
@@ -30,9 +27,7 @@ Implementation and review follow [SPECQ-F1–F6](implementation-fidelity.md); pr
 4. Check long text, large fonts, narrow surfaces, both themes and system scaling.
 5. Review the complete route: list, detail, action, result, error and return. A polished home screen does not compensate for unusable deeper views.
 
-Validate one real component before spreading a rule. Inspect rendered output at its intended size; calculation tests alone do not establish visual quality.
-Product acceptance criteria define concrete fixtures, dimensions and platform checks.
-A product-specific exception needs a reason and an owner decision. Never silently substitute a spacious dashboard.
+Validate one real component before spreading a rule. Inspect rendered output at its intended size; calculation tests alone do not establish visual quality. A product-specific exception needs a reason and an owner decision; never silently substitute a spacious dashboard.
 
 ## Stable adaptation
 

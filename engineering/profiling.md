@@ -4,7 +4,7 @@ Every product measures its own operations, so optimization starts from evidence,
 
 ## Counters
 
-- Name each measured operation once, in the product spec, for example `sync.board` or `render.menu` (invented). A name is stable; a renamed operation starts a new series.
+- Name each measured operation once, in the product spec, for example `sync.board` or `render.menu` (invented). A name is stable; a renamed operation starts a new series. A time or error reference value, if any, comes from the operation's own telemetry history ([observe, do not gate](performance.md#observe-do-not-gate)); a spec never asks for invented numbers.
 - Counters are always on and cheap: per operation, keep the count, p50, p95 and max duration, the outcome (`ok`, `failed`, `refused`, `cancelled`, `retried`) and the error class.
 - An error class is a short stable code, such as `timeout` or `auth`, never a raw message.
 - Retries and instability count separately from failures: an operation that succeeds after retries is unstable, not healthy.
@@ -13,7 +13,7 @@ Every product measures its own operations, so optimization starts from evidence,
 ## Store
 
 - Store no secrets, user content, task text, prompts, model output or host paths: operation names, numbers, outcomes, error classes and run identity (stable ids, runtime name and version, host name) only. Traces follow the same rule. Session content has one home outside telemetry: the [agent session archive](#agent-session-archive).
-- Reuse the [telemetry contract](#telemetry-contract): every product writes its observations to its installation's CoreQ local store. Never add a second collector, agent, store or service for profiling.
+- Never add a second collector, agent, store or service for profiling: observations go to the one [local store](#ship-and-store).
 
 ## Report
 
@@ -29,7 +29,7 @@ Agent work is an operation like any other: every task attempt is measured by des
 - Per attempt, record each stage that occurred: `claim`, `start`, `build`, `checks`, `review`, `ask`, `close`. Per stage keep the duration, outcome and error class, with the counters above.
 - Every attempt ends with a terminal stage record: `ok`, `failed` or `cancelled`, with a stable error class (`none` when no error occurred). The product contract bounds how long a stage may remain open; past that window, the service closes it as `failed` with an error class, never leaves it open silently or reports it as `ok`.
 - Children and background jobs follow the same rule. A child or job that reports `failed` or `stopped`, or vanishes, makes the service close its open stage as `failed` with the corresponding error class within one service pass.
-- An attempt without a terminal stage record reads [unknown, never healthy](verification.md#unknown-is-never-healthy); it is not evidence of a successful attempt. The [errors query](#queries) lists it; no person reads logs to find it.
+- An attempt without a terminal stage record reads [unknown, never healthy](verification.md#unknown-is-never-healthy). The [errors query](#queries) lists it; no person reads logs to find it.
 - Each agent run and each model call is an observation of the [telemetry contract](#telemetry-contract). A client that reports no tokens reads unknown, never zero.
 - A profile report for agent work ranks stages and runtimes by slowness, failure rate and retries, like any operation report.
 
@@ -68,7 +68,7 @@ One observation format, one local store per installation, one shipper and one gl
 - An observation is one CoreQ record. Every kind uses the same record: an operation call, an agent stage, a queue transition, a service pass, a check, `agent.turn` or `agent.call`.
 - Shared fields: schema version, kind, operation name, UTC start time, duration, outcome, error class, `project`, `task`, `attempt`, `actor`, `entry` (the board comment id that the record belongs to), `pipeline`, `pipeline_revision`, `step`, `units`, `unit_kind`, `disk_bytes`, runtime name and version, host name.
 - A record holds metadata only, as in [store](#store).
-- A value that was not collected is null with a reason code, never zero or a guess ([unknown is never healthy](verification.md#unknown-is-never-healthy)).
+- A value that was not collected, has no samples, failed collection or a pruned window is null with a reason code, never zero, ok or a guess ([unknown is never healthy](verification.md#unknown-is-never-healthy)).
 
 Request summaries distinguish observed counts from complete intervals using the [typed request coverage contract](request-coverage.md).
 
@@ -82,7 +82,7 @@ Request summaries distinguish observed counts from complete intervals using the 
 
 ### Ship and store
 
-- Each installation has one CoreQ local store. Products write to it and to nothing else.
+- Each installation has one CoreQ local store; products write to it and to nothing else.
 - One CoreQ shipper sends local records to the global store. It keeps a durable cursor per store, so a restart neither loses nor duplicates a record.
 - The local store prunes a record only after the shipper's cursor has passed it.
 - DASHQ-D11 on pds18 is the only global store and the only reader. Dashboards, reports and exports read it; no derived copy is a source of truth.
@@ -123,7 +123,7 @@ Each repository changes in this order. A deletion waits until the new path shows
 
 ## Agent session archive
 
-Telemetry never holds content. An agent session archive holds content: the session's native bytes, from which its [step history](agent-runtimes.md#step-history-and-archive) is derived. The archive is a separate store, so neither one breaks the rules of the other.
+Telemetry never holds content. An agent session archive holds content: the session's native bytes, from which its [step history](agent-runtimes.md#step-history-and-archive) is derived.
 
 - **Separate store.** The archive shares no store, shipper, schema or retention with telemetry. It serves reading and comparing runs, not profiling, so it is not a second store under [store](#store).
 - **Explicit grant.** Capture and content reads need the archive's own grant, approved by the owner. Capture is off without that grant. A telemetry or observation grant never implies it.
@@ -135,8 +135,3 @@ Telemetry never holds content. An agent session archive holds content: the sessi
 - **Secrets.** Scrub known secret shapes before content leaves the host. Scrubbing is best effort, so treat archive content as possibly holding a secret.
 
 The consumer contract names the grant scope, reader roles, retention values and store location.
-
-## Budgets and unknowns
-
-- Each product spec lists its measured operations. A time or error reference value, if any, comes from the operation's own telemetry history and follows [observe, do not gate](performance.md#observe-do-not-gate); a spec never asks for invented numbers.
-- An operation with no samples, a failed collection or a pruned window reads unknown with a reason, never zero or ok ([unknown is never healthy](verification.md#unknown-is-never-healthy)).

@@ -1,7 +1,6 @@
 # Design fidelity and acceptance
 
-Translate an approved design into observable product behavior. A similar screenshot is insufficient.
-Use [operator principles](operator-ui.md) and [engineering evidence](../engineering/verification.md).
+Translate an approved design into observable product behavior; a similar screenshot is insufficient. Use [operator principles](operator-ui.md) and [engineering evidence](../engineering/verification.md).
 
 ## SPECQ-F1 Source and change control
 
@@ -14,12 +13,11 @@ Use [operator principles](operator-ui.md) and [engineering evidence](../engineer
 
 ## SPECQ-F2 Size to content, then constrain
 
-- Measure natural content at the selected font and intended width. Include native chrome in the available-space calculation.
-- Fit to the anchor monitor's usable work area, excluding reserved OS regions; do not use a percentage of total screen height as a substitute.
+- Measure natural, unconstrained content at the selected font and intended width, not an already clipped viewport. Include native chrome in the available space. Recompute after fonts, asynchronous content, disclosure changes and native scale changes.
+- Fit to the anchor monitor's usable work area, excluding reserved OS regions; a percentage of total screen height is no substitute.
 - Expand to fit when space exists. Scroll only when natural content exceeds available space. Product contracts set margins, width limits and anchoring.
 - Keep width stable during ordinary refresh. Reflow on font, monitor, DPI or navigation changes; never shrink text to avoid overflow.
-- Measure unconstrained content, not an already clipped viewport. Recompute after fonts, asynchronous content, disclosure changes and native scale changes.
-- Avoid resize loops and visible oscillation. A scrollbar must not repeatedly change wrapping and reverse the sizing decision.
+- No resize loops or visible oscillation: a scrollbar must not repeatedly change wrapping and reverse the sizing decision.
 
 ## SPECQ-F3 Scroll and focus
 
@@ -37,7 +35,7 @@ Use [operator principles](operator-ui.md) and [engineering evidence](../engineer
 - If the slot cannot hold the prescribed number of marks, use an approved aggregation or fallback. Never hide samples or smear them into a false continuous signal.
 - Equal quantities share one scale. Stack cumulative boundaries; round boundaries, not independent segment heights.
 - Empty data, zero, stale data and unknown data remain distinct. Color order and data meaning must match across renderers.
-- Inspect at natural size first, then enlarged nearest-neighbor detail. Font antialiasing may differ; missing series, unequal gaps and altered shapes are not font tolerance.
+- Inspect at natural size first, then enlarged nearest-neighbor detail. Font antialiasing may differ; missing series, unequal gaps and altered shapes are defects, not font tolerance.
 
 ## SPECQ-F5 Acceptance package
 
@@ -50,8 +48,7 @@ Deliver:
 4. Automated results separated into data/model, adapter, geometry and runtime checks.
 5. Review report findings: requirement, expected, observed, reproduction, severity, evidence and disposition.
 
-Every mandatory criterion is Pass, Fail or Not tested. “Looks close” is not a verdict. Missing platform evidence stays Not tested.
-Do not average away a failed action, missing state, wrong data meaning or unreachable control with a visual score.
+Every mandatory criterion is Pass, Fail or Not tested; “looks close” is not a verdict, and missing platform evidence stays Not tested. A visual score never averages away a failed action, missing state, wrong data meaning or unreachable control.
 
 ## SPECQ-F6 Build, polish, accept
 
@@ -69,5 +66,5 @@ Do not average away a failed action, missing state, wrong data meaning or unreac
 - Keep the selected tab/view and address in sync. Browser Back and Forward restore the corresponding view and its navigation state; apply [SPECQ-F3](#specq-f3-scroll-and-focus) to scroll and focus.
 - Preserve filters when navigating away and back. Encode filters needed to reproduce a shared view in the URL; distinguish that shareable state from local drafts and transient interaction state. Never put secrets in URLs.
 - Unknown paths, unsupported state and unavailable destinations remain explicit. Do not silently display another tab as though the requested destination loaded. Explain the limitation and provide a valid recovery destination without claiming the original view was restored.
-- Consumer contracts define route syntax, initial destinations, filter defaults and which state is shareable or local. Keep these product choices out of shared rules.
-- Verify direct entry, tab changes, Back/Forward, reload, shared filtered views and unknown paths against the same navigation ledger. A shared specification change alone does not prove consumer adoption.
+- Consumer contracts define route syntax, initial destinations, filter defaults and which state is shareable or local.
+- Verify direct entry, tab changes, Back/Forward, reload, shared filtered views and unknown paths against the same navigation ledger.

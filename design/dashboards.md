@@ -1,6 +1,6 @@
 # Dashboards and widgets
 
-A dashboard gives the owner a useful overview at a glance and stays current without manual reload. Apply [operator design](operator-ui.md), [design workflow](workflow.md) and [implementation fidelity](implementation-fidelity.md); this page owns dashboard-specific rules.
+A dashboard gives the owner an overview at a glance and stays current without manual reload. This page owns dashboard-specific rules on top of [operator design](operator-ui.md), [design workflow](workflow.md) and [implementation fidelity](implementation-fidelity.md).
 
 ## First-screen overview
 
@@ -36,4 +36,4 @@ A dashboard gives the owner a useful overview at a glance and stays current with
 
 Verify the first viewport against the owner's named questions with representative data, warnings, missing sources and long labels. Check the agreed screen sizes and text scale, both themes, reduced motion and several consecutive refreshes. Confirm that detail remains reachable, reading position stays stable, changes remain noticeable without distraction, and failed refreshes cannot look like a fresh all-clear.
 
-Each product records exact metrics, ordering, breakpoints, cadence, thresholds, trend windows and effect parameters. Unresolved parameters stay proposals; this shared page does not silently choose them or claim a consumer is implemented.
+Each product records exact metrics, ordering, breakpoints, cadence, thresholds, trend windows and effect parameters. Unresolved parameters stay proposals; this page does not choose them.

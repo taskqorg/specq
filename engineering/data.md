@@ -4,10 +4,10 @@ Rules for the state a tool keeps on disk. Consumer contracts name their store, s
 
 ## Store
 
-- Default store is SQLite in the tool's own process, WAL mode. No separate database or cache server unless the contract shows a need the file cannot meet.
+- Default store is SQLite in the tool's own process, WAL mode. No separate database or cache server unless the contract names a need the file cannot meet.
 - Name the durability class in the contract. `synchronous=NORMAL` survives a process crash, not a power loss; use `FULL` where losing an acknowledged write is unacceptable. Never `synchronous=OFF` or an in-memory journal for data the user relies on.
 - One writer connection with prepared statements and a `busy_timeout`; readers may use separate connections. Let the database build the response shape (for example JSON) when that removes an object layer.
-- Group commit is allowed: several requests' writes share one transaction, and every response waits for that commit. A failed batch fails every waiting request honestly and rolls back; nothing uncommitted is visible.
+- Group commit is allowed: several requests' writes share one transaction and every response waits for that commit. A failed batch rolls back and fails every waiting request; nothing uncommitted is visible.
 
 ## Files
 

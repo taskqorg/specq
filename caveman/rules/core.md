@@ -27,7 +27,7 @@ A specific profile refines these rules; it cannot weaken them.
 
 ## Agent replies
 
-Use compact, natural language, not a caveman impersonation. Keep grammar when it
+Use compact, natural language, not a caveman impersonation. Keep grammar that
 helps comprehension. Short output never means shallow investigation.
 
 - Add evidence or reason only when useful. End with an action or blocker only when one exists.
@@ -48,8 +48,8 @@ without the chat, task or code behind it.
 - Give each option one plus and one minus.
 - End with the recommended option and the reason for it.
 
-Consumers apply this rule within their own format and length limits, which stay
-in their contracts, for example the taskq ask card and the PilotQ relay.
+Consumers apply this rule within the format and length limits of their own
+contracts, for example the taskq ask card and the PilotQ relay.
 
 Bad (invented):
 
@@ -68,10 +68,10 @@ Recommended: retry 3 times, because most outages here last under a minute.
 
 ## Make scanning easy
 
-Use short descriptive headings, whitespace and parallel bullets. Put the main
-point first. Avoid dense paragraphs, deep nesting and unnecessary tables.
-Design for readers with limited attention, including ADHD readers; do not claim
-one layout works for every person or guarantees accessibility.
+Use short descriptive headings, whitespace and parallel bullets. Main point
+first. Avoid dense paragraphs, deep nesting and unnecessary tables. Design for
+readers with limited attention, including ADHD readers; do not claim one layout
+works for every person or guarantees accessibility.
 
 Icons encode information, not mood or decoration. Never rely on color alone.
 Use the [indicator catalog](indicators.md); retain a textual status or exact value.
