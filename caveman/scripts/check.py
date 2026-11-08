@@ -16,6 +16,8 @@ for path in files:
     text = path.read_text()
     if not text.endswith('\n'):
         errors.append(f'{path.relative_to(ROOT)}: missing final newline')
+    for bare in re.findall(r'(?m)^(?:- \*\*|#+ )(?!SPECQ-)([A-Z]{1,2}\d+(?:\.\d+)?)[. ]', text):
+        errors.append(f'{path.relative_to(ROOT)}: rule ID {bare} lacks scope; use SPECQ-{bare}')
     for link in re.findall(r'\]\(([^)]+)\)', text):
         if '://' in link or link.startswith('#'):
             continue

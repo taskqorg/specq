@@ -2,10 +2,11 @@
 
 **State the change and its user impact without hiding release facts.**
 
-This profile covers commit subjects, merge-request descriptions and release or
-deploy messages. Follow the project's required commit convention, tracker
-references and release process. Do not rewrite published history to improve old
-wording. Merge-request and release text: [merge and release](merge-and-release.md).
+Covers commit subjects and the encoding shared by merge-request descriptions and
+release or deploy messages; their text rules are in
+[merge and release](merge-and-release.md). Follow the project's commit
+convention, tracker references and release process. Do not rewrite published
+history to improve old wording.
 
 ## Keep the source and sink separate
 
@@ -26,13 +27,11 @@ for the sink once, at the final output boundary:
   changes its meaning. Do not impose an arbitrary subject limit that removes
   essential meaning.
 
-## Write the right artifact
+## Commit subject: plain text
 
-### Commit subject: plain text
-
-Prefer a short, meaningful subject that says what changed and why it matters.
-Keep a project-required Conventional Commit prefix when applicable. Use a body
-for material tests, limitations, migration notes or non-obvious context.
+A short subject says what changed and why it matters. Keep a project-required
+Conventional Commit prefix. Use a body for material tests, limitations,
+migration notes or non-obvious context.
 
 Before and after (invented):
 
@@ -41,18 +40,18 @@ fix: fix issue
 fix(events): prevent localized village page crashes
 ```
 
-Avoid vague subjects such as `fix bug`, `updates`, `merge main`, or a raw merge
-branch subject. The default merge branch subject records Git history; it is not
-a human change description.
+Avoid vague subjects such as `fix bug`, `updates`, `merge main` or a raw merge
+branch subject: the default merge subject records Git history, not a human
+change description.
 
-### Merge-request description: Markdown
+## Merge-request description: Markdown
 
-See [merge and release](merge-and-release.md#merge-request-description-markdown).
+See [merge and release](merge-and-release.md).
 
-### Deploy message: rendered Telegram HTML
+## Deploy message: rendered Telegram HTML
 
-See [merge and release](merge-and-release.md#deploy-message-rendered-telegram-html).
+See [merge and release](merge-and-release.md).
 
 ## Release check
 
-See [merge and release](merge-and-release.md#release-check).
+See [merge and release](merge-and-release.md).

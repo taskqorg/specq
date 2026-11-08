@@ -9,7 +9,7 @@ Consumer contracts define platforms, commands, artifact names, paths, schemas, d
 - Publish integrity metadata and a machine-readable release manifest.
 - Verify release artifacts before publication. Failed checks block publication.
 - Define the trusted release source and who may publish.
-- Reuse a shared implementation where available; keep its identity and pinned version in the consumer contract.
+- Reuse a shared implementation where available; its identity and pin follow [shared implementations](#shared-implementations).
 
 ## Shared implementations
 
@@ -25,10 +25,10 @@ A feature in a shared implementation reaches every consumer through its pin, so 
 
 ## Calendar product release identity
 
-- Every product release uses the format `N.yymmdd.M`: N is that product’s own major under its existing compatibility policy, yymmdd is the UTC release date, and M is that product’s independent daily sequence starting at 1. Share the format, not the version or major: do not force a common major, synchronize product releases or change compatibility policy merely for numbering. Same-day M increments numerically, including 9 to 10; a new UTC day starts at 1 unless monotonicity requires a later existing identity.
+- Every product release uses the format `N.yymmdd.M`: N is that product’s own major under its existing compatibility policy, yymmdd is the UTC release date, and M is that product’s independent daily sequence starting at 1. Share the format, not the version or major: do not force a common major, synchronize product releases or change compatibility policy for numbering. Same-day M increments numerically, including 9 to 10; a new UTC day starts at 1 unless monotonicity requires a later existing identity.
 - The existing serialized release pipeline selects the maximum of the UTC floor `N.yymmdd.1` for that product’s own major, the product manifest and the highest stable product tag plus one patch. A clock rollback never downgrades a release. Tag-read, clock or source uncertainty refuses allocation; collisions never move an existing tag.
 - Allocate once per product/source and stamp that identity into every platform build, binary version, release tag, asset filename and URL, manifest/index, status, heartbeat and user interface. Do not require a Cargo bump commit, version PR or preparation task for each release. Resume only an exactly matching immutable source under the existing draft/unpublished-release contract; an already published source does not acquire a second tag.
-- Preserve existing tags/releases, current and previous installed versions, update comparison and rollback floors; do not mass-retag history. The numbering change is not protocol or API compatibility. Existing library/API/source compatibility identities and exact dependency pins remain immutable until a real relevant release requires their update. Do not invent an extra library distribution identity or repin unchanged code merely to make product numbers equal; a real new library product release follows the shared format with its own major and compatibility policy.
+- Preserve existing tags/releases, current and previous installed versions, update comparison and rollback floors; do not mass-retag history. The numbering change is not protocol or API compatibility. Existing library/API/source compatibility identities and exact dependency pins remain immutable until a real relevant release requires their update. Do not invent an extra library distribution identity or repin unchanged code to make product numbers equal; a real new library product release follows the shared format with its own major and compatibility policy.
 - Each consumer inventories every version-producing and version-consuming path, including CI, scripts, fixtures, update/rollback and UI, and proves UTC/day rollover, daily numbering, immutable collision refusal, legacy upgrade/rollback and one tag/build/index/status identity.
 
 ## Update
@@ -60,8 +60,8 @@ Install once, then leave it. The service maintains itself.
 
 ## Release task
 
-- A release task ends when its accepted source PR is merged to main and the release branch is fast-forwarded to that merge commit. The pipeline allocates the calendar identity; no separate version PR or bump commit is required. Acceptance names the source and release-branch commit, nothing after it.
-- Tagging, release assets and host updates follow the release-branch push automatically ([self-maintenance](#self-maintenance)). The task card has no tag, release-run or heartbeat condition, and no task or PM action starts them.
+- A release task ends when its accepted source PR is merged to main and the release branch is fast-forwarded to that merge commit ([delivery speed](#delivery-speed), [calendar identity](#calendar-product-release-identity)). Acceptance names the source and release-branch commit, nothing after it.
+- The task card has no tag, release-run or heartbeat condition, and no task or PM action starts them; they follow the release-branch push ([self-maintenance](#self-maintenance)).
 - The worker does not produce rollout evidence. Rollout evidence is the version each host reports in its heartbeat.
 - The PM verifies rollout from host heartbeats and the DashQ hosts view.
 - A follow-up task is justified only when a host stays behind the released version for more than one update interval. It names the host, the reported version and the observed interval.

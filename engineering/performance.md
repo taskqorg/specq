@@ -1,6 +1,6 @@
 # Performance and capacity
 
-Rules for tools that must stay responsive within fixed resources. Performance is observed in the product's own telemetry ([profiling](profiling.md)), not gated.
+Rules for tools that must stay responsive within fixed resources; performance is observed in the product's own telemetry ([profiling](profiling.md)).
 
 ## Observe, do not gate
 
@@ -10,10 +10,10 @@ Rules for tools that must stay responsive within fixed resources. Performance is
 
 ## Load and optimization tasks
 
-A dedicated load or optimization task is the only place a performance target applies. It follows [Report](profiling.md#report): the same report before and after the change.
+A dedicated load or optimization task is the only place a performance target applies. It shows the same [report](profiling.md#report) before and after the change.
 
 - The task states its load: concurrent users or requests per second, error rate and hold duration. A burst is not a result; a sustained hold is.
-- Name the environment limits with the result: CPU, memory, file descriptors, connection tracking, load generator. A limit of the environment is not a limit of the implementation, and results are comparable only within one environment.
+- Name the environment limits with the result: CPU, memory, file descriptors, connection tracking, load generator. An environment limit is not an implementation limit; results compare only within one environment.
 - Its target is at or below 70% sustained CPU on the hold. p99 rises first; treat it as the early signal.
 
 ## Order of work

@@ -4,11 +4,11 @@ A committed request summary proves its observed incremental counts. It does not 
 
 ## Typed descriptor
 
-The optional `request_coverage` object belongs only to `product: taskq`, `kind: requests`, `operation: requests.summary`, `source: service` in the existing `coreq-observation/1` record. No other context admits it. Version1 has exactly these keys:
+The optional `request_coverage` object belongs only to `product: taskq`, `kind: requests`, `operation: requests.summary`, `source: service` in the existing `coreq-observation/1` record. No other context admits it. Version 1 has exactly these keys:
 
 | Key | Type and meaning |
 | --- | --- |
-| `version` | Integer1. Other versions are refused. |
+| `version` | Integer 1. Other versions are refused. |
 | `epoch` | 32 lowercase hex characters: an opaque counter epoch bound to the original service lifecycle receipt, not a PID alone. |
 | `sequence` | Positive u64, contiguous within that epoch. |
 | `start_ms`, `end_ms` | Unsigned UTC milliseconds no larger than i64::MAX, with end >= start. Unknown boundaries may be null only when state is unknown. |
@@ -23,7 +23,7 @@ The immutable logical batch identity uses the existing identified Event seam wit
 
 The producer initializes the epoch boundary before counting requests and serializes interval cuts, counts and sequence in one state lock. Admission refusal retains the same pending batch and its boundary; once enqueued, its identity and contents cannot change. Enqueue is not commit. Only retained committed records with matching original lifecycle identity, adjacent sequences and equal previous-end/next-start boundaries can establish their exact measured interval. Missing parts, loss, pruning, poison, reset, unknown boundaries or an unknown final tail keep completeness unknown. Current health cannot repair an earlier gap. Descriptor shape validation alone proves none of these runtime facts.
 
-A service emits a positive empty summary at its actual interval boundary through the same path. This changes service empty suppression; it does not infer zero from silence. CLI positive-empty behavior, incremental counts and observed-only legacy reports stay unchanged. A late304 across a legacy summary boundary remains an estimated billed count unless independently bound final-response evidence establishes otherwise.
+A service emits a positive empty summary at its actual interval boundary through the same path. This changes service empty suppression; it does not infer zero from silence. CLI positive-empty behavior, incremental counts and observed-only legacy reports stay unchanged. A late 304 across a legacy summary boundary remains an estimated billed count unless independently bound final-response evidence establishes otherwise.
 
 ## Compatible rollout
 

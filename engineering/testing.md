@@ -32,7 +32,9 @@ Keep the candidate revision, command, result and relevant seed, events or native
 ## Time budget
 
 - The project defines one command for its selected merge gate and a numeric elapsed-time budget on a named runner. Measure build, setup and execution, plus repeat runs caused by instability. The core is deterministic and needs neither a human nor a paid service.
-- Remove redundant runs, repeated setup and unnecessary external dependencies before adding parallelism. Before proposing a scheduler, establish what existing direct shells, native subagents, fixture descendants and remote execution already cover; unknown coverage is not a scheduler requirement. Replace fixed sleeps with bounded completion signals. Process fixtures own their descendants and finish cleanup on timeout or failure; a direct-child exit alone does not prove cleanup. Repair flaky checks; retries until green are not proof. Exceeding the budget requires diagnosis, not silently skipping required protection.
+- Remove redundant runs, repeated setup and unnecessary external dependencies before adding parallelism. Before proposing a scheduler, establish what existing direct shells, native subagents, fixture descendants and remote execution already cover; unknown coverage is not a scheduler requirement.
+- Replace fixed sleeps with bounded completion signals. Process fixtures own their descendants and finish cleanup on timeout or failure; a direct-child exit alone does not prove cleanup.
+- Repair flaky checks; retries until green are not proof. Exceeding the budget requires diagnosis, not silently skipping required protection.
 
 ## When evidence disagrees
 

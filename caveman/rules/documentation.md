@@ -15,10 +15,10 @@ Start with purpose or decision. Add only sections the document needs:
 4. Failure, rollback or limitation.
 5. References for deeper detail.
 
-Use descriptive headings, short paragraphs and one idea per paragraph or bullet. Number steps
-only when order matters. Keep nesting shallow. Use tables only for genuine
-comparisons; use lists on narrow screens. Code blocks contain runnable, exact
-commands; mark placeholders and examples explicitly.
+Use descriptive headings and one idea per paragraph or bullet. Number steps only
+when order matters. Keep nesting shallow. Use tables only for genuine
+comparisons; lists on narrow screens. Code blocks hold runnable, exact commands;
+mark placeholders and examples explicitly.
 
 ## Density without ambiguity
 
