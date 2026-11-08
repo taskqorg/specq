@@ -18,6 +18,10 @@ Each adapter implements the full trait. An operation that a runtime cannot suppo
 | `launch` | Start a run from ordered input parts (text and images), working directory, abstract permission policy, tools and instructions. |
 | `resume` | Continue an existing session by its opaque session id. |
 | `input` | Send further user input to a running session. |
+| `respond` | Answer an original pending approval or question through its typed occurrence, without a new turn or grant change. |
+| `steer` | Send input to the owned active turn; queued delivery is not observed application. |
+| `compact` | Request supported native compaction; acknowledgment is not completion. |
+| `set_option` | Request a supported native model or session option under unchanged account and permission authority. |
 | `cancel` | Stop a run; the result states whether it stopped. |
 | `poll` | Return the run state: running, finished, failed or unknown. |
 | `report` | Return the final result text and outcome of a finished run. |
@@ -40,6 +44,22 @@ Each adapter implements the full trait. An operation that a runtime cannot suppo
 - `progress` events have one meaning across runtimes. A product never parses a native record and never replies to a native protocol request. An event a runtime cannot produce stays absent, never invented.
 - Product tools reach every runtime over MCP, the one tool boundary. Native tool protocols of one runtime are not product interfaces.
 - A session under a protected host stays an explicit capability, because its authority comes from that host, not from the adapter.
+
+## Live control
+
+Accepted decision: [typed live-worker control](https://github.com/taskqorg/specq/issues/132). AgentQ owns the [native operation contracts](https://github.com/taskqorg/agentq/blob/main/docs/spec/RUNTIME.md#live-worker-control).
+
+- A launch declares its control needs before spawn. The adapter selects a compatible transport; descriptors and callable methods agree. Missing, unknown or unsupported capability refuses before submission, without a transport restart or widened permissions.
+- Replies bind the original run, session, turn, generation and request occurrence. Only offered choices or typed answers are accepted, once. Duplicate, foreign, late or uncertain replies refuse; no automatic approval or callback reconstruction.
+- Steering preserves the original active turn. It neither interrupts nor creates a replacement turn. Native queueing, write acknowledgment and observed consumption are distinct results.
+- Compaction and option changes retain native validation, SessionStore authority, the original account and permission policy. Acknowledgment does not prove completed compaction or model use.
+- Uncertain delivery fences replay and further input. Recovery observes retained evidence only; owner loss, cancellation and write uncertainty retain their named refusal and cleanup boundaries.
+- Protected-host authority remains independent. Request and answer content is private session data, not telemetry. Shared controls add no grant, timeout, cap, retry or grace period.
+- Qualification checks descriptor/method agreement, occurrence binding, duplicate/late replies, cancellation, owner loss, uncertain writes and protected authority. Scripted checks are not versioned native approval or active-turn proof.
+
+## Consumer adoption
+
+Use the shared [runtime release adoption note](agent-runtime-adoption.md). A pin, release build or healthy service does not establish a real product worker lifecycle.
 
 ## Step history and archive
 
