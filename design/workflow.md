@@ -11,7 +11,7 @@ Entry point for collaborative product and interface work. Adopt this workflow an
 
 ## Rule homes
 
-Each rule has one [canonical home](../engineering/principles.md#rule-homes); project documents link shared rules. Corrections that reveal a reusable principle follow [improve shared rules](../engineering/spec-first.md#improve-shared-rules). Dashboard and widget work also follows [W1–W15](dashboards.md).
+Each rule has one [canonical home](../engineering/principles.md#rule-homes); project documents link shared rules. Corrections that reveal a reusable principle follow [improve shared rules](../engineering/spec-first.md#improve-shared-rules). Dashboard and widget work also follows [SPECQ-W1–W15](dashboards.md).
 
 ## Iteration loop
 
@@ -24,7 +24,7 @@ Use the next incomplete step. Scale the work to the change; a small correction n
 5. **Record the choice.** Update canonical requirements before the next implementation/prototype revision. Mark proposals separately. Approval of structure does not automatically approve styling or unresolved policies.
 6. **Refine a representative view.** Prove density, readable type, alignment and direct actions at actual size. Then apply the chosen rules across all affected levels and states.
 7. **Complete the design package.** Connect use cases, requirements, references, assets, fixtures and acceptance checks. Preserve existing functions or record approved removals. Resolve required choices before dependent implementation.
-8. **Implement and review.** Follow [F1–F6](implementation-fidelity.md). Compare actual product behavior and pixels with the approved reference; fix shared causes, preserve useful improvements and recheck affected scenarios.
+8. **Implement and review.** Follow [SPECQ-F1–F6](implementation-fidelity.md). Compare actual product behavior and pixels with the approved reference; fix shared causes, preserve useful improvements and recheck affected scenarios.
 
 Before closing an iteration, trace material requests through existing decision IDs, specifications, references, implementation and evidence. Report missing links and unresolved decisions; do not create a duplicate ledger or claim unimplemented links are complete.
 
@@ -32,7 +32,7 @@ After each iteration report: changed decision, canonical location, evidence and 
 
 ## Operator design default
 
-Use [D1–D14](operator-ui.md) as the preference profile and its [review checklist](operator-ui.md#review-each-change).
+Use [SPECQ-D1–D14](operator-ui.md) as the preference profile and its [review checklist](operator-ui.md#review-each-change).
 
 ## Process every correction
 
@@ -53,7 +53,7 @@ Do not turn every bug into policy. Existing-rule violations need fixes; repeated
 
 ## Handoff and acceptance
 
-Keep the package index and deliver the [acceptance package](implementation-fidelity.md#f5-acceptance-package); split builder, reviewer and owner work per [F6](implementation-fidelity.md#f6-build-polish-accept). The implementer continues from project state without the chat ([agent integration](../engineering/rule-delivery.md#agent-integration)). Report implemented, tested, published, deployed and verified separately ([core](../caveman/rules/core.md#write)).
+Keep the package index and deliver the [acceptance package](implementation-fidelity.md#specq-f5-acceptance-package); split builder, reviewer and owner work per [SPECQ-F6](implementation-fidelity.md#specq-f6-build-polish-accept). The implementer continues from project state without the chat ([agent integration](../engineering/rule-delivery.md#agent-integration)). Report implemented, tested, published, deployed and verified separately ([core](../caveman/rules/core.md#write)).
 
 ## End-to-end simplicity
 

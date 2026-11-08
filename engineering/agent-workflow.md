@@ -27,7 +27,7 @@ A spec rule records an owner decision; its checks protect that behavior.
 
 - Changing decided behavior or weakening its protection requires the named owner decision. Removing duplicate assertions while retaining the same failure detection follows [Testing](testing.md#keep-or-remove): name the retained check; no new owner decision is required.
 - Otherwise the worker does not change the decided behavior or weaken its protection; it asks the owner, even when the task acceptance conflicts with the rule. A failing guard is fixed in the code, never by rewriting the guard ([Testing](testing.md#when-evidence-disagrees)).
-- Projects enforce this rule with a rule-change gate: CI fails for unnamed rule changes. A changed guarding assertion names either the approved rule change or the retained check that detects the same failure; review validates that claim. The gate script and the rule-ID syntax stay in each consumer contract; pilot: [taskq#1794](https://github.com/taskqorg/taskq/issues/1794).
+- Projects enforce this rule with a rule-change gate: CI fails for unnamed rule changes. A changed guarding assertion names either the approved rule change or the retained check that detects the same failure; review validates that claim. The gate script stays in each consumer contract and reads the shared [rule ID](contracts.md#rule-ids) form; pilot: [taskq#1794](https://github.com/taskqorg/taskq/issues/1794).
 
 ## Task intake
 

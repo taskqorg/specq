@@ -7,11 +7,21 @@ A project contract (`<project>.md`) is the one root file of a project's decision
 A contract has these parts, in this order:
 
 1. Title (H1) and purpose: one paragraph on what the product does and does not do.
-2. `Principles` (or `Rules`): the mandatory rules, most important first. Each one starts with a stable ID, such as `R1`.
+2. `Principles` (or `Rules`): the mandatory rules, most important first. Each one starts with a stable [rule ID](#rule-ids).
 3. Product sections, one per area, most important first. Inside a section, mandatory rules come first and detail follows.
 4. Linked detail: one line per linked file, its path plus a one-line summary.
 
 Headings alone read as a usable outline ([Documentation review](../caveman/rules/documentation.md#review)). Headings are descriptive and unique, skip no level, and are never generic, such as `Notes` or `Other`.
+
+## Rule IDs
+
+Every mandatory rule starts with a stable ID of the form `<SCOPE>-<prefix><n>`, for example `SPECQ-D7` or `TASKQ-R12` (invented). The ID says where the rule lives before anyone reads it.
+
+- Scope is the repository name in capitals that owns the rule: `SPECQ` for a shared rule, the project name for its contract and linked pages. `SPECQ-` is shared and binding everywhere; any other scope is one project's decision ([rule homes](principles.md#rule-homes)).
+- Prefix is one or two capital letters for the page or area. A scope lists its prefixes in its index ([specq prefixes](../specq.md#rule-prefixes)); one prefix has one page. The number is sequential within a prefix and never reused; a deleted rule leaves a gap. A sub-rule appends `.<n>`, for example `SPECQ-M3.1` (invented).
+- Hyphen is the only separator. It survives Markdown anchors, grep, file names and issue titles; a dot would collide with sub-rule numbering and sentence ends.
+- The full form appears at the definition and in every reference, including inside the owning repository. An attempt reads injected shared files and the project contract in one conversation, so a bare `D1` is ambiguous. A range names the scope once: `SPECQ-D1–D14`.
+- A bare ID without scope refers to nothing; review rejects it. [`check.py`](../caveman/scripts/check.py) fails a specq rule defined without `SPECQ-`.
 
 ## Writing
 
@@ -55,7 +65,7 @@ Display limits are format rules, not budgets: for example, title length, line le
 - A file above the 70% target and at or below its cap gets one marker line, `COMPACT: <path>: <value> <bytes|lines> > target <target> (cap <cap>)`, and does not fail the lint. A project check turns each `COMPACT:` line into one compaction task ([size budgets](#size-budgets)).
 
 - Checks: cap, headroom, line length, ISO dates, decision-log phrases, and the outline: one H1 first, a purpose paragraph, `Principles` or `Rules` as the first section, no skipped level, no duplicate, generic or history heading.
-- Not checked: priority order, rule IDs and whether a task number is needed. Review judges these.
+- Not checked: priority order, rule ID numbering and whether a task number is needed. Review judges these.
 - specq runs the lint on [specq.md](../specq.md) inside `caveman/scripts/check.py`, in CI.
 
 A project runs the lint from its own check at a pinned specq commit. Example GitHub Actions steps (invented placeholders):

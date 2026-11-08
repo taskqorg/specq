@@ -85,7 +85,7 @@ Request summaries distinguish observed counts from complete intervals using the 
 - Each installation has one CoreQ local store. Products write to it and to nothing else.
 - One CoreQ shipper sends local records to the global store. It keeps a durable cursor per store, so a restart neither loses nor duplicates a record.
 - The local store prunes a record only after the shipper's cursor has passed it.
-- DashQ D11 on pds18 is the only global store and the only reader. Dashboards, reports and exports read it; no derived copy is a source of truth.
+- DASHQ-D11 on pds18 is the only global store and the only reader. Dashboards, reports and exports read it; no derived copy is a source of truth.
 - Langfuse is not part of the contract and is deleted.
 
 ### Cost
@@ -118,8 +118,8 @@ Each repository changes in this order. A deletion waits until the new path shows
 1. specq: this contract.
 2. coreq: observation schema, inherited context, local store, shipper with durable cursors.
 3. agentq: `agent.turn` and `agent.call` capture in agentq-runtime; hooks for manual and PM sessions. Then delete the agentq store and OTLP export.
-4. Products (taskq, pilotq, assetq, serverq): write observations to the local CoreQ store; serverq checks become observations. Then delete the PilotQ store, the taskq sync and parser and taskq R46.
-5. dashq: D11 as the global store and reader, read-time price table, errors query, question tests. Then delete Langfuse; it needs no parity window, only the new reader showing records.
+4. Products (taskq, pilotq, assetq, serverq): write observations to the local CoreQ store; serverq checks become observations. Then delete the PilotQ store, the taskq sync and parser and TASKQ-R46.
+5. dashq: DASHQ-D11 as the global store and reader, read-time price table, errors query, question tests. Then delete Langfuse; it needs no parity window, only the new reader showing records.
 
 ## Agent session archive
 
