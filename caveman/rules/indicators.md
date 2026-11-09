@@ -1,8 +1,9 @@
 # Indicators
 
 Use one visual family per metric. Keep direction consistent. Prefer a familiar
-Unicode symbol to a custom asset; emoji appearance varies across clients.
-Do not recolor standard emoji through unsupported text formatting.
+Unicode symbol to a custom asset; emoji appearance varies across clients, so
+verify glyphs and spacing per output channel. Do not recolor standard emoji
+through unsupported text formatting.
 
 ## Discrete operational status
 
@@ -32,9 +33,9 @@ sign halfway through its scale. Keep the exact value beside the quantized icon.
 - 80–89%: `😣`
 - 90% and above: `🥵`
 
-This describes occupancy, not measured loss of model intelligence. Use the same
-displayed percentage as the runtime; do not introduce independent rounding.
-Missing context may be omitted when the renderer cannot provide it.
+This describes occupancy, not measured loss of model intelligence. Use the
+runtime's displayed percentage without independent rounding. Omit context the
+renderer cannot provide.
 
 ### Weekly quota remaining
 
@@ -55,10 +56,37 @@ Unknown data is `? unavailable`, never `🌑 0%`. Retained stale data carries
 model · FACE context-used% · MOON quota-remaining% ↻ reset
 ```
 
-`↻` means quota reset, not server restart. Round partial days up at 24 hours or
-more, partial hours up below 24 hours; show `<1h` below one hour. Do not imply
-that quota usage determines reset time. Use `YYYY-MM-DD HH:mm UTC` when an exact
-cross-timezone time is required; omit dates when they do not affect interpretation.
+`↻` means quota reset, not server restart. The reset reads as a
+[countdown](#time). Do not imply that quota usage determines reset time.
 
-Footer layout must be verified for each output channel; do not assume identical
-glyphs or spacing across clients.
+## Time
+
+Every surface writes time the same way: UI, tray, CLI, notifications, reports.
+Relative time leads; the exact time sits beside it or on hover. One function per
+product renders each form below; surfaces do not format time themselves.
+
+Countdown to a future moment. Minutes matter only inside the last five hours.
+Round up, so the moment never arrives later than the number says.
+
+| Time left | Reads | Example |
+|---|---|---|
+| 24 h or more | whole days | `3d` |
+| 5 h to 24 h | whole hours | `21h` |
+| under 5 h | `H:MM` | `4:12`, `0:47` |
+| none | `now` | `now` |
+
+Age of a past moment. Use the largest whole unit, rounded down, one unit only:
+`<1m`, `5m`, `2h`, `3d`. Add `ago` unless a label or column already says so. A
+negative age reads `<1m`.
+
+Exact time:
+
+- For one viewer: viewer-local, 24-hour, `Thu Nov 05, 14:30`. Add the year when
+  it is not the current year.
+- Across hosts or time zones, or in board comments, logs and public text:
+  `YYYY-MM-DD HH:mm UTC`.
+- For machines: RFC 3339 in UTC, `2026-11-05T14:30:00Z`, or integer epoch.
+  Never parse a display form back.
+
+Omit the date when it does not affect interpretation. An unknown time reads
+`? unavailable`, never `0:00`, `now` or an empty cell.

@@ -9,7 +9,27 @@ Consumer contracts define platforms, commands, artifact names, paths, schemas, d
 - Publish integrity metadata and a machine-readable release manifest.
 - Verify release artifacts before publication. Failed checks block publication.
 - Define the trusted release source and who may publish.
-- Reuse a shared implementation where available; keep its identity and pinned version in the consumer contract.
+- Reuse a shared implementation where available; its identity and pin follow [shared implementations](#shared-implementations).
+
+## Shared implementations
+
+A feature in a shared implementation reaches every consumer through its pin, so the pin stays exact and stays current.
+
+- Each new tag of a shared implementation opens a pin update in each consumer automatically. A green merge queue merges it. A consumer whose pin is part of an approved signed or qualified identity names that exception in its contract, and its update goes through review.
+- A consumer that reaches one shared implementation both directly and through another pins the version the other resolves, and updates both in one change.
+- Merge-queue CI of a shared implementation builds and tests each consumer's main branch against the candidate. A consumer it breaks blocks the merge. The shared implementation's contract lists the checked consumers. A consumer behind on the pin joins that list once it has caught up.
+- The manifest holds the pin. A contract points at the manifest and does not repeat the version.
+- A breaking change ships with the consumer changes it needs.
+- A pin update does not adopt a new API. A task that adds a capability consumers must call lists those consumers in its acceptance, and it is done when they use it.
+- A merged pin update is a release candidate; it reaches hosts by [release](#delivery-speed).
+
+## Calendar product release identity
+
+- Every product release uses the format `N.yymmdd.M`: N is that product’s own major under its existing compatibility policy, yymmdd is the UTC release date, and M is that product’s independent daily sequence starting at 1. Share the format, not the version or major: do not force a common major, synchronize product releases or change compatibility policy for numbering. Same-day M increments numerically, including 9 to 10; a new UTC day starts at 1 unless monotonicity requires a later existing identity.
+- The existing serialized release pipeline selects the maximum of the UTC floor `N.yymmdd.1` for that product’s own major, the product manifest and the highest stable product tag plus one patch. A clock rollback never downgrades a release. Tag-read, clock or source uncertainty refuses allocation; collisions never move an existing tag.
+- Allocate once per product/source and stamp that identity into every platform build, binary version, release tag, asset filename and URL, manifest/index, status, heartbeat and user interface. Do not require a Cargo bump commit, version PR or preparation task for each release. Resume only an exactly matching immutable source under the existing draft/unpublished-release contract; an already published source does not acquire a second tag.
+- Preserve existing tags/releases, current and previous installed versions, update comparison and rollback floors; do not mass-retag history. The numbering change is not protocol or API compatibility. Existing library/API/source compatibility identities and exact dependency pins remain immutable until a real relevant release requires their update. Do not invent an extra library distribution identity or repin unchanged code to make product numbers equal; a real new library product release follows the shared format with its own major and compatibility policy.
+- Each consumer inventories every version-producing and version-consuming path, including CI, scripts, fixtures, update/rollback and UI, and proves UTC/day rollover, daily numbering, immutable collision refusal, legacy upgrade/rollback and one tag/build/index/status identity.
 
 ## Update
 
@@ -30,21 +50,31 @@ Install once, then leave it. The service maintains itself.
 
 ## Delivery speed
 
-- Development and release are separate channels. The main branch is the development channel; the release branch (`live` unless the consumer contract names another) is the release channel.
-- A merge to main is a development candidate. The development host builds it locally from source and runs it within minutes; no release run, tag or host rollout waits on it. The gates are the checks selected by [Testing](testing.md#run-policy-by-stage).
-- Live acceptance of a merged change runs on the development build right after merge. Tasks depend on merge or close, never on a release; a check that needs a released artifact on every host goes to the next release task.
+- The main branch is the development line. The release branch (`live` unless the consumer contract names another) is what hosts run.
+- A merge to main is a release candidate. Every host installs releases the same way; no host builds from source to get a change sooner. The gates are the checks selected by [Testing](testing.md#run-policy-by-stage).
+- Live acceptance of a merged change runs on the release that holds it. Tasks depend on merge or close, never on a release; a check that needs a released artifact on every host goes to the next release task.
 - A release fast-forwards the release branch to a main commit that already passed merge-queue CI. That push tags, publishes and rolls out to every host automatically. The owner decides when to release; that push is the only manual step.
-- One approval per task, recorded in the task contract ([approval boundaries](agent-workflow.md#approval-boundaries)); no approval per step and no manual queue between merge and the development build.
+- One approval per task, recorded in the task contract ([approval boundaries](agent-workflow.md#approval-boundaries)); no approval per step.
 - Rollout and rollback are bounded in minutes and scripted; rollback is one command that activates the preserved previous version.
 - Measure lead time from merge to running version, deployment frequency, change failure rate and time to restore. A slow or manual step in that path is a defect to remove, not a routine to keep.
 
 ## Release task
 
-- A release task ends when its version PR is merged to main and the release branch is fast-forwarded to that merge commit. Acceptance names the version bump and the release-branch commit, nothing after it.
-- Tagging, release assets and host updates follow the release-branch push automatically ([self-maintenance](#self-maintenance)). The task card has no tag, release-run or heartbeat condition, and no task or PM action starts them.
+- A release task ends when its accepted source PR is merged to main and the release branch is fast-forwarded to that merge commit ([delivery speed](#delivery-speed), [calendar identity](#calendar-product-release-identity)). Acceptance names the source and release-branch commit, nothing after it.
+- The task card has no tag, release-run or heartbeat condition, and no task or PM action starts them; they follow the release-branch push ([self-maintenance](#self-maintenance)).
 - The worker does not produce rollout evidence. Rollout evidence is the version each host reports in its heartbeat.
 - The PM verifies rollout from host heartbeats and the DashQ hosts view.
 - A follow-up task is justified only when a host stays behind the released version for more than one update interval. It names the host, the reported version and the observed interval.
+
+## Host requirements
+
+A missing or outdated host tool is a product defect, not a host patch.
+
+- The consumer contract lists every external tool and library the product runs on a host (for example `gh`, `git`, `codex`, `claude`, a system library), each with its minimum version and what needs it.
+- The product's doctor or selftest checks each listed requirement on the installed host. A missing tool or a version below the minimum fails with the tool, the found version, the required minimum and the fix.
+- Install, onboarding and the update check bring listed requirements up to their minimum on hosts the product manages. When they cannot, they report the exact step and the doctor stays failed.
+- A change that starts using a new tool, flag or API raises the listed minimum in the same change. Tests cover the oldest supported version.
+- A failed call to an external tool is logged with the command and its error; it never reads as an empty result.
 
 ## Service
 

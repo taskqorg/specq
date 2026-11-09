@@ -1,56 +1,65 @@
 # Agent workflow
 
-How an agent takes a task from request to verified outcome. Projects keep their own commands, gates and approval owners in their contract.
+How an agent takes a task from request to verified outcome. Projects keep their own commands, gates and approval owners in their contract. Rules for some attempts only live in [task planning](task-planning.md), [review](review.md) and [rule delivery](rule-delivery.md).
 
 ## Ownership
 
-- The human owns product intent, architecture, risk, approvals and final acceptance.
+- The human owns product intent, architecture, risk, approvals and decided rules. AI review accepts a task against its acceptance; the owner joins only through an ask the AI cannot resolve, such as a visual acceptance ([Testing](testing.md#keep-or-remove)).
 - One outcome has one owner, one writer, one worktree and one acceptance contract. Parallel writers use isolated worktrees and hand off through immutable commits, never shared uncommitted state.
+- Moving a task to another owner stops the old one first: stop its queue and running attempts, then hand it over. A second writer never starts on a task the queue can still dispatch.
 - Delegate only when independent work gains from it. Workers do not fan out; add at most one read-only reviewer when risk warrants it.
 
 ## Attempt context
 
-- The runner injects the project contract and the shared core at each attempt start. The shared core applies to every attempt: [principles](principles.md), [spec first](spec-first.md), [Ponytail](ponytail.md), this file, [use cases](use-cases.md), [verification](verification.md), [security](security.md), [Caveman core](../caveman/rules/core.md), [documentation](../caveman/rules/documentation.md) and [change communication](../caveman/rules/changes.md).
-- Every other shared file is linked from the injected index and is not injected. The agent loads it on demand when the task touches its area. Rule-repository contributor files (its `README.md`, `AGENTS.md`, `SECURITY.md`, scripts, vendor snapshots and audits) are neither injected nor indexed.
-- A header names the injected revisions and states precedence: the project contract overrides shared rules where they conflict.
-- Project `docs/` are not injected. The index lists them too: one line per file, path plus a one-line summary.
-- A resume repeats the header and the index, not file bodies already in the conversation.
-- Delivery uses the attempt brief only; no runtime-specific skill is required.
-- Acknowledging the injected rules is not evidence. Apply them to the work; evidence follows [verification](verification.md).
+Acknowledging the injected rules is not evidence. Apply them to the work; evidence follows [verification](verification.md). Delivery: [rule delivery](rule-delivery.md#attempt-context).
 
 ## Prepare the task
 
-- For a substantial behavior change, walk the relevant [scenarios](use-cases.md) to uncover decisions missing from the request. Investigate facts in code and current state; bring only unresolved choices that change behavior, authority, cost or risk to the owner, with recommendations.
-- Group independent choices in a short round; ask dependent questions after their prerequisites are settled. Reuse accepted answers. Resolve material choices before dependent implementation; routine changes need no interview or extra approval round.
-- Split functional work into small, independently verifiable user scenarios across the required layers, with only real blocking dependencies. Size by a coherent outcome and manageable context, not a fixed token quota. Research and mechanical migrations may use a different split when each step has a clear check and preserves compatibility.
-- One task is one user-visible outcome; its steps, hosts and surfaces are acceptance items, not tasks. A batch of fixes to the same screen, module or file goes to one task and one session, and a new fix for that surface joins its open task instead of starting a parallel writer. A repeated check (a probe per host, a periodic measure) is one recipe run, not one task per run.
-- A gap found in review is fixed inside the task, up to three review rounds; a task stays open until its outcome is proved rather than spawning follow-up tasks for its own acceptance ([review](#review)).
-- Waiting is not a question: a task that needs an owner action, a release or another task's close is parked with its dependency and resumes on it; an ask is only for a product, scope or spec-rule choice the agent cannot make. Technical choices inside the contract are the agent's.
-- A task whose outcome is a decision (research, design, proposal) ends with an ask, not with the decision in its result text: each open choice as options with a recommendation. The answer records the decision; the task then closes or files the dependent tasks. A closed task never buries a decision. If one slips through (a design page marked for approval, rules left inactive, choices deferred to the owner), whoever supervises the board delivers it the same way before any dependent task starts.
-- Acceptance follows the [run policy](testing.md#run-policy-by-stage); it names evidence for changed behavior and its risks without adding unrelated snapshots or platform matrices.
+See [task planning](task-planning.md#prepare-the-task).
+
+## Experiment tasks
+
+See [task planning](task-planning.md#experiment-tasks).
+
+## Decided rules
+
+A spec rule records an owner decision; its checks protect that behavior.
+
+- Changing decided behavior or weakening its protection requires the named owner decision. Removing duplicate assertions while retaining the same failure detection follows [Testing](testing.md#keep-or-remove): name the retained check; no new owner decision is required.
+- Otherwise the worker does not change the decided behavior or weaken its protection; it asks the owner, even when the task acceptance conflicts with the rule. A failing guard is fixed in the code, never by rewriting the guard ([Testing](testing.md#when-evidence-disagrees)).
+- Projects enforce this rule with a rule-change gate: CI fails for unnamed rule changes. A changed guarding assertion names either the approved rule change or the retained check that detects the same failure; review validates that claim. The gate script stays in each consumer contract and reads the shared [rule ID](contracts.md#rule-ids) form; pilot: [taskq#1794](https://github.com/taskqorg/taskq/issues/1794).
+
+## Task intake
+
+See [task planning](task-planning.md#task-intake).
+
+## Queue flow
+
+Every wait has an automatic exit.
+
+- No free-text wait: a worker that cannot finish files the blocker as a task and links it with `Depends on`; the task resumes when the blocker closes. Parking a task with `later` stays an owner or PM decision.
+- A broken check, script or workflow in the task's own repository is not an external blocker: fix it in the same PR when small, otherwise file it as a task and depend on it.
+- A task with no movement for 2 hours (held draft, ask, later, waiting on a closed dependency, doing without a heartbeat) is shown as stuck and notified. Stuck detection observes and never gates.
+- Technical choices are the worker's own: take the recommended option. An ask is only for a product, scope or visual choice. Review rejects only against the task's acceptance and never adds new proof demands.
 
 ## Runtime preference
 
-Design, UI, visual and image work runs on codex; all other work (code, infrastructure, release, host, docs, research) runs on claude. Every review runs on claude, including review of codex work. The rule is hard: work waits for its runtime instead of moving to the other one. How a task states it belongs to the consumer contract.
+See [task planning](task-planning.md#runtime-preference).
 
 ## Work cycle
 
 1. Inspect the relevant code, contract and current state. Discovery stays inside the exact project or worktree.
 2. Implement the smallest coherent change ([Ponytail](ponytail.md)).
 3. Run checks selected under [Testing](testing.md#run-policy-by-stage) while iterating.
-4. Freeze the diff and run the project's selected canonical gate once. Rerun only when changes, failures or invalidated evidence require it.
-5. Review only the frozen result when review is warranted, using the two axes below.
+4. Freeze the diff and run the applicable project-selected candidate gate once under [Testing](testing.md#run-policy-by-stage). Rerun only when changes, failures or invalidated evidence require it.
+5. Review only the frozen result when review is warranted, using the two axes of [review](review.md#review).
 6. Report the actual outcome with its evidence ([verification](verification.md)).
 
 If the same command or failure repeats twice, stop and change strategy. Dispatch async work once and wait for its completion signal; do not poll or redispatch healthy work.
 
 ## Review
 
-- Report task fit and implementation quality separately: missing, incorrect or unrequested behavior versus concrete standards violations and maintenance risks. Neither result substitutes for the other.
-- Distinguish binding violations from judgement calls. A code smell alone is not a rejection; follow the project's acceptance rules. Tool-enforced rules need no duplicate manual checklist.
-- A deferred decision without an ask is a task-fit gap: a research, design or proposal task is not done until its open choices are asked.
-- Report every gap in one pass over the whole result. A later round checks only the requested fixes and their direct effects; a new finding on unchanged lines is a separate task or a note, not a rejection.
-- Two axes do not require two agents. Keep safety, compatibility and architectural constraints available to the implementer; load detailed review guidance when needed.
+See [review](review.md#review).
 
 ## Approval boundaries
 
@@ -62,11 +71,6 @@ Done means the requested user-visible outcome exists and its executable evidence
 
 ## Learn from friction
 
-After repeated rework, prolonged diagnosis or a material owner correction, briefly inspect the relevant attempt evidence: time lost or error, cause, smallest remedy and how to verify it. Skip this for routine work; reuse the task or result rather than adding a report file or completion gate.
-
-- Check whether an existing check or navigation pointer is missing, disconnected or broken before adding another.
-- Prefer a deterministic check for a mechanically detectable mistake; reserve prose for judgement and decisions. Inspect tool cost and missing information when they caused the friction.
-- Propose only evidence-backed improvements, most consequential first. Fixes within the authorized task proceed normally; changes to shared decisions follow [spec first](spec-first.md#improve-shared-rules). Do not auto-apply speculative findings or expand access.
-- A remedy that changes how work is done lives in the owning specification or a check, never only in agent memory. Agent memory keeps private and host facts and a pointer to the rule.
+See [review](review.md#learn-from-friction).
 
 Source: [Matt Pocock skills, v1.3.1](https://github.com/mattpocock/skills/tree/v1.3.1), adapted to shared ownership and acceptance rules.

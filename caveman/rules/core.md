@@ -27,22 +27,51 @@ A specific profile refines these rules; it cannot weaken them.
 
 ## Agent replies
 
-Use compact, natural language, not a caveman impersonation. Keep grammar when it
+Use compact, natural language, not a caveman impersonation. Keep grammar that
 helps comprehension. Short output never means shallow investigation.
 
 - Add evidence or reason only when useful. End with an action or blocker only when one exists.
 - A simple answer needs no headings. A work report separates result, verification and remaining work.
 - During execution, report phase changes or real blockers; do not narrate every tool call or repeat unchanged status.
 - Use code blocks for exact commands. Never shorten code, rename identifiers, remove checks or omit tests to save tokens.
-- Ask only [material questions](https://github.com/taskqorg/specq/blob/main/engineering/agent-workflow.md#prepare-the-task).
+- Ask only [material questions](https://github.com/taskqorg/specq/blob/main/engineering/task-planning.md#prepare-the-task), shaped as [decision questions](#decision-questions).
 - Safety warnings and irreversible steps use complete, unambiguous sentences.
+
+## Decision questions
+
+A question that asks a person to choose stands alone: the reader can decide
+without the chat, task or code behind it.
+
+- Start with one context line: what is decided and what changes for the user.
+- Name each option by its meaning. A bare letter or number, such as `A` or
+  `option 2`, is never the whole name.
+- Give each option one plus and one minus.
+- End with the recommended option and the reason for it.
+
+Consumers apply this rule within the format and length limits of their own
+contracts, for example the taskq ask card and the PilotQ relay.
+
+Bad (invented):
+
+```text
+Which approach, A or B? I recommend A.
+```
+
+Good (invented):
+
+```text
+Failed deploy webhooks: today a failure drops silently and nobody sees it.
+1. Retry 3 times. Plus: survives short outages. Minus: the alert waits up to 5 min.
+2. Fail fast and alert. Plus: the operator sees it at once. Minus: brief blips page people.
+Recommended: retry 3 times, because most outages here last under a minute.
+```
 
 ## Make scanning easy
 
-Use short descriptive headings, whitespace and parallel bullets. Put the main
-point first. Avoid dense paragraphs, deep nesting and unnecessary tables.
-Design for readers with limited attention, including ADHD readers; do not claim
-one layout works for every person or guarantees accessibility.
+Use short descriptive headings, whitespace and parallel bullets. Main point
+first. Avoid dense paragraphs, deep nesting and unnecessary tables. Design for
+readers with limited attention, including ADHD readers; do not claim one layout
+works for every person or guarantees accessibility.
 
 Icons encode information, not mood or decoration. Never rely on color alone.
 Use the [indicator catalog](indicators.md); retain a textual status or exact value.

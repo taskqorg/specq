@@ -1,7 +1,7 @@
 # Agent replies
 
-Reply shape lives in [Core](core.md#agent-replies). This file keeps the paste block
-for agents without repository access and the upstream relationship.
+Reply shape: [Core](core.md#agent-replies). This file holds the paste block for
+agents without repository access and the upstream relationship.
 
 ## Ready-to-paste agent instruction
 
@@ -22,7 +22,8 @@ The [upstream snapshot](../vendor/caveman/SKILL.md) is reference material, not
 an automatically active instruction. Its persistent mode and slash commands
 belong to its plugin, not to every agent consuming this repository.
 
-Our profile deliberately differs: meaningful status icons are allowed; compact
-persistent documentation has its own profile. We do not import upstream's blanket
-emoji prohibition or apply telegraphic chat grammar to code and documentation.
-Do not promise a token-saving percentage or unchanged quality without measurement.
+Our profile differs on purpose: meaningful status icons are allowed, and
+persistent documentation has its own profile. We do not import upstream's
+blanket emoji prohibition or apply telegraphic chat grammar to code and
+documentation. Promise no token-saving percentage or unchanged quality without
+measurement.
