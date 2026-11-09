@@ -17,6 +17,6 @@ One owner page per area. Other pages in the area link from it.
 
 ## Rule prefixes
 
-Rule IDs follow [`<SCOPE>-<prefix><n>`](engineering/contracts.md#rule-ids). specq prefixes: `R` principles (this file), `D` [operator interfaces](design/operator-ui.md), `F` [implementation fidelity](design/implementation-fidelity.md), `W` [dashboards](design/dashboards.md).
+Rule IDs follow [`<SCOPE>-<prefix><n>`](engineering/contracts.md#rule-ids). specq prefixes: `R` principles (this file), `D` [operator interfaces](design/operator-ui.md), `F` [implementation fidelity](design/implementation-fidelity.md), `W` [dashboards](design/dashboards.md), `V` [app UI acceptance](design/app-ui.md).
 
 Check: `python3 caveman/scripts/check.py` and `git diff --check`.

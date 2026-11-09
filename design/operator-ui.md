@@ -19,6 +19,9 @@ Maximize readable, useful information within the smallest practical area. Applie
 - **SPECQ-D13. Put attention first.** Decisions and failures precede ordinary lists. Completed conversations and maintenance details must not displace active work.
 - **SPECQ-D14. Put actions in their section headers.** Place add beside the section name and external links beside the entity name. Group settings by purpose with recognizable icons and labels.
 
+Apply the [app UI checklist](app-ui.md) for navigation, interaction and state checks;
+its SPECQ-V IDs index these SPECQ-D rules without replacing them.
+
 ## Review each change
 
 1. Does each element help recognition, decision or action? Remove it if not.
