@@ -48,21 +48,21 @@ Never drop a condition during compaction.
 
 This rule covers these budgets:
 
-- Contract size in bytes and contract length in lines, defined below.
+- Contract size in bytes, defined below.
 - Injected rule size: the total of the contract, shared core and index that one attempt receives ([attempt context](rule-delivery.md#attempt-context)). The consumer that injects the rules states its cap.
 
 Display limits are format rules, not budgets: for example, title length, line length and the field limits of an ask card or a notification. Content at a display limit is valid; text over it is rejected or shortened at once, with no target and no compaction task.
 
 ## Budget
 
-- The default cap is 60 KiB (61440 bytes) and 300 lines. A contract may declare its own cap in one comment line, for example (invented values): `<!-- contract-budget: bytes=81920 lines=400 -->`. A declared cap is a decision of that contract.
+- The default cap is 60 KiB (61440 bytes). A contract may declare its own cap in one comment line, for example (invented values): `<!-- contract-budget: bytes=81920 -->`. A declared cap is a decision of that contract. Legacy `lines=` values are ignored; line count is informational.
 - Linked files are not injected; the attempt index lists them ([attempt context](rule-delivery.md#attempt-context)).
 
 ## Lint
 
 `python3 engineering/scripts/contract_lint.py <contract.md>...` uses the Python standard library only. It prints bytes, lines and the longest line per file, then one finding per line. It exits 1 on any error, including a file above its cap.
 
-- A file above the target and at or below its cap gets one marker line, `COMPACT: <path>: <value> <bytes|lines> > target <target> (cap <cap>)`, and passes. A project check turns each marker into the compaction task of [size budgets](#size-budgets).
+- A file above the target and at or below its cap gets one marker line, `COMPACT: <path>: <value> bytes > target <target> (cap <cap>)`, and passes. A project check turns each marker into the compaction task of [size budgets](#size-budgets).
 - Checks: cap, headroom, line length, ISO dates, decision-log phrases, and the outline: one H1 first, a purpose paragraph, `Principles` or `Rules` as the first section, no skipped level, no duplicate, generic or history heading.
 - Not checked: priority order, rule ID numbering and whether a task number is needed. Review judges these.
 - specq runs the lint on [specq.md](../specq.md) inside `caveman/scripts/check.py`, in CI.

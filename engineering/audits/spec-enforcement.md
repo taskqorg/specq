@@ -75,7 +75,7 @@ Control: **none** (nothing checks it), **review** (an agent or the owner reads i
 | Rule kind | Example | Home | Control today | Gap |
 |---|---|---|---|---|
 | Lifecycle transitions | § 2 table rows | taskq.md § 2 | model + test: `fold`, 99 golden traces, `every_table_row_has_a_golden_trace` (`src/core.rs`) | Generated sequences (duplicates, reordering) cover only what traces list. |
-| Contract size and form | ≤ 300 lines, ≤ 60 KiB, no dates | taskq.md R8, Change rule | test (same function) | The size cap pushes cuts; nothing checks what a cut removes. |
+| Contract size and form | At the audited revision: ≤ 300 lines, ≤ 60 KiB, no dates; current budget: [project contracts](../contracts.md#budget) | taskq.md R8, Change rule | test (same function) | The size cap pushes cuts; nothing checks what a cut removes. |
 | Card and result limits | Ask card ≤ 160 per option; result lines ≤ 240 | taskq.md § 2, § 7; R7 | command: `taskq ask/result` refuse over-limit text | none |
 | Runtime names in adapters only | — | taskq docs/runtime-qualification.md | test: `scripts/check.py` `runtime_names` | none |
 | Change rule | Rule changes name the R-number; numbers kept | taskq.md Change rule | review (result text) | Nothing lists removed or changed R-numbers or sections. |

@@ -11,10 +11,9 @@ import re
 import sys
 
 MAX_BYTES = 60 * 1024
-MAX_LINES = 300
 HEADROOM = 0.7
 MAX_LINE = 400
-BUDGET = re.compile(r'<!--\s*contract-budget:\s*bytes=(\d+)\s+lines=(\d+)\s*-->')
+BUDGET = re.compile(r'<!--\s*contract-budget:\s*bytes=(\d+)(?:\s+lines=\d+)?\s*-->')
 FENCE = re.compile(r'^\s*(```|~~~)')
 HEADING = re.compile(r'^(#{1,6})\s+(.*?)\s*#*\s*$')
 LINK_TARGET = re.compile(r'\]\([^)]*\)')
@@ -37,9 +36,9 @@ def lint(text):
     found = []
     lines = text.splitlines()
     declared = BUDGET.search(text)
-    max_bytes, max_lines = map(int, declared.groups()) if declared else (MAX_BYTES, MAX_LINES)
+    max_bytes = int(declared.group(1)) if declared else MAX_BYTES
     size = len(text.encode('utf-8'))
-    for what, value, cap in (('bytes', size, max_bytes), ('lines', len(lines), max_lines)):
+    for what, value, cap in (('bytes', size, max_bytes),):
         if value > cap:
             found.append(('error', 0, f'{value} {what} > cap {cap}; compact to target following engineering/contracts.md#size-budgets'))
         elif value > cap * HEADROOM:
@@ -92,7 +91,7 @@ def lint(text):
         headings.append((level, title))
     if not headings:
         found.append(('error', 0, 'no headings'))
-    stats = {'bytes': size, 'max_bytes': max_bytes, 'lines': len(lines), 'max_lines': max_lines, 'longest': longest}
+    stats = {'bytes': size, 'max_bytes': max_bytes, 'lines': len(lines), 'longest': longest}
     return stats, found
 
 
@@ -103,7 +102,7 @@ def main(paths):
     for path in paths:
         stats, found = lint(pathlib.Path(path).read_text(encoding='utf-8'))
         print(f"{path}: {stats['bytes']} bytes ({stats['bytes'] / stats['max_bytes']:.0%} of {stats['max_bytes']}), "
-              f"{stats['lines']} lines ({stats['lines'] / stats['max_lines']:.0%} of {stats['max_lines']}), "
+              f"{stats['lines']} lines, "
               f"longest line {stats['longest']} chars (limit {MAX_LINE}), "
               f"{sum(level == 'error' for level, _, _ in found)} errors")
         for level, number, message in found:
