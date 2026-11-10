@@ -23,7 +23,7 @@ specq owns the rules every taskqorg project shares. A project repository keeps o
 | Dimensions, assets, platform policies and acceptance fixtures | Project design package |
 | Scenarios and product-specific exceptions | Project use cases / contract |
 | Observations and test results | [Project documents](#project-documents): cited evidence records; other findings go into specifications |
-| Screenshots and other working papers | Pull requests, tasks or ignored local scratch |
+| Working papers | Pull requests, tasks or ignored local scratch |
 | Decision history, dates and owner or task attributions | Tasks, pull requests and git history |
 
 Shared rules contain no consumer names, paths, catalogs or product-specific thresholds. A local shared edit does not prove publication, consumer adoption or deployment.
@@ -39,14 +39,16 @@ Check each page of the project, one item at a time.
 
 ## Project documents
 
-Each project file has one kind, decided by its path. The project contract names or links the path rules.
+This rule covers project documents: the contract, agent entry file, and documentation and evidence folders, not code or assets. Each document has one kind, decided by its path. The project contract names or links the path rules.
 
 - Contract: the one root file of decisions ([contracts](contracts.md)).
 - Index: one row per specification: topic, file, one-line summary. The attempt index lists the same files.
 - Specification: the current target of one topic. One file per topic, rewritten in place; no history and no dated sections. A part not yet built says so in one line.
 - Evidence record: a measurement that a specification or code cites for its exact numbers. Unchanged after merge except link fixes; deleted when nothing cites it.
-- Working paper: brief, draft, review, drift report, handoff, screenshot, rejected option. Never committed; it lives in the pull request, the task or ignored local scratch. A finding that must survive goes into the specification it changes.
+- Working paper: brief, draft, review, drift report, handoff, picture taken to show or review work, rejected option. Never committed; it lives in the pull request, the task or ignored local scratch. A finding that must survive goes into the specification it changes.
 
-Before adding a file, find the topic's index row and edit that file. Add a specification only with its new row, and say in the pull request why no row fits. File names carry no dates.
+A picture that a specification or check uses as its accepted reference stays as part of that specification or design package.
+
+Before adding a document, find the topic's index row and edit that file. Add a specification only with its new row, and say in the pull request why no row fits. File names carry no dates.
 
 A project check reports, without failing the build: specifications the index does not list, links and cited paths that do not resolve, working papers and uncited evidence in the tree, and the size and file change of each pull request. On the main branch the findings keep one open work item, updated on each run and closed when none remain.
