@@ -18,30 +18,35 @@ class ContractLintTest(unittest.TestCase):
         self.assertEqual(lint(CLEAN)[1], [])
 
     def test_budget_below_target_above_target_and_over_cap(self):
-        below = CLEAN + 'x\n' * (210 - CLEAN.count('\n'))  # exactly at target 210 lines
+        below = CLEAN + '\n' * (43008 - len(CLEAN.encode('utf-8')))
         self.assertEqual(lint(below)[1], [])
-        above = below + 'x\n'
+        above = below + '\n'
         self.assertEqual(messages(above), [])
-        self.assertEqual(messages(above, 'compact'), ['211 lines > target 210 (cap 300)'])
-        over = CLEAN + 'x\n' * 300
-        self.assertTrue(any('lines > cap 300' in m for m in messages(over)))
+        self.assertEqual(messages(above, 'compact'), ['43009 bytes > target 43008 (cap 61440)'])
+        over = below + '\n' * (61441 - 43008)
+        self.assertTrue(any('bytes > cap 61440' in m for m in messages(over)))
         self.assertEqual(messages(over, 'compact'), [])
 
-    def test_compact_marker_line_does_not_fail(self):
+    def test_cli_byte_target_and_cap(self):
         import contextlib, io, tempfile
         from contract_lint import main
-        with tempfile.NamedTemporaryFile('w', suffix='.md', delete=False) as f:
-            f.write(CLEAN + 'x\n' * 250)
-        out = io.StringIO()
-        with contextlib.redirect_stdout(out):
-            code = main([f.name])
-        pathlib.Path(f.name).unlink()
-        self.assertEqual(code, 0)
-        self.assertIn(f'COMPACT: {f.name}: ', out.getvalue())
+        for size, expected in ((43009, 0), (61441, 1)):
+            with self.subTest(size=size), tempfile.TemporaryDirectory() as directory:
+                path = pathlib.Path(directory) / 'demo.md'
+                path.write_text(CLEAN + '\n' * (size - len(CLEAN.encode('utf-8'))), encoding='utf-8')
+                out = io.StringIO()
+                with contextlib.redirect_stdout(out):
+                    code = main([str(path)])
+                self.assertEqual(code, expected)
+                self.assertEqual('COMPACT:' in out.getvalue(), expected == 0)
+                self.assertIn(' lines, longest line ', out.getvalue())
 
     def test_declared_cap(self):
-        declared = '<!-- contract-budget: bytes=100000 lines=1000 -->\n' + CLEAN + 'x\n' * 300
-        self.assertEqual([m for m in messages(declared) if 'cap' in m], [])
+        for comment in ('bytes=100000', 'bytes=100000 lines=1'):
+            with self.subTest(comment=comment):
+                declared = '<!-- contract-budget: ' + comment + ' -->\n' + CLEAN + 'x\n' * 300
+                self.assertEqual(lint(declared)[0]['max_bytes'], 100000)
+                self.assertEqual(lint(declared)[1], [])
 
     def test_line_length_ignores_link_targets_and_code(self):
         self.assertTrue(any('401 chars' in m for m in messages(CLEAN + 'a' * 401 + '\n')))
